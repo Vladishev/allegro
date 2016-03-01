@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_Allegro
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
+-->
+<config>
+    <modules>
+        <Tim_Allegro>
+            <version>0.0.1</version>
+        </Tim_Allegro>
+    </modules>
+    <global>
+        <helpers>
+            <tim_allegro>
+                <class>Tim_Allegro_Helper</class>
+            </tim_allegro>
+        </helpers>
+    </global>
+</config>

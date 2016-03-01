@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_Allegro
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
+-->
+<config>
+    <tabs>
+        <tim_tab translate="label" module="tim_allegro">
+            <label>TIM SA</label>
+            <sort_order>100500</sort_order>
+        </tim_tab>
+    </tabs>
+</config>
