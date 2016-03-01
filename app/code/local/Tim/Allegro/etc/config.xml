@@ -21,5 +21,33 @@
                 <class>Tim_Allegro_Helper</class>
             </tim_allegro>
         </helpers>
+        <blocks>
+            <tim_allegro>
+                <class>Tim_Allegro_Block</class>
+            </tim_allegro>
+        </blocks>
     </global>
+    <admin>
+        <routers>
+            <tim_allegro>
+                <use>admin</use>
+                <args>
+                    <module>Tim_Allegro</module>
+                    <frontName>tim_allegro</frontName>
+                </args>
+            </tim_allegro>
+        </routers>
+    </admin>
+    <adminhtml>
+        <!--Translate have to be implemented to general config.xml-->
+        <translate>
+            <modules>
+                <Tim_Allegro>
+                    <files>
+                        <default>Tim_Allegro.csv</default>
+                    </files>
+                </Tim_Allegro>
+            </modules>
+        </translate>
+    </adminhtml>
 </config>

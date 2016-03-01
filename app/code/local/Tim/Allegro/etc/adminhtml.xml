@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_Allegro
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <tim_import>
+                                        <title>Import products from CSV</title>
+                                    </tim_import>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

@@ -16,4 +16,44 @@
             <sort_order>100500</sort_order>
         </tim_tab>
     </tabs>
+    <sections>
+        <tim_import translate="label">
+            <label>Import products from CSV</label>
+            <tab>tim_tab</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tim_import_interface translate="label">
+                    <label>Import products from CSV</label>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <import translate="label comment">
+                            <label>File to import</label>
+                            <comment>Allow ONLY csv files!</comment>
+                            <frontend_type>file</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_file</backend_model>
+                            <upload_dir>var/tim_import/csv</upload_dir>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </import>
+                        <import_button>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>tim_allegro/adminhtml_system_config_form_field_importButton</frontend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </import_button>
+                    </fields>
+                </tim_import_interface>
+            </groups>
+        </tim_import>
+    </sections>
 </config>
