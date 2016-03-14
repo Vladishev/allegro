@@ -29,8 +29,37 @@
         <models>
             <tim_allegro>
                 <class>Tim_Allegro_Model</class>
+                <resourceModel>tim_allegro_resource</resourceModel>
             </tim_allegro>
+            <tim_allegro_resource>
+                <class>Tim_Allegro_Model_Resource</class>
+                <entities>
+                    <import_csv>
+                        <table>tim_import_csv_file</table>
+                    </import_csv>
+                </entities>
+            </tim_allegro_resource>
         </models>
+        <resources>
+            <tim_allegro_setup>
+                <setup>
+                    <module>Tim_Allegro</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tim_allegro_setup>
+            <tim_allegro_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </tim_allegro_write>
+            <tim_allegro_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </tim_allegro_read>
+        </resources>
         <events>
             <admin_system_config_changed_section_tim_import>
                 <observers>
