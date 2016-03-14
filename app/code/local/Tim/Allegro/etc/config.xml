@@ -26,6 +26,21 @@
                 <class>Tim_Allegro_Block</class>
             </tim_allegro>
         </blocks>
+        <models>
+            <tim_allegro>
+                <class>Tim_Allegro_Model</class>
+            </tim_allegro>
+        </models>
+        <events>
+            <admin_system_config_changed_section_tim_import>
+                <observers>
+                    <tim_delete_uploaded_file>
+                        <class>tim_allegro/observer</class>
+                        <method>deleteUploadedFile</method>
+                    </tim_delete_uploaded_file>
+                </observers>
+            </admin_system_config_changed_section_tim_import>
+        </events>
     </global>
     <admin>
         <routers>

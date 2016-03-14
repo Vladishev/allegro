@@ -35,6 +35,7 @@ class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_A
      */
     public function importCsvAction()
     {
+        $parsedSku = Mage::getModel('tim_allegro/importFiles')->parseCsv();
 //        $result = array(
 //            'message' => '',
 //            'success' => false,
