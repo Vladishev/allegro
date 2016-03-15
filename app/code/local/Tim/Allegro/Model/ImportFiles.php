@@ -11,10 +11,30 @@
 class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
 {
     /**
+     * Runs import of xml files
+     */
+    public function run()
+    {
+        $csvData = $this->_parseCsv();
+
+        $xmlImportPath = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'xml';
+        if (!is_dir($xmlImportPath)) {
+            mkdir($xmlImportPath);
+        }
+
+        foreach ($csvData as $fileName => $links) {
+            foreach ($links as $sku => $link) {
+                $xml = file_get_contents($link);
+                file_put_contents($xmlImportPath . DS . $sku . '.xml', $xml);
+            }
+        }
+    }
+
+    /**
      * Parses csv file and transforms sku to right link format
      * @return array
      */
-    public function parseCsv()
+    protected function _parseCsv()
     {
         $siteUrl = 'http://crmmedia.tim.pl/Products/PIM-XML/';
         $parsed = array();
@@ -27,18 +47,12 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
                     $replaced = str_replace('-', '/', $data[0]);
                     $slashAdded = substr_replace($replaced, '/', 8, 0);
                     $slashAdded = substr_replace($slashAdded, '/', 15, 0);
-                    $links[] = $siteUrl . $slashAdded . '/' . $data[0] . '.xml';
+                    $links[$data[0]] = $siteUrl . $slashAdded . '/' . $data[0] . '.xml';
                 }
 
                 fclose($handle);
-                $fileName = basename($file);
-                $parsed[$fileName] = $links;
-                $parsedPath = $importFilePath . DS . 'parsed';
-                $moveTo = $parsedPath . DS . time() . '-' . $fileName;
-                if (!is_dir($parsedPath)) {
-                    mkdir($parsedPath);
-                }
-                rename($file, $moveTo);
+                $parsed[basename($file)] = $links;
+                unlink($file);
             }
         }
         return $parsed;
