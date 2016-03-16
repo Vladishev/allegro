@@ -34,9 +34,9 @@
             <tim_allegro_resource>
                 <class>Tim_Allegro_Model_Resource</class>
                 <entities>
-                    <import_csv>
+                    <import>
                         <table>tim_import_csv_file</table>
-                    </import_csv>
+                    </import>
                 </entities>
             </tim_allegro_resource>
         </models>
