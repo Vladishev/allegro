@@ -39,12 +39,14 @@ class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_A
             'message' => '',
             'success' => false,
         );
+        //Checking if script still executing
+        $isExecuting = shell_exec("ps ax | grep -i 'importXml.php' | wc -l");
 
-        if (shell_exec("ps ax | grep -i 'importFiles.php' | wc -l") != 2) {
+        if ($isExecuting != 2) {
             $result['message'] = Mage::helper('adminhtml')->__('Import is still running! Please wait.');
         } else {
             $path = Mage::getBaseDir() . DS . 'shell/tim_allegro';
-            $start = "cd $path; php importXml.php";
+            $start = "cd ".$path."; php -f importXml.php >/dev/null 2>&1 &";
             exec($start);
             $result['message'] = Mage::helper('adminhtml')->__('Import was executed!');
             $result['success'] = true;

@@ -23,14 +23,14 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
             mkdir($xmlImportPath);
         }
 
-        $importModel = Mage::getModel('tim_allegro/import');
+        sleep(20);
 
         foreach ($csvData as $fileName => $links) {
             $brokenLink = '';
-            $file = $importModel->load($fileName, 'file_name');
+            $file = Mage::getModel('tim_allegro/import')->load($fileName, 'file_name');
             $lastSku = $file->getLastSku();
 
-            //Cut array till not downloaded link
+//            Cut array till not downloaded link
             if (!empty($lastSku)) {
                 $i = 0;
                 foreach ($links as $sku => $link) {
@@ -65,7 +65,7 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
                 unlink($csvPath . DS . $fileName);
             }
             try {
-                $importModel->save();
+                $file->save();
             } catch (Exception $e) {
                 Mage::log($e->getMessage(), null, 'tim_import.log');
             }
@@ -98,7 +98,7 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
                 $issetFile = Mage::getModel('tim_allegro/import')
                     ->load(basename($file), 'file_name')
                     ->getData();
-                //If file not exist in database - add it
+//                If file not exist in database - add it
                 if (empty($issetFile)) {
                     $importModel = Mage::getModel('tim_allegro/import')
                         ->setFileName(basename($file))
