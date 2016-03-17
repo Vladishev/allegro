@@ -23,8 +23,6 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
             mkdir($xmlImportPath);
         }
 
-        sleep(20);
-
         foreach ($csvData as $fileName => $links) {
             $brokenLink = '';
             $file = Mage::getModel('tim_allegro/import')->load($fileName, 'file_name');
