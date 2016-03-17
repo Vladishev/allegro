@@ -94,4 +94,12 @@
             </modules>
         </translate>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <inchoo_birthday_send>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>tim_allegro/importFiles::run</model></run>
+            </inchoo_birthday_send>
+        </jobs>
+    </crontab>
 </config>
