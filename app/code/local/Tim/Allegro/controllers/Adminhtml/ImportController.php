@@ -1,6 +1,12 @@
 <?php
-
-
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_Allegro
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
 class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_Action
 {
     /**
@@ -43,12 +49,12 @@ class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_A
         $isExecuting = shell_exec("ps ax | grep -i 'importXml.php' | wc -l");
 
         if ($isExecuting != 2) {
-            $result['message'] = Mage::helper('adminhtml')->__('Import is still running! Please wait.');
+            $result['message'] = Mage::helper('tim_allegro')->__('Import is still running! Please wait.');
         } else {
             $path = Mage::getBaseDir() . DS . 'shell/tim_allegro';
-            $start = "cd ".$path."; php -f importXml.php >/dev/null 2>&1 &";
+            $start = "cd " . $path . "; php -f importXml.php >/dev/null 2>&1 &";
             exec($start);
-            $result['message'] = Mage::helper('adminhtml')->__('Import was executed!');
+            $result['message'] = Mage::helper('tim_allegro')->__('Import was executed!');
             $result['success'] = true;
         }
 

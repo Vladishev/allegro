@@ -17,7 +17,7 @@
         </tim_tab>
     </tabs>
     <sections>
-        <tim_import translate="label">
+        <tim_import translate="label" module="tim_allegro">
             <label>Import products from CSV</label>
             <tab>tim_tab</tab>
             <sort_order>10</sort_order>
@@ -25,14 +25,14 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <tim_import_interface translate="label">
+                <tim_import_interface translate="label" module="tim_allegro">
                     <label>Import products from CSV</label>
                     <sort_order>5</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <import translate="label comment">
+                        <import translate="label comment" module="tim_allegro">
                             <label>File to import</label>
                             <comment>Allow ONLY csv files!</comment>
                             <frontend_type>file</frontend_type>
