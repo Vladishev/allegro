@@ -21,5 +21,10 @@
                 <class>Tim_Allegro_Helper</class>
             </tim_allegro>
         </helpers>
+        <models>
+            <tim_allegro>
+                <class>Tim_Allegro_Model</class>
+            </tim_allegro>
+        </models>
     </global>
 </config>
