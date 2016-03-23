@@ -83,7 +83,6 @@
         </routers>
     </admin>
     <adminhtml>
-        <!--Translate have to be implemented to general config.xml-->
         <translate>
             <modules>
                 <Tim_Allegro>
