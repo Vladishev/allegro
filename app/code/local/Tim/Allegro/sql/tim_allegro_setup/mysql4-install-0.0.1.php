@@ -12,7 +12,7 @@
 $installer = $this;
 $connection = $installer->getConnection();
 
-$importCsvTable = $installer->getTable('tim_allegro/import_csv');
+$importCsvTable = $installer->getTable('tim_allegro/import');
 $installer->startSetup();
 
 if (!$connection->isTableExists($importCsvTable)) {
