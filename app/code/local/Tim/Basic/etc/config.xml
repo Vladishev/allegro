@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_Basic
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
+-->
+<config>
+    <modules>
+        <Tim_Basic>
+            <version>0.0.1</version>
+        </Tim_Basic>
+    </modules>
+    <global>
+        <helpers>
+            <tim_basic>
+                <class>Tim_Basic_Helper</class>
+            </tim_basic>
+        </helpers>
+        <resources>
+            <tim_basic_setup>
+                <setup>
+                    <module>Tim_Basic</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tim_basic_setup>
+            <tim_basic_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </tim_basic_write>
+            <tim_basic_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </tim_basic_read>
+        </resources>
+    </global>
+</config>
