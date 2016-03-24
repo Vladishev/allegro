@@ -21,5 +21,32 @@
                 <class>Tim_Allegro_Helper</class>
             </tim_allegro>
         </helpers>
+        <blocks>
+            <tim_allegro>
+                <class>Tim_Allegro_Block</class>
+            </tim_allegro>
+        </blocks>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <tim_allegro before="Mage_Adminhtml">Tim_Allegro_Adminhtml</tim_allegro>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Tim_Allegro>
+                    <files>
+                        <default>Tim_Allegro.csv</default>
+                    </files>
+                </Tim_Allegro>
+            </modules>
+        </translate>
+    </adminhtml>
 </config>
