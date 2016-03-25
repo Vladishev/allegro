@@ -20,7 +20,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             if (!empty($files)) {
                 foreach ($files as $file) {
                     $fileName = basename($file);
-                    $sku = '';
+                    $attributes = array();
                     $xml = new SimpleXMLElement(file_get_contents($file));
                     $rootNode = $xml->DataArea->ItemMaster->ItemMasterHeader;
                     $itemId = $rootNode->ItemID;
@@ -37,7 +37,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
                     $categoryArray = $this->_createCategoryArray($rootNode, $fileName);
                     if ($categoryArray !== false) {
-                        $this->_createCategoryTree($categoryArray);
+                        $productCategoryTimId = $this->_createCategoryTree($categoryArray);
+                        $attributes = $this->_getAttributes($rootNode);
+                        var_dump($attributes);
+//                        $this->_createProduct($attributes, $productCategoryTimId);
                     } else {
                         continue;
                     }
@@ -95,9 +98,11 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     /**
      * Creates category tree, if category exist - skips it.
      * @param $categoryArray
+     * @return int|string
      */
     protected function _createCategoryTree($categoryArray)
     {
+        $productCategoryTimId = '';
         $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', 'B24');
 
         foreach ($categoryArray as $id => $name) {
@@ -105,6 +110,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
             if ($currentCategory !== false) {
                 $rootCategory = $currentCategory;
+                $productCategoryTimId = $id;
                 continue;
             } else {
                 Mage::getModel('catalog/category')
@@ -118,7 +124,103 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     ->setInitialSetupFlag(true)
                     ->save();
                 $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', $id);
+                $productCategoryTimId = $id;
             }
         }
+
+        return $productCategoryTimId;
+    }
+
+    protected function _createProduct($attributes, $productCategoryTimId)
+    {
+
+    }
+
+    protected function _getAttributes($rootNode)
+    {
+        $attributes = array();
+        //getting tim_czy_magazynowy attribute
+        foreach ($rootNode->Classification as $classification) {
+            if ($classification['type'] == 'KategoriaDostawcyProduktu') {
+                $attributes['tim_czy_magazynowy'] = (string) $classification->Codes->Code;
+            }
+        }
+        //getting tim_jednostka_logistyczna attribute
+        if ($rootNode->Packaging->ID) {
+            $attributes['tim_jednostka_logistyczna'] = (string) $rootNode->Packaging->ID;
+        }
+        //getting tim_jednostka_miary attribute
+        if ($rootNode->BaseUOMCode) {
+            $attributes['tim_jednostka_miary'] = (string) $rootNode->BaseUOMCode;
+        }
+        //getting tim_producent attribute
+        foreach ($rootNode->Packaging->Note as $note) {
+            if ($note['type'] == 'SkroconaNazwaProducenta') {
+                $attributes['tim_producent'] = (string) $note;
+            }
+        }
+        //getting tim_wolumen attribute
+        if ($rootNode->Packaging->PerPackageQuantity) {
+            $attributes['tim_wolumen'] = (string) $rootNode->Packaging->PerPackageQuantity;
+        }
+        //getting sku, tim_ean, tim_nr_katalogowy_producenta attributes
+        foreach ($rootNode->ItemID as $item) {
+            if ($item['agencyRole'] == 'TIM article code') {
+                $attributes['sku'] = (string) $item->ID;
+            }
+            if ($item['agencyRole'] == 'Barcode') {
+                $attributes['tim_ean'] = (string) $item->ID;
+            }
+            if ($item['agencyRole'] == 'NrRefProducenta') {
+                $attributes['tim_nr_katalogowy_producenta'] = (string) $item->ID;
+            }
+        }
+        //getting image attribute
+        foreach ($rootNode->Attachment as $attachment) {
+            $attributes['image'][] = (string) $attachment->URI;
+        }
+        //getting description and name attributes
+        foreach ($rootNode->Description as $description) {
+            if ($description['type'] == 'B24') {
+                $attributes['description'] = '<p>' . $description . '</p>';
+            }
+            if ($description['type'] == 'Nazwa') {
+                $attributes['name'] = $description;
+            }
+        }
+        //getting description attribute(if exist OpisMarketingowyDlugi - it will rewrite the previous one)
+        foreach ($rootNode->Description as $description) {
+            if ($description['type'] == 'OpisMarketingowyDlugi') {
+                $attributes['description'] = '<p>' . $description . '</p>';
+            }
+        }
+        //getting description attribute(adding description list)
+        $z = 0;
+        foreach ($rootNode->Classification as $classification) {
+            if ($classification['type'] == 'ETIMAttr') {
+                if ($z == 0) {
+                    $attributes['description'] .= '<ul>';
+                }
+                foreach ($classification->Note as $note) {
+                    if ($note['type'] == 'Nazwa') {
+                        $attributes['description'] .= '<li>' . $note . ' : ';
+                    }
+                }
+                foreach ($classification->Note as $note) {
+                    if ($note['type'] == 'Wartosc') {
+                        $attributes['description'] .= $note . '</li>';
+                    }
+                }
+                $z++;
+            }
+        }
+        if ($z > 0) {
+            $attributes['description'] .= '</ul>';
+        }
+        //getting weight and price attributes
+        $attributes['weight'] = 1;
+        $attributes['price'] = 1;
+
+        return $attributes;
     }
 }
