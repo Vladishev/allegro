@@ -37,10 +37,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
                     $categoryArray = $this->_createCategoryArray($rootNode, $fileName);
                     if ($categoryArray !== false) {
-                        $productCategoryTimId = $this->_createCategoryTree($categoryArray);
+                        $categoryId = $this->_createCategoryTree($categoryArray);
                         $attributes = $this->_getAttributes($rootNode);
-                        var_dump($attributes);
-//                        $this->_createProduct($attributes, $productCategoryTimId);
+//                        var_dump($productCategoryTimId);die;
+                        $this->_createProduct($attributes, $categoryId);
                     } else {
                         continue;
                     }
@@ -127,13 +127,45 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 $productCategoryTimId = $id;
             }
         }
+        $categoryId = Mage::getModel('catalog/category')
+            ->loadByAttribute('tim_category_id', $productCategoryTimId)
+            ->getId();
 
-        return $productCategoryTimId;
+        return $categoryId;
     }
 
-    protected function _createProduct($attributes, $productCategoryTimId)
+    protected function _createProduct($attributes, $categoryId)
     {
+        Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
 
+        try {
+            Mage::getModel('catalog/product')
+                ->setWebsiteIds(array(0)) //website ID the product is assigned to, as an array
+                ->setAttributeSetId(4) //ID of a attribute set named 'default'
+                ->setTypeId('simple') //product type
+                ->setCreatedAt(strtotime('now')) //product creation time
+                ->setSku($attributes['sku']) //SKU
+                ->setName($attributes['name']) //product name
+                ->setWeight($attributes['weight'])
+                ->setStatus(1) //product status (1 - enabled, 2 - disabled)
+                ->setTaxClassId(1) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
+                ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) //catalog and search visibility
+                ->setPrice($attributes['price']) //price in form 11.22
+                ->setDescription($attributes['description'])
+                ->setShortDescription($attributes['description'])
+                ->setTimCzyMagazynowy($attributes['tim_czy_magazynowy'])
+                ->setTimJednostkaLogistyczna($attributes['tim_jednostka_logistyczna'])
+                ->setTimJednostkaMiary($attributes['tim_jednostka_miary'])
+                ->setTimProducent($attributes['tim_producent'])
+                ->setTimWolumen($attributes['tim_wolumen'])
+                ->setTimNrKatalogowyProducenta($attributes['tim_nr_katalogowy_producenta'])
+//                ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
+//                ->addImageToMediaGallery('media/catalog/product/1/0/10243-1.png', array('image','thumbnail','small_image'), false, false)
+                ->setCategoryIds(array($categoryId)) //assign product to categories
+                ->save();
+        } catch (Exception $e) {
+            Mage::log($e->getMessage()/*'Can not create product from file ' . $attributes['sku'] . '.xml.'*/, null, 'tim_import.log');
+        }
     }
 
     protected function _getAttributes($rootNode)
@@ -185,7 +217,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 $attributes['description'] = '<p>' . $description . '</p>';
             }
             if ($description['type'] == 'Nazwa') {
-                $attributes['name'] = $description;
+                $attributes['name'] = (string) $description;
             }
         }
         //getting description attribute(if exist OpisMarketingowyDlugi - it will rewrite the previous one)
@@ -218,7 +250,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             $attributes['description'] .= '</ul>';
         }
         //getting weight and price attributes
-        $attributes['weight'] = 1;
+        $attributes['weight'] = 1.0000;
         $attributes['price'] = 1;
 
         return $attributes;
