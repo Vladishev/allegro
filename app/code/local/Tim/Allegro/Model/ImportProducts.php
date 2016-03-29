@@ -21,6 +21,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 foreach ($files as $file) {
                     $fileName = basename($file);
                     $attributes = array();
+                    $productStatus = '';
                     $xml = new SimpleXMLElement(file_get_contents($file));
                     $rootNode = $xml->DataArea->ItemMaster->ItemMasterHeader;
                     $itemId = $rootNode->ItemID;
@@ -30,7 +31,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         }
                     }
 
-                    if (empty($sku)) {
+                    if (!empty($sku)) {
+                        $productStatus = $this->_checkProductStatus($sku, $rootNode);
+                        if ($productStatus == false) {
+                            continue;
+                        }
+                    } else {
                         Mage::log('File ' . $fileName . ' is broken - missing <ItemID agencyRole="TIM article code"> tag with SKU.', null, 'tim_import.log');
                         continue;
                     }
@@ -39,7 +45,6 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     if ($categoryArray !== false) {
                         $categoryId = $this->_createCategoryTree($categoryArray);
                         $attributes = $this->_getAttributes($rootNode);
-//                        var_dump($productCategoryTimId);die;
                         $this->_createProduct($attributes, $categoryId);
                     } else {
                         continue;
@@ -134,6 +139,11 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         return $categoryId;
     }
 
+    /**
+     * Creates product
+     * @param $attributes
+     * @param $categoryId
+     */
     protected function _createProduct($attributes, $categoryId)
     {
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
@@ -164,10 +174,15 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setCategoryIds(array($categoryId)) //assign product to categories
                 ->save();
         } catch (Exception $e) {
-            Mage::log($e->getMessage()/*'Can not create product from file ' . $attributes['sku'] . '.xml.'*/, null, 'tim_import.log');
+            Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
         }
     }
 
+    /**
+     * Takes all needed attributes for product from xml file
+     * @param $rootNode
+     * @return array
+     */
     protected function _getAttributes($rootNode)
     {
         $attributes = array();
@@ -254,5 +269,42 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         $attributes['price'] = 1;
 
         return $attributes;
+    }
+
+    /**
+     * Checks product according needed conditions
+     * @param $sku
+     * @param $rootNode
+     * @return bool|string
+     */
+    protected function _checkProductStatus($sku, $rootNode)
+    {
+        $productStatus = '';
+        foreach ($rootNode->Description as $description) {
+            if ($description['type'] == 'Wyprzedaz') {
+                $productStatus = (string) $description;
+            }
+        }
+        $product = Mage::getModel('catalog/product')->loadByAttribute('sku', $sku);
+
+        if ($product !== false) {
+            if ($productStatus == 'TAK') {
+                $productStatus = false;
+            } else {
+                $status = $product->getStatus();
+                if ($status == Mage_Catalog_Model_Product_Status::STATUS_ENABLED) {
+                    $storeId = 0;
+                    Mage::getModel('catalog/product_status')->updateProductStatus($product->getId(), $storeId, Mage_Catalog_Model_Product_Status::STATUS_DISABLED);
+                }
+                $productStatus = false;
+            }
+        } else {
+            if ($productStatus == 'TAK') {
+                $productStatus = true;
+            } else {
+                $productStatus = false;
+            }
+        }
+        return $productStatus;
     }
 }
