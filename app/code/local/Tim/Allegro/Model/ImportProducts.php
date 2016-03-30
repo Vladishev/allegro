@@ -45,6 +45,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     if ($categoryArray !== false) {
                         $categoryId = $this->_createCategoryTree($categoryArray);
                         $attributes = $this->_getAttributes($rootNode);
+                        $attributes = $this->_resizeImages($attributes);
                         $this->_createProduct($attributes, $categoryId);
                     } else {
                         continue;
@@ -149,7 +150,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
 
         try {
-            Mage::getModel('catalog/product')
+            $product = Mage::getModel('catalog/product')
                 ->setWebsiteIds(array(0)) //website ID the product is assigned to, as an array
                 ->setAttributeSetId(4) //ID of a attribute set named 'default'
                 ->setTypeId('simple') //product type
@@ -169,13 +170,23 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setTimProducent($attributes['tim_producent'])
                 ->setTimWolumen($attributes['tim_wolumen'])
                 ->setTimNrKatalogowyProducenta($attributes['tim_nr_katalogowy_producenta'])
-//                ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
-//                ->addImageToMediaGallery('media/catalog/product/1/0/10243-1.png', array('image','thumbnail','small_image'), false, false)
-                ->setCategoryIds(array($categoryId)) //assign product to categories
-                ->save();
+                ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
+                ->setCategoryIds(array($categoryId)); //assign product to categories
+            $k = 0;
+            foreach ($attributes['image'] as $image) {
+                if ($k == 0) {
+                    $product->addImageToMediaGallery($image, array('image','thumbnail','small_image'), false, false);
+                } else {
+                    $product->addImageToMediaGallery($image, null, false, false);
+                }
+                $k++;
+            }
+                $product->save();
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
         }
+        $imagesPath = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'images' . DS . 'resized' . DS . '*';
+        array_map("unlink", glob($imagesPath));
     }
 
     /**
@@ -306,5 +317,56 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             }
         }
         return $productStatus;
+    }
+
+    /**
+     * Download, resize and save images to tmp folder. Write new path to attributes array
+     * and delete ways with unused file extensions.
+     * @param $attributes
+     * @return mixed
+     */
+    protected function _resizeImages($attributes)
+    {
+        $imagePath = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'images';
+        $resizedFilePath = $imagePath . DS . 'resized';
+        $downloadedFilePath = $imagePath . DS . 'downloaded';
+        if (!is_dir($imagePath)) {
+            mkdir($imagePath);
+        }
+        if (!is_dir($resizedFilePath)) {
+            mkdir($resizedFilePath);
+        }
+        if (!is_dir($downloadedFilePath)) {
+            mkdir($downloadedFilePath);
+        }
+
+        foreach ($attributes['image'] as $key => $image) {
+            $fileInfo = pathinfo($image);
+            if ($fileInfo['extension'] == 'jpg' || $fileInfo['extension'] == 'jpeg' || $fileInfo['extension'] == 'png') {
+                if (!copy($image, $downloadedFilePath . DS . $fileInfo['basename'])) {
+                    Mage::log('Can not download file ' . $fileInfo['basename'], null, 'tim_import.log');
+                    unset($attributes['image'][$key]);
+                    continue;
+                }
+                try {
+                    $resizedImage = $resizedFilePath . DS . $fileInfo['basename'];
+                    $imageObj = new Varien_Image($downloadedFilePath . DS . $fileInfo['basename']);
+                    $imageObj->constrainOnly(true);
+                    $imageObj->keepAspectRatio(true);
+                    $imageObj->keepFrame(false);
+                    $imageObj->resize(800, false);
+                    $imageObj->save($resizedImage);
+                    $attributes['image'][$key] = $resizedImage;
+                } catch (Exception $e) {
+                    Mage::log($e->getMessage(), null, 'tim_import.log');
+                    unset($attributes['image'][$key]);
+                }
+            } else {
+                unset($attributes['image'][$key]);
+            }
+            array_map("unlink", glob($downloadedFilePath . DS . '*'));
+        }
+
+        return $attributes;
     }
 }
