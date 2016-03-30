@@ -34,6 +34,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     if (!empty($sku)) {
                         $productStatus = $this->_checkProductStatus($sku, $rootNode);
                         if ($productStatus == false) {
+                            unlink($file);
                             continue;
                         }
                     } else {
@@ -43,10 +44,15 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
                     $categoryArray = $this->_createCategoryArray($rootNode, $fileName);
                     if ($categoryArray !== false) {
-                        $categoryId = $this->_createCategoryTree($categoryArray);
-                        $attributes = $this->_getAttributes($rootNode);
-                        $attributes = $this->_resizeImages($attributes);
-                        $this->_createProduct($attributes, $categoryId);
+                        $categoryId = $this->_createCategoryTree($categoryArray, $sku);
+                        if ($categoryId) {
+                            $attributes = $this->_getAttributes($rootNode);
+                            $attributes = $this->_resizeImages($attributes);
+                            $result = $this->_createProduct($attributes, $categoryId);
+                            if ($result) {
+                                unlink($file);
+                            }
+                        }
                     } else {
                         continue;
                     }
@@ -104,9 +110,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     /**
      * Creates category tree, if category exist - skips it.
      * @param $categoryArray
-     * @return int|string
+     * @param $sku
+     * @return bool
      */
-    protected function _createCategoryTree($categoryArray)
+    protected function _createCategoryTree($categoryArray, $sku)
     {
         $productCategoryTimId = '';
         $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', 'B24');
@@ -119,35 +126,48 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 $productCategoryTimId = $id;
                 continue;
             } else {
-                Mage::getModel('catalog/category')
-                    ->setName($name)
-                    ->setTimCategoryId($id)
-                    ->setDisplayMode('PRODUCTS')
-                    ->setAttributeSetId(Mage::getModel('catalog/category')->getDefaultAttributeSetId())
-                    ->setIsActive(1)
-                    ->setIsAnchor(1)
-                    ->setPath(implode('/',$rootCategory->getPathIds()))
-                    ->setInitialSetupFlag(true)
-                    ->save();
-                $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', $id);
-                $productCategoryTimId = $id;
+                try {
+                    Mage::getModel('catalog/category')
+                        ->setName($name)
+                        ->setTimCategoryId($id)
+                        ->setDisplayMode('PRODUCTS')
+                        ->setAttributeSetId(Mage::getModel('catalog/category')->getDefaultAttributeSetId())
+                        ->setIsActive(1)
+                        ->setIsAnchor(1)
+                        ->setPath(implode('/',$rootCategory->getPathIds()))
+                        ->setInitialSetupFlag(true)
+                        ->save();
+                    $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', $id);
+                    $productCategoryTimId = $id;
+                } catch (Exception $e) {
+                    Mage::log('Can not create category from file ' . $sku . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
+                    $productCategoryTimId = false;
+                    break;
+                }
             }
         }
-        $categoryId = Mage::getModel('catalog/category')
-            ->loadByAttribute('tim_category_id', $productCategoryTimId)
-            ->getId();
 
-        return $categoryId;
+        if ($productCategoryTimId) {
+            $categoryId = Mage::getModel('catalog/category')
+                ->loadByAttribute('tim_category_id', $productCategoryTimId)
+                ->getId();
+            return $categoryId;
+        } else {
+            return false;
+        }
+
     }
 
     /**
      * Creates product
      * @param $attributes
      * @param $categoryId
+     * @return bool
      */
     protected function _createProduct($attributes, $categoryId)
     {
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+        $result = true;
 
         try {
             $product = Mage::getModel('catalog/product')
@@ -184,9 +204,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 $product->save();
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
+            $result = false;
         }
         $imagesPath = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'images' . DS . 'resized' . DS . '*';
         array_map("unlink", glob($imagesPath));
+
+        return $result;
     }
 
     /**
