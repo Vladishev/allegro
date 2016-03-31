@@ -73,13 +73,13 @@
     </global>
     <admin>
         <routers>
-            <adminhtml>
+            <tim_allegro>
+                <use>admin</use>
                 <args>
-                    <modules>
-                        <tim_allegro before="Mage_Adminhtml">Tim_Allegro_Adminhtml</tim_allegro>
-                    </modules>
+                    <module>Tim_Allegro</module>
+                    <frontName>tim_allegro</frontName>
                 </args>
-            </adminhtml>
+            </tim_allegro>
         </routers>
     </admin>
     <adminhtml>
@@ -95,10 +95,10 @@
     </adminhtml>
     <crontab>
         <jobs>
-            <inchoo_birthday_send>
+            <tim_import_files>
                 <schedule><cron_expr>* * * * *</cron_expr></schedule>
                 <run><model>tim_allegro/importFiles::run</model></run>
-            </inchoo_birthday_send>
+            </tim_import_files>
         </jobs>
     </crontab>
 </config>
