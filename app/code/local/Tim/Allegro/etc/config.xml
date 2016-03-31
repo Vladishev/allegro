@@ -73,13 +73,13 @@
     </global>
     <admin>
         <routers>
-            <tim_allegro>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Tim_Allegro</module>
-                    <frontName>tim_allegro</frontName>
+                    <modules>
+                        <tim_allegro before="Mage_Adminhtml">Tim_Allegro_Adminhtml</tim_allegro>
+                    </modules>
                 </args>
-            </tim_allegro>
+            </adminhtml>
         </routers>
     </admin>
     <adminhtml>

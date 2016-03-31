@@ -10,6 +10,21 @@
  */
 -->
 <config>
+    <menu>
+        <report>
+            <children>
+                <tim translate="title" module="tim_allegro">
+                    <title>TIM</title>
+                    <children>
+                        <tim_product_name_report translate="title" module="tim_allegro">
+                            <title>Products(name > 50 chars)</title>
+                            <action>adminhtml/productName</action>
+                        </tim_product_name_report>
+                    </children>
+                </tim>
+            </children>
+        </report>
+    </menu>
     <acl>
         <resources>
             <admin>
@@ -25,6 +40,19 @@
                             </config>
                         </children>
                     </system>
+                    <report>
+                        <children>
+                            <tim translate="title" module="tim_allegro">
+                                <title>TIM</title>
+                                <children>
+                                    <tim_product_name_report translate="title" >
+                                        <title>Products(name > 50 chars)</title>
+                                        <sort_order>0</sort_order>
+                                    </tim_product_name_report>
+                                </children>
+                            </tim>
+                        </children>
+                    </report>
                 </children>
             </admin>
         </resources>

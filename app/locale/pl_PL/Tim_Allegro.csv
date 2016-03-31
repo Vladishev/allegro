@@ -1,4 +1,7 @@
-"TIM SA","TIM SA"
+"Name of product","Name of product"
+"Products where name > 50 chars","Products where name > 50 chars"
+"Products(name > 50 chars)","Products(name > 50 chars)"
+"TIM","TIM""TIM SA","TIM SA"
 "Import products from CSV","Import products from CSV"
 "File to import","File to import"
 "Allow ONLY csv files!","Allow ONLY csv files!"
