@@ -263,7 +263,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         //getting description and name attributes
         foreach ($rootNode->Description as $description) {
             if ($description['type'] == 'B24') {
-                $attributes['description'] = '<p>' . $description . '</p>';
+                $description = (string) $description;
+                if (!empty($description)) {
+                    $attributes['description'] = '<p>' . $description . '</p>';
+                } else {
+                    $attributes['description'] = '';
+                }
             }
             if ($description['type'] == 'Nazwa') {
                 $attributes['name'] = (string) $description;
@@ -272,7 +277,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         //getting description attribute(if exist OpisMarketingowyDlugi - it will rewrite the previous one)
         foreach ($rootNode->Description as $description) {
             if ($description['type'] == 'OpisMarketingowyDlugi') {
-                $attributes['description'] = '<p>' . $description . '</p>';
+                $description = (string) $description;
+                if (!empty($description)) {
+                    $attributes['description'] = '<p>' . $description . '</p>';
+                } else {
+                    $attributes['description'] = '';
+                }
             }
         }
         //getting description attribute(adding description list)
