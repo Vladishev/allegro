@@ -10,33 +10,6 @@
 class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_Action
 {
     /**
-     * Initialize layout.
-     * @return $this
-     */
-    protected function _initAction()
-    {
-        $this->_title($this->__('Import'))
-            ->loadLayout()
-            ->_setActiveMenu('system/tim_import_interface');
-
-        return $this;
-    }
-
-    /**
-     * Index action.
-     *
-     * @return void
-     */
-    public function indexAction()
-    {
-        $this->_initAction()
-            ->_title($this->__('Import'))
-            ->_addBreadcrumb($this->__('Import'), $this->__('Import'));
-
-        $this->renderLayout();
-    }
-
-    /**
      * Import xml files
      */
     public function importXmlAction()
