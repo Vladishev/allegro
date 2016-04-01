@@ -76,7 +76,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <importXml before="Mage_Adminhtml">Tim_Allegro_Adminhtml</importXml>
+                        <tim_allegro before="Mage_Adminhtml">Tim_Allegro_Adminhtml</tim_allegro>
                     </modules>
                 </args>
             </adminhtml>
