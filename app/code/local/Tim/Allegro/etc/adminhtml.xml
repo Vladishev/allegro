@@ -20,6 +20,10 @@
                             <title>Products(name > 50 chars)</title>
                             <action>adminhtml/productName</action>
                         </tim_product_name_report>
+                        <tim_product_image_report translate="title" module="tim_allegro">
+                            <title>Products without images</title>
+                            <action>adminhtml/productImage</action>
+                        </tim_product_image_report>
                     </children>
                 </tim>
             </children>
@@ -49,6 +53,10 @@
                                         <title>Products(name > 50 chars)</title>
                                         <sort_order>0</sort_order>
                                     </tim_product_name_report>
+                                    <tim_product_image_report translate="title" module="tim_allegro">
+                                        <title>Products without images</title>
+                                        <sort_order>20</sort_order>
+                                    </tim_product_image_report>
                                 </children>
                             </tim>
                         </children>
