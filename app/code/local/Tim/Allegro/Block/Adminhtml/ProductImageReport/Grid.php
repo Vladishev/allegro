@@ -25,13 +25,7 @@ class Tim_Allegro_Block_Adminhtml_ProductImageReport_Grid extends Mage_Adminhtml
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('catalog/product')->getCollection();
-        $collection->addAttributeToSelect('name');
-        $collection->addAttributeToSelect('status');
-        $collection->addAttributeToSelect('image');
-        $collection->addAttributeToFilter(
-            'status',
-            array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
-        );
+        $collection->addAttributeToSelect(array('name', 'image', 'thumbnail', 'small_image'));
         $collection->addAttributeToFilter(array(
             array (
                 'attribute' => 'image',
@@ -47,6 +41,42 @@ class Tim_Allegro_Block_Adminhtml_ProductImageReport_Grid extends Mage_Adminhtml
             ),
             array (
                 'attribute' => 'image', // check for information that doesn't conform to Magento's formatting
+                'nlike' => '%/%/%'
+            ),
+        ));
+        $collection->addAttributeToFilter(array(
+            array (
+                'attribute' => 'thumbnail',
+                'like' => 'no_selection'
+            ),
+            array (
+                'attribute' => 'thumbnail', // null fields
+                'null' => true
+            ),
+            array (
+                'attribute' => 'thumbnail', // empty, but not null
+                'eq' => ''
+            ),
+            array (
+                'attribute' => 'thumbnail', // check for information that doesn't conform to Magento's formatting
+                'nlike' => '%/%/%'
+            ),
+        ));
+        $collection->addAttributeToFilter(array(
+            array (
+                'attribute' => 'small_image',
+                'like' => 'no_selection'
+            ),
+            array (
+                'attribute' => 'small_image', // null fields
+                'null' => true
+            ),
+            array (
+                'attribute' => 'small_image', // empty, but not null
+                'eq' => ''
+            ),
+            array (
+                'attribute' => 'small_image', // check for information that doesn't conform to Magento's formatting
                 'nlike' => '%/%/%'
             ),
         ));
