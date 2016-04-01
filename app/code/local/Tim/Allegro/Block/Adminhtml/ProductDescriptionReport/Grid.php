@@ -25,9 +25,17 @@ class Tim_Allegro_Block_Adminhtml_ProductDescriptionReport_Grid extends Mage_Adm
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('catalog/product')->getCollection();
-        $collection->addAttributeToSelect('name');
-        $collection->addAttributeToSelect('description');
-        $collection->addAttributeToFilter('description', array('null' => true));
+        $collection->addAttributeToSelect('name', 'description');
+        $collection->addAttributeToFilter(array(
+            array(
+                'attribute' => 'description',
+                'null' => true
+            ),
+            array(
+                'attribute' => 'description',
+                'eq' => ''
+            ),
+        ));
 
         $this->setCollection($collection);
 
@@ -37,7 +45,7 @@ class Tim_Allegro_Block_Adminhtml_ProductDescriptionReport_Grid extends Mage_Adm
     /**
      * Prepare grid columns
      *
-     * @return Tim_Allegro_Block_Adminhtml_ProductName_Grid
+     * @return Tim_Allegro_Block_Adminhtml_ProductDescription_Grid
      */
     protected function _prepareColumns()
     {
