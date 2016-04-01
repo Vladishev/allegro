@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
  * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
  */
-class Tim_Allegro_Adminhtml_ImportXml_ImportController extends Mage_Adminhtml_Controller_Action
+class Tim_Allegro_Adminhtml_ImportController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Import xml files
