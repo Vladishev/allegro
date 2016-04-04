@@ -24,6 +24,10 @@
                             <title>Products without images</title>
                             <action>adminhtml/productImage</action>
                         </tim_product_image_report>
+                        <tim_product_description_report translate="title" module="tim_allegro">
+                            <title>Products without description</title>
+                            <action>adminhtml/productDescription</action>
+                        </tim_product_description_report>
                     </children>
                 </tim>
             </children>
@@ -49,7 +53,7 @@
                             <tim translate="title" module="tim_allegro">
                                 <title>TIM</title>
                                 <children>
-                                    <tim_product_name_report translate="title" >
+                                    <tim_product_name_report translate="title">
                                         <title>Products(name > 50 chars)</title>
                                         <sort_order>0</sort_order>
                                     </tim_product_name_report>
@@ -57,6 +61,10 @@
                                         <title>Products without images</title>
                                         <sort_order>20</sort_order>
                                     </tim_product_image_report>
+                                    <tim_product_description_report translate="title">
+                                        <title>Products without description</title>
+                                        <sort_order>10</sort_order>
+                                    </tim_product_description_report>
                                 </children>
                             </tim>
                         </children>
