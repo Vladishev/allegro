@@ -54,6 +54,6 @@ class Tim_Allegro_Block_Adminhtml_System_Config_Form_Field_ImportButton extends 
      */
     public function getAjaxImportUrl()
     {
-        return Mage::getSingleton('adminhtml/url')->getUrl('tim_allegro/adminhtml_import/importXml');
+        return Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/import/importXml');
     }
 }
