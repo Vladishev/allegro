@@ -56,4 +56,34 @@
             </groups>
         </tim_import>
     </sections>
+    <sections>
+        <tim_reports_settings translate="label" module="tim_allegro">
+            <label>Reports settings</label>
+            <tab>tim_tab</tab>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tim_reports_group translate="label" module="tim_allegro">
+                    <label>Email settings</label>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <tim_reports_to translate="label comment" module="tim_allegro">
+                            <label>Send reports to</label>
+                            <comment>Comma-separated</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tim_reports_to>
+                    </fields>
+                </tim_reports_group>
+            </groups>
+        </tim_reports_settings>
+    </sections>
 </config>
