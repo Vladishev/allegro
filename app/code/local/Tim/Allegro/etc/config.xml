@@ -69,6 +69,14 @@
                     </tim_delete_uploaded_file>
                 </observers>
             </admin_system_config_changed_section_tim_import>
+            <admin_system_config_changed_section_tim_alternative_image>
+                <observers>
+                    <tim_clean_image_dir>
+                        <class>tim_allegro/observer</class>
+                        <method>cleanImageDir</method>
+                    </tim_clean_image_dir>
+                </observers>
+            </admin_system_config_changed_section_tim_alternative_image>
         </events>
     </global>
     <admin>

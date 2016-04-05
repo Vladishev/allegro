@@ -21,6 +21,9 @@
                                     <tim_import translate="title" module="tim_allegro">
                                         <title>Import products from CSV</title>
                                     </tim_import>
+                                    <tim_alternative_image translate="title" module="tim_allegro">
+                                        <title>Alternative image</title>
+                                    </tim_alternative_image>
                                 </children>
                             </config>
                         </children>
