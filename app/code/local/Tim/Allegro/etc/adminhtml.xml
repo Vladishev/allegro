@@ -44,6 +44,9 @@
                                     <tim_import translate="title" module="tim_allegro">
                                         <title>Import products from CSV</title>
                                     </tim_import>
+                                    <tim_reports_settings translate="title" module="tim_allegro">
+                                        <title>Reports settings</title>
+                                    </tim_reports_settings>
                                 </children>
                             </config>
                         </children>

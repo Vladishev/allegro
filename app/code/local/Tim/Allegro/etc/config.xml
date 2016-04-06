@@ -70,6 +70,15 @@
                 </observers>
             </admin_system_config_changed_section_tim_import>
         </events>
+        <template>
+            <email>
+                <tim_products_report>
+                    <label>Products report</label>
+                    <file>productsReport.html</file>
+                    <type>html</type>
+                </tim_products_report>
+            </email>
+        </template>
     </global>
     <admin>
         <routers>
@@ -103,6 +112,10 @@
                 <schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
                 <run><model>tim_allegro/importProducts::run</model></run>
             </tim_import_products>
+            <tim_send_product_reports>
+                <schedule><cron_expr>0 7 * * 1-5</cron_expr></schedule>
+                <run><model>tim_allegro/sendReports::sendReport</model></run>
+            </tim_send_product_reports>
         </jobs>
     </crontab>
 </config>
