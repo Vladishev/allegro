@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Tim_Allegro>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </Tim_Allegro>
     </modules>
     <global>
@@ -99,6 +99,10 @@
                 <schedule><cron_expr>* * * * *</cron_expr></schedule>
                 <run><model>tim_allegro/importFiles::run</model></run>
             </tim_import_files>
+            <tim_import_products>
+                <schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
+                <run><model>tim_allegro/importProducts::run</model></run>
+            </tim_import_products>
         </jobs>
     </crontab>
 </config>
