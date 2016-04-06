@@ -55,6 +55,36 @@
                 </tim_import_interface>
             </groups>
         </tim_import>
+        <tim_alternative_image translate="label" module="tim_allegro">
+            <label>Alternative image</label>
+            <tab>tim_tab</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tim_alternative_image_group translate="label" module="tim_allegro">
+                    <label>Alternative image</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <alternative_image translate="label comment" module="tim_allegro">
+                            <label>Image to download</label>
+                            <comment>Allow ONLY jpg files!</comment>
+                            <frontend_type>file</frontend_type>
+                            <backend_model>tim_allegro/system_config_backend_images</backend_model>
+                            <upload_dir>var/tim_import/alternative_image</upload_dir>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </alternative_image>
+                    </fields>
+                </tim_alternative_image_group>
+            </groups>
+        </tim_alternative_image>
     </sections>
     <sections>
         <tim_reports_settings translate="label" module="tim_allegro">

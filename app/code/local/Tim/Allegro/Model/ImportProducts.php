@@ -354,7 +354,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Download, resize and save images to tmp folder. Write new path to attributes array
-     * and delete ways with unused file extensions.
+     * and delete ways with unused file extensions. If file do not have allowed images,
+     * sets to product alternative image from Configuration->TIM SA->Alternative image
      * @param $attributes
      * @return mixed
      */
@@ -363,6 +364,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         $imagePath = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'images';
         $resizedFilePath = $imagePath . DS . 'resized';
         $downloadedFilePath = $imagePath . DS . 'downloaded';
+        $noImage = true;
         if (!is_dir($imagePath)) {
             mkdir($imagePath);
         }
@@ -372,24 +374,35 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         if (!is_dir($downloadedFilePath)) {
             mkdir($downloadedFilePath);
         }
+        $alternativeImage = glob(Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'alternative_image' . DS . '*');
+        if (!empty($alternativeImage[0])) {
+            $alternativeImage = $alternativeImage[0];
+        } else {
+            $alternativeImage = '';
+        }
 
         foreach ($attributes['image'] as $key => $image) {
             $fileInfo = pathinfo($image);
             if ($fileInfo['extension'] == 'jpg' || $fileInfo['extension'] == 'jpeg' || $fileInfo['extension'] == 'png') {
-                if (!copy($image, $downloadedFilePath . DS . $fileInfo['basename'])) {
+                $downloadedFile = $downloadedFilePath . DS . $fileInfo['basename'];
+                if (!copy($image, $downloadedFile)) {
                     Mage::log('Can not download file ' . $fileInfo['basename'], null, 'tim_import.log');
                     unset($attributes['image'][$key]);
                     continue;
                 }
+                $imageInfo = getimagesize($downloadedFile);
                 try {
                     $resizedImage = $resizedFilePath . DS . $fileInfo['basename'];
-                    $imageObj = new Varien_Image($downloadedFilePath . DS . $fileInfo['basename']);
+                    $imageObj = new Varien_Image($downloadedFile);
                     $imageObj->constrainOnly(true);
                     $imageObj->keepAspectRatio(true);
                     $imageObj->keepFrame(false);
-                    $imageObj->resize(800, false);
+                    if ($imageInfo[0] > 800) {
+                        $imageObj->resize(800, false);
+                    }
                     $imageObj->save($resizedImage);
                     $attributes['image'][$key] = $resizedImage;
+                    $noImage = false;
                 } catch (Exception $e) {
                     Mage::log($e->getMessage(), null, 'tim_import.log');
                     unset($attributes['image'][$key]);
@@ -398,6 +411,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 unset($attributes['image'][$key]);
             }
             array_map("unlink", glob($downloadedFilePath . DS . '*'));
+        }
+        if ($noImage) {
+            $attributes['image'][0] = $alternativeImage;
         }
 
         return $attributes;

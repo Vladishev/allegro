@@ -47,6 +47,9 @@
                                     <tim_reports_settings translate="title" module="tim_allegro">
                                         <title>Reports settings</title>
                                     </tim_reports_settings>
+                                    <tim_alternative_image translate="title" module="tim_allegro">
+                                        <title>Alternative image</title>
+                                    </tim_alternative_image>
                                 </children>
                             </config>
                         </children>

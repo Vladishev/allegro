@@ -25,4 +25,47 @@ class Tim_Allegro_Model_Observer
         }
         return $this;
     }
+
+    /**
+     * Cleans folder of old files
+     * @return $this
+     */
+    public function cleanImageDir()
+    {
+        $uploadedFile = Mage::app()->getStore()->getConfig('tim_alternative_image/tim_alternative_image_group/alternative_image');
+        $path = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'alternative_image' . DS;
+        $files = glob($path . '*');
+        if (!empty($files[0])) {
+            foreach ($files as $file) {
+                if (basename($file) == $uploadedFile) {
+                    continue;
+                }
+                unlink($file);
+            }
+        }
+        $this->_resizeImage($path . $uploadedFile);
+
+        return $this;
+    }
+
+    /**
+     * Resize image after download
+     * @param $file
+     */
+    protected function _resizeImage($file)
+    {
+        $imageInfo = getimagesize($file);
+        try {
+            $imageObj = new Varien_Image($file);
+            $imageObj->constrainOnly(true);
+            $imageObj->keepAspectRatio(true);
+            $imageObj->keepFrame(false);
+            if ($imageInfo[0] > 800) {
+                $imageObj->resize(800, false);
+            }
+            $imageObj->save($file);
+        } catch (Exception $e) {
+            Mage::log('Can not resize alternative image. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
+        }
+    }
 }
