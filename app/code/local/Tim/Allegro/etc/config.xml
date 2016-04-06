@@ -112,14 +112,14 @@
     </adminhtml>
     <crontab>
         <jobs>
-            <tim_import_files>
-                <schedule><cron_expr>* * * * *</cron_expr></schedule>
-                <run><model>tim_allegro/importFiles::run</model></run>
-            </tim_import_files>
-            <tim_import_products>
-                <schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
-                <run><model>tim_allegro/importProducts::run</model></run>
-            </tim_import_products>
+            <!--<tim_import_files>-->
+                <!--<schedule><cron_expr>0 7 * * 1-5</cron_expr></schedule>-->
+                <!--<run><model>tim_allegro/importFiles::run</model></run>-->
+            <!--</tim_import_files>-->
+            <!--<tim_import_products>-->
+                <!--<schedule><cron_expr>0 7 * * 1-5</cron_expr></schedule>-->
+                <!--<run><model>tim_allegro/importProducts::run</model></run>-->
+            <!--</tim_import_products>-->
             <tim_send_product_reports>
                 <schedule><cron_expr>0 7 * * 1-5</cron_expr></schedule>
                 <run><model>tim_allegro/sendReports::sendReport</model></run>

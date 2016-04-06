@@ -53,7 +53,7 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
                     break;
                 }
 
-                file_put_contents($xmlImportPath . DS . $sku . '.xml', $xml, FILE_APPEND);
+                file_put_contents($xmlImportPath . DS . $sku . '.xml', $xml);
             }
             //If all links downloaded set data and delete csv file
             if (empty($brokenLink)) {
