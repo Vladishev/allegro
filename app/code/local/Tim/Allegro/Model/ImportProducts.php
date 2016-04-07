@@ -270,6 +270,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     $attributes['description'] = '';
                 }
             }
+
+        }
+        foreach ($rootNode->Description as $description) {
             if ($description['type'] == 'Nazwa') {
                 $attributes['name'] = (string) $description;
             }
@@ -398,7 +401,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     $imageObj->keepAspectRatio(true);
                     $imageObj->keepFrame(false);
                     if ($imageInfo[0] > 800) {
-                        $imageObj->resize(800, false);
+                        $imageObj->resize(800, null);
                     }
                     $imageObj->save($resizedImage);
                     $attributes['image'][$key] = $resizedImage;
