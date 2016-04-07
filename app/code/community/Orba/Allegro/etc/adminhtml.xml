@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <sales>
+            <children>
+                <orbaallegro translate="title" module="orbaallegro">
+                    <title>ORBA | Allegro</title>
+                    <children>
+                        <auctions translate="title" module="orbaallegro">
+                            <title>Auctions</title>
+                            <action>adminhtml/auction/index</action>
+                        </auctions>
+                        <sales translate="title" module="orbaallegro">
+                            <title>Sales</title>
+                            <children>
+                                <transaction translate="title" module="orbaallegro">
+                                    <title>Transactions</title>
+                                    <action>adminhtml/transaction/index</action>
+                                </transaction>
+                                <bids translate="title" module="orbaallegro">
+                                    <title>Bids</title>
+                                    <action>adminhtml/auction_bid/index</action>
+                                </bids>
+                            </children>
+                        </sales>
+                        
+                        <templates translate="title" module="orbaallegro">
+                            <title>Templates</title>
+                            <action>adminhtml/template/index</action>
+                        </templates>
+  
+                        <synchronization translate="title" module="orbaallegro">
+                            <title>Synchronization</title>
+                            <children>
+                                <auctions translate="title" module="orbaallegro">
+                                    <title>Auciton synchronization</title>
+                                    <action>adminhtml/auction/sync</action>
+                                </auctions>
+                                <categories translate="title" module="orbaallegro">
+                                    <title>Categories synchronization</title>
+                                    <action>adminhtml/category/index</action>
+                                </categories>
+                                <shop_categories translate="title" module="orbaallegro">
+                                    <title>Shop categories synchronization</title>
+                                    <action>adminhtml/shop_category/index</action>
+                                </shop_categories>
+                            </children>
+                        </synchronization>
+                        <mappings  translate="title" module="orbaallegro">
+                            <title>Mappings</title>
+                            <children>
+                                <templates_mappings translate="title" module="orbaallegro">
+                                    <title>Templates</title>
+                                    <action>adminhtml/mapping_template/index</action>
+                                </templates_mappings>
+                                <categories_mappings translate="title" module="orbaallegro">
+                                    <title>Categories</title>
+                                    <action>adminhtml/mapping_category/index</action>
+                                </categories_mappings>
+                                <shipment translate="title" module="orbaallegro">
+                                    <title>Shipments</title>
+                                    <action>adminhtml/mapping_shipment/index</action>
+                                </shipment>
+                                <payment translate="title" module="orbaallegro">
+                                    <title>Payments</title>
+                                    <action>adminhtml/mapping_payment/index</action>
+                                </payment>
+                            </children>
+                        </mappings>
+                        <config translate="title" module="orbaallegro">
+                            <title>Configuration</title>
+                            <action>adminhtml/system_config/edit/section/orbaallegro</action>
+                        </config>
+                    </children>
+                    <sort_order>19</sort_order>
+                </orbaallegro>
+            </children>
+        </sales>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <sales>
+                        <children>
+                            <orbaallegro translate="title" module="orbaallegro">
+                                <title>ORBA | Allegro</title>
+                                <sort_order>19</sort_order>
+                                <children>
+                                    <auctions translate="title" module="orbaallegro">
+                                        <title>Auction</title>
+                                        <sort_order>0</sort_order>
+                                    </auctions>
+                                    <sales translate="title" module="orbaallegro">
+                                        <title>Sales</title>
+                                        <children>
+                                            <transaction translate="title" module="orbaallegro">
+                                                <title>Transactions</title>
+                                            </transaction>
+                                            <bids translate="title" module="orbaallegro">
+                                                <title>Bids</title>
+                                            </bids>
+                                        </children>
+                                    </sales>
+                                    <synchronization translate="title" module="orbaallegro">
+                                        <title>Synchronization</title>
+                                        <children>
+                                            <auctions translate="title" module="orbaallegro">
+                                                <title>Auciton synchronization</title>
+                                                <sort_order>10</sort_order>
+                                            </auctions>
+                                            <categories translate="title" module="orbaallegro">
+                                                <title>Categories synchronization</title>
+                                                <sort_order>20</sort_order>
+                                            </categories>
+                                            <shop_categories translate="title" module="orbaallegro">
+                                                <title>Shop categories synchronization</title>
+                                                <sort_order>30</sort_order>
+                                            </shop_categories>
+                                        </children>
+                                    </synchronization>
+                                    <mappings translate="title" module="orbaallegro">
+                                        <title>Mappings</title>
+                                        <children>
+                                            <categories_mappings translate="title" module="orbaallegro">
+                                                <title>Categories Mapping</title>
+                                                <sort_order>20</sort_order>
+                                            </categories_mappings>
+                                            <templates_mappings translate="title" module="orbaallegro">
+                                                <title>Templates Mapping</title>
+                                                <sort_order>25</sort_order>
+                                            </templates_mappings>    
+                                            <shipment_mappings translate="title" module="orbaallegro">
+                                                <title>Shipments</title>
+                                                <sort_order>50</sort_order>
+                                            </shipment_mappings>
+                                            <payment_mappings translate="title" module="orbaallegro">
+                                                <title>Payments</title>
+                                                <sort_order>70</sort_order>
+                                            </payment_mappings>
+                                        </children>
+                                    </mappings>
+                                    <templates translate="title" module="orbaallegro">
+                                        <title>Templates</title>
+                                        <sort_order>30</sort_order>
+                                    </templates>
+                                    <templates_mappings translate="title" module="orbaallegro">
+                                        <title>Mass Default Templates Mapping</title>
+                                        <sort_order>40</sort_order>
+                                    </templates_mappings>
+                                </children>
+                            </orbaallegro>
+                        </children>
+                    </sales>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

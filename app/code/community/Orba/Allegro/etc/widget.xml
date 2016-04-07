@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<widgets>
+    <!-- Register plugin here
+    <orbaallegro_catalog_product type="cms/widget_page_link" translate="name description" module="cms">
+        <name>CMS Page Link</name>
+        <description>Link to a CMS Page</description>
+        <parameters>
+            <page_id type="complex" translate="label">
+                <visible>1</visible>
+                <required>1</required>
+                <label>CMS Page</label>
+                <type>label</type>
+                <helper_block>
+                    <type>adminhtml/cms_page_widget_chooser</type>
+                    <data>
+                        <button translate="open">
+                            <open>Select Page...</open>
+                        </button>
+                    </data>
+                </helper_block>
+                <sort_order>10</sort_order>
+            </page_id>
+            <anchor_text translate="label description">
+                <visible>1</visible>
+                <label>Anchor Custom Text</label>
+                <description>If empty, the Page Title will be used</description>
+                <type>text</type>
+            </anchor_text>
+            <title translate="label">
+                <visible>1</visible>
+                <label>Anchor Custom Title</label>
+                <type>text</type>
+            </title>
+            <template translate="label">
+                <label>Template</label>
+                <visible>1</visible>
+                <type>select</type>
+                <value>cms/widget/link/link_block.phtml</value>
+                <values>
+                    <default translate="label">
+                        <value>cms/widget/link/link_block.phtml</value>
+                        <label>CMS Page Link Block Template</label>
+                    </default>
+                    <link_inline translate="label">
+                        <value>cms/widget/link/link_inline.phtml</value>
+                        <label>CMS Page Link Inline Template</label>
+                    </link_inline>
+                </values>
+            </template>
+        </parameters> 
+    </orbaallegro_catalog_product>-->
+</widgets>

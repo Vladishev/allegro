@@ -1,0 +1,7 @@
+<?php if($this->getYoutubeUrl()):?>
+<div id="youtube-movie" style="margin: 0 auto; width: <?php echo $this->getBlockWidth();?>px; height: <?php echo $this->getBlockHeight();?>px; background: url('<?php echo $this->getProductImageUrl();?>') center center no-repeat;">
+    <a href="<?php echo $this->getYoutubeUrl();?>"  target="_blank" style="display: block; width: 100%; height: <?php echo $this->getBlockHeight();?>px; background: url('<?php echo $this->getPlayButtonUrl();?>') center center no-repeat;">
+        &nbsp;
+    </a>
+</div>
+<?php endif;?>

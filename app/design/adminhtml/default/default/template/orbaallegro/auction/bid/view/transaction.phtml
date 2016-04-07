@@ -1,0 +1,76 @@
+<?php $_collection = $this->getCollection();?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Realted transactions'); ?></h4>
+    </div>
+</div>
+<?php if($_collection->count()):?>
+<div class="grid np">
+    <div class="hor-scroll">
+        <table cellspacing="0" class="data order-tables">
+            <colgroup>
+                <col width="*"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="150"/>
+                <col width="100"/>
+                <col width="150"/>
+                <col width="100"/>
+            </colgroup><thead>
+                <tr class="headings">
+                    <th><?php echo Mage::helper('orbaallegro')->__("Transaction ID"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("This product"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Count total"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Subtotal"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Cod"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Total"); ?></th>
+                    <th><span class="nobr"><?php echo Mage::helper('orbaallegro')->__("Date"); ?></span></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Expired"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Order"); ?></th>
+                    <th class="last"><?php echo Mage::helper('orbaallegro')->__("Action"); ?></th>
+                </tr>
+            </thead>
+            <tbody class="even">
+                <?php $_locale = Mage::app()->getLocale(); ?>
+                <?php foreach($_collection as $transaction):?>
+                
+                <tr class="border <?php echo $this->getRowClass($transaction);?>">
+                    <td><?php echo $transaction->getAllegroTransactionId();?></td>
+                    <td class="a-right"><?php echo $transaction->getBidItemCount();?></td>
+                    <td class="a-right"><?php echo $transaction->getItemCount();?></td>
+                    <td class="a-right"><?php echo $_locale->currency($transaction->getCurrency())->toCurrency($transaction->getTransactionSubtotal());?></td>
+                    <td class="a-right"><?php echo $_locale->currency($transaction->getCurrency())->toCurrency($transaction->getTransactionCodAmount());?></td>
+                    <td class="a-right"><?php echo $_locale->currency($transaction->getCurrency())->toCurrency($transaction->getTransactionTotal());?></td>
+                    <td><span class="nobr"><?php echo $_locale->date($transaction->getAllegroCreatedAt());?></span></td>
+                    <td class="a-center"><?php echo Mage::helper("orbaallegro")->__($transaction->getIsDeleted() ? "Yes" : "No");?></td>
+                    <td class="a-center">
+                        <?php if($_order=$transaction->getOrder()):?>
+                            <a href="<?php echo $this->getUrl("*/sales_order/view", array("order_id"=>$_order->getId()));?>"><?php echo $_order->getIncrementId();?></a>
+                        <?php else:?>
+                            <a href="<?php echo $this->getUrl("*/transaction/createOrder", array("transaction"=>$transaction->getId()));?>">
+                                <?php echo Mage::helper('orbaallegro')->__("Place order"); ?>
+                            </a>
+                        <?php endif;?>
+                    </td>
+                    <td class="a-center last">
+                        <a href="<?php echo $this->getUrl("*/transaction/view", array("transaction"=>$transaction->getId()));?>">
+                            <?php echo Mage::helper('orbaallegro')->__("View"); ?>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br/>
+<?php else:?>
+<div class="entry-edit">
+    <div class="fieldset">
+        <p><?php echo Mage::helper("orbaallegro")->__("There is no related transaction");?></p>
+    </div>
+</div>
+<?php endif;?>

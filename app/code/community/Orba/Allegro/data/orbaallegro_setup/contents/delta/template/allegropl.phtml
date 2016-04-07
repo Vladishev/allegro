@@ -1,0 +1,108 @@
+<style type="text/css">
+    <!--
+    #main_do { width:1004px; margin: 0 auto; background:url('http://deltaoptical.pl/allegro/tlo3.jpg') 50%; text-align:center; font-family:Tahoma; font-size:11px; }
+    #content_do { background: #ffffff; width:970px; margin:0 auto;}
+    #menu_do { background:url('http://deltaoptical.pl/allegro/menu.jpg'); width:930px; height: 33px;text-align:center;}
+    #menu_do ul { padding-top:7px;}#menu_do li { display:inline; padding-right:20px; font-size:14px;font-weight:bold; color:#ffffff; }
+    #blok_lewy { width:248px; float:left;  text-align:left; padding-left:20px; padding-top:15px;} 
+    #blok_prawy { width:248px; height:100%;  text-align:left; padding-top:15px; padding-right:10px; float:right;} 
+    #center_do { padding-left:15px; text-align:left; padding-top:20px; width:670px; float:left; font-size:12px; }
+    .menu_do_left { width:242px; background:url('http://deltaoptical.pl/allegro/menu_center.jpg'); overflow:hidden; text-align:left; }
+    .menu_do_right { width:242px; background:url('http://deltaoptical.pl/allegro/menu_center.jpg'); overflow:hidden; text-align:left; }
+    #menu_do a { color:#ffffff; text-decoration:none; }
+    .b { color:#494949; } 
+    #dlaczego li { font-size:12px; padding:10px;}
+    .ap_aplon {border-collapse: collapse;color: #ffffff;font-weight: bold;}
+    .ap_aplon a {color: #ffffff;text-decoration: underline;}
+    .ap_aplon .ap_back {background-color:#ff7200;}
+    .ap_aplon .ap_back td {padding: 3px 8px;}
+    .ap_aplon .ap_right {text-align: right;}
+    .ap_aplon img {border: 0;}
+    .ap_aplon tr td {border: 1px solid #ff7200;}
+    .ap_aplon tr td a {display: block;}
+    -->
+</style>
+<div id="main_do">
+    <br/>
+    <br/>
+    <div id="up"><img src="http://deltaoptical.pl/allegro/top.png"></div>
+    <div id="content_do">
+        <center>
+            <img src="http://deltaoptical.pl/allegro/baner.jpg"/><br/>
+            {{block type="cms/block" block_id="orbaallegro_logo"}}<br/>
+            <div id="menu_do">
+                {{block type="orbaallegro/cms_block" block_id="orbaallegro_topmenu"}}
+            </div>
+        </center>
+
+        <div id="blok_lewy">
+             {{block type="orbaallegro/cms_block" block_id="orbaallegro_left"}}
+        </div> 
+        <!-- koniec bloku lewego -->
+        
+        <div id="center_do">
+
+            <center> 
+                <h1 class="nazwa_produktu">{{var product.getName()}}</h1><br/>
+                {{if product_photo_url}}
+                <img style="border: 0px solid rgb(0, 0, 0);" id="Obj1" src="{{var product_photo_url}}" vspace="0" hspace="0"/>
+                <br/><br/><br/>
+                {{/if}}
+                <!-- <font size="3"><b class="b">Delta Optical jest wyłącznym przedstawicielem Sky-Watcher w  Polsce.</b></font> -->
+                <font size="3">
+                    <br/>
+                    Kupując towar na naszych  aukcjach masz pewność, że towar pochodzi bezpośrednio od dystrybutora.
+                    <br/>
+                </font>
+                <br/>
+                <font size="4">
+                    Natychmiastowa wysyłka kurierem !!! <br/>
+                    {{if product.gwarancja}}
+                    <font color="orange" size="4">Gwarancja {{var product.getAttributeText('gwarancja')}}!</font><br/>
+                    {{/if}}
+                    Faktura VAT<br/>
+                    <font color="orange" size="4">Kup teraz za {{var product.getFormatedPrice()}}</font>
+                </font>
+            </center>
+            <font size="2">
+            <br/><br/>
+            {{var product.getDescription()}}
+            <b class="b">Dane techniczne:</b><br/>
+            {{var attributes}}
+            
+           
+            <center> <h3 class="nazwa_produktu"><font color="orange" size="6">Kup teraz za {{var product.getFinalPrice()}} zł!</font></h3></center><br/>
+                      
+            <br/>
+            {{var gallery}}
+
+            <br/>
+            <br/>
+            {{if youtube}}
+            <center>Zobacz Video</center>
+            {{var youtube}}
+            {{/if}}
+            <br/>
+            <img src="http://deltaoptical.pl/allegro/supersprzedawca.jpg"><br/><br/>
+            {{block type="orbaallegro/cms_block" block_id="orbaallegro_why"}}
+            <br/>
+            {{block type="orbaallegro/cms_block" block_id="orbaallegro_gallery"}}
+            <br/>
+            {{block type="orbaallegro/cms_block" block_id="orbaallegro_other"}}
+        </div>
+
+
+
+        <div style="clear:both"></div>
+
+
+    </div>
+    <div id="down">
+        <img src="http://deltaoptical.pl/allegro/bottom.png"/>
+    </div>
+    <br/>
+    <center>
+        <font size=2>Nie wyrażamy zgody na kopiowanie informacji i materiałów reklamowych z naszych aukcji.<br/>Copyright © 2010 Delta Optical</font>
+    </center>
+    <br/>
+</div>

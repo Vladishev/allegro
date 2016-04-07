@@ -1,0 +1,59 @@
+<script type="text/javascript">
+if (typeof jQuery === "undefined") {
+    var script_tag = document.createElement('script');
+    script_tag.setAttribute("type","text/javascript");
+    script_tag.setAttribute("src","//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+    script_tag.onload = orbaallegroSystemConfigShippingHandler;
+    document.getElementsByTagName("head")[0].appendChild(script_tag);
+} else {
+    orbaallegroSystemConfigShippingHandler();
+}
+function orbaallegroSystemConfigShippingHandler() {
+    var $j = jQuery.noConflict();
+    (function($) {
+        $("#orbaallegro_template_shipping tr[id^=row_orbaallegro_template_shipping_first_item]").each(function(i) {
+            if (i === 0) {
+                $(this).before('<tr><td class="label"></td><td class="value"><div class="values"><table cellspacing="0" cellpadding="0"><tr><td><div>Pierwsza sztuka</div></td><td><div>Kolejna sztuka</div></td><td><div>Ilość w paczce</div></td></tr></table></div></td></tr>');
+            }
+            var use_default = '';
+            if ($(this).find(".use-default").length) {
+                use_default = use_default + '<td class="use-default">' + $(this).find(".use-default").html() + '</td>';
+                $(this).find(".use-default").remove();
+            }
+            if ($(this).find(".scope-label").length) {
+                use_default = use_default + '<td class="scope-label">' + $(this).find(".scope-label").html() + '</td>';
+                $(this).find(".scope-label").remove();
+            }
+            var value = $(this).find(".value input");
+            if (use_default) {
+                use_default = '<table cellspacing="0" cellpadding="0"><tr>' + use_default + '</tr></table>';
+            }
+            $(this).find(".value").html('<div class="values"><table cellspacing="0" cellpadding="0"><tr><td class="column"></td></tr></table></div>').find(".values td").append(value).append(use_default);
+            $(this).find(".label > label").each(function() {
+                $(this).text($(this).text().replace(' (pierwsza sztuka)', ''));
+            });
+        });
+        $("#orbaallegro_template_shipping tr[id^=row_orbaallegro_template_shipping_next_item], #orbaallegro_template_shipping tr[id^=row_orbaallegro_template_shipping_item_count]").each(function() {
+            var use_default = '';
+            if ($(this).find(".use-default").length) {
+                use_default = use_default + '<td class="use-default">' + $(this).find(".use-default").html() + '</td>';
+                $(this).find(".use-default").remove();
+            }
+            if ($(this).find(".scope-label").length) {
+                use_default = use_default + '<td class="scope-label">' + $(this).find(".scope-label").html() + '</td>';
+                $(this).find(".scope-label").remove();
+            }
+            var value = $(this).find(".value input");
+            if (use_default) {
+                use_default = '<table cellspacing="0" cellpadding="0"><tr>' + use_default + '</tr></table>';
+            }
+            var td = $('<td class="column"></td>').append(value).append(use_default);
+            $(this).prev().find(".values tr:first").append(td);
+            $(this).remove();
+        });
+        $("#orbaallegro_template_shipping .values input[type=checkbox]").change(function() {
+            $(this).closest(".column").children("input").prop('disabled', $(this).is(":checked"));
+        });
+    })($j);
+}
+</script>

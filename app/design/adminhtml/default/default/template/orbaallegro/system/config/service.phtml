@@ -1,0 +1,72 @@
+<script type="text/javascript">
+    noDependedSections = "orbaallegro_config";
+    dependedSections = [
+        'orbaallegro_categories', 
+        'orbaallegro_orders',
+        'orbaallegro_template_design',
+        'orbaallegro_template_base',
+        'orbaallegro_template_localization',
+        'orbaallegro_template_shipping',
+        'orbaallegro_template_payment',
+        'orbaallegro_template_image',
+        'orbaallegro_utils'
+    ];
+    
+      function orbaallegroReloadSelect(field, array, oldValue){
+            field.innerHTML = "";
+            if(typeof oldValue != "undefined" && oldValue.constructor!=Array){
+                oldValue = [oldValue];
+            }
+            for(var i=0; i<array.length; i++){
+                array[i].value = array[i].value + ""; //strign cast
+                field.insert(
+                    new Element('option', {
+                        'value': array[i].value,
+                        'selected': (oldValue.indexOf(array[i].value)>-1)
+                    }).
+                    update(array[i].label)
+                );
+            }
+      }
+    
+    function switchSections(sections, state){
+        state = state||false;
+        for(var i=0, el; i<sections.length; i++){
+            el = $(sections[i]);
+            el.up('.section-config')[state ? "show" : "hide"]();
+        }
+    }
+    
+    function handleOrbaallegroServiceChanged(){
+         var serviceField = $("<?php echo $this->getElementId();?>"),
+             countryField = $("orbaallegro_template_localization_country"),
+             countriesUrl = "<?php echo $this->getCountriesJsonUrl();?>";
+         
+         if(!isFirstImportComplete){
+             return false;
+         }
+         
+         new Ajax.Request(countriesUrl, {
+            onSuccess: function(response) {
+                var  oldValueCountry = $F(countryField);
+                   
+                if(!oldValueCountry){
+                    oldValueCountry = "<?php echo Mage::getConfig()->getNode('default/orbaallegro/template_localization/country');?>";
+                }
+                   
+                countryField.innerHTML = "";
+                if(!response.responseJSON || !response.responseJSON.length){
+                    return;
+                }
+                orbaallegroReloadSelect(countryField, response.responseJSON, oldValueCountry);
+                handleOrbaallegroCountryChange();
+            },
+            parameters: Object.extend(<?php echo $this->getJsonParmas();?>, {country_code: $F(serviceField)})
+          });
+    }
+    
+    document.observe("dom:loaded", function() {
+        $("<?php echo $this->getElementId();?>").observe('change', handleOrbaallegroServiceChanged);
+    });
+    
+</script>

@@ -1,0 +1,49 @@
+<?php $helper = Mage::helper('orbaallegro'); ?>
+<?php $elementId = $this->getHtmlId();?>
+<?php $stateFieldId = $this->getStateFieldId();?>
+<script type="text/javascript">
+    handleOrbaallegroCountryChange = function(){
+         var countryField       = $("<?php echo $elementId;?>"),
+             provinceField      = $("<?php echo $stateFieldId?>"),
+             provincesUrl       = "<?php echo $this->getProvinceJsonUrl();?>";
+             
+         
+         
+         new Ajax.Request(provincesUrl, {
+            onSuccess: function(response) {
+                
+                var oldData = $F(provinceField);
+                provinceField.innerHTML = "";
+                
+                if(!response.responseJSON || !response.responseJSON.length){
+                    return;
+                }
+                orbaallegroReloadSelect(provinceField, response.responseJSON, oldData);
+                
+            },
+            parameters: Object.extend(<?php echo $this->getJsonParmas();?>, {country_code: $F(countryField)})
+          });
+    }    
+    
+    function orbaallegroReloadSelect(field, array, oldValue){
+            field.innerHTML = "";
+            if(typeof oldValue != "undefined" && oldValue.constructor!=Array){
+                oldValue = [oldValue];
+            }
+            for(var i=0; i<array.length; i++){
+                array[i].value = array[i].value + ""; //strign cast
+                field.insert(
+                    new Element('option', {
+                        'value': array[i].value,
+                        'selected': (oldValue.indexOf(array[i].value)>-1)
+                    }).
+                    update(array[i].label)
+                );
+            }
+      }
+    
+    document.observe("dom:loaded", function() {
+        $("<?php echo $elementId;?>").observe('change', handleOrbaallegroCountryChange);
+        handleOrbaallegroCountryChange();
+    });
+</script>

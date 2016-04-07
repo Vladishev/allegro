@@ -1,0 +1,55 @@
+<?php /* @var $this Orba_Allegro_Block_Adminhtml_Auction_Edit_Tab_Product_Configure */ ?>
+<?php
+$_product    = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+?>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <div style="float: right;"></div>
+        <h4 class="fieldset-legend "><?php echo $this->__("Configure Product");?></h4>
+    </div>
+    <div class="fieldset">
+		<?php if ($_attributes->getSize()):?>
+			<dl>
+			<?php foreach($_attributes as $_attribute): ?>
+				<dt><label class="required"><em>*</em><?php echo $_attribute->getLabel() ?></label></dt>
+				<dd<?php if ($_attribute->decoratedIsLast){?> class="last"<?php }?>>
+					<div class="input-box">
+						<select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+							<option><?php echo $this->__('Choose an Option...') ?></option>
+						</select>
+					  </div>
+				</dd>
+			<?php endforeach; ?>
+			</dl>
+		<?php endif;?>
+		<?php
+			echo $this->getContinueUrlButtonHtml();
+		?>
+    </div>
+</div>
+
+<script type="text/javascript">
+	var spConfig = new Product.Config(<?php echo $this->getJsonConfig(); ?>);
+	
+    function setAttributes(url) {
+		var jsonData = {};
+		
+		if (auctionForm.validate()) {
+			spConfig.settings.each(function(element) {
+				var attributeId = element.id.replace(/[a-z]*/, '');
+				if (spConfig.config.attributes[attributeId]) {
+					var superAttributeId = spConfig.config.attributes[attributeId].id;
+					var attributeValue = $(element)[$(element).selectedIndex];
+					var attributeValueId = attributeValue.value;
+					jsonData[superAttributeId] = attributeValueId;
+				}
+			}.bind(this));
+			
+			url = url.replace('{{attributes}}', JSON.stringify(jsonData));
+			setLocation(url);
+			return;
+		}
+    }	
+</script>

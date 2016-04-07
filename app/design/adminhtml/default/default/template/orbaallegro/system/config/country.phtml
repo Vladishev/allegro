@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    handleOrbaallegroCountryChange = function(event){
+         var countryField       = $("<?php echo $this->getElementId();?>"),
+             serviceField       = $("orbaallegro_config_country_id"),
+             provinceField      = $("orbaallegro_template_localization_province"),
+             provincesUrl       = "<?php echo $this->getProvinceJsonUrl();?>";
+          
+         if(!isFirstImportComplete){
+             return false;
+         }
+         
+         new Ajax.Request(provincesUrl, {
+            onSuccess: function(response) {
+                
+                var oldData = $F(provinceField);
+                provinceField.innerHTML = "";
+                
+                if(!response.responseJSON || !response.responseJSON.length){
+                    return;
+                }
+                orbaallegroReloadSelect(provinceField, response.responseJSON, oldData);
+                
+            },
+            parameters: Object.extend(<?php echo $this->getJsonParmas();?>, {country_code: $F(countryField)})
+          });
+    }
+    document.observe("dom:loaded", function() {
+        $("<?php echo $this->getElementId();?>").observe('change', handleOrbaallegroCountryChange);
+    });
+</script>

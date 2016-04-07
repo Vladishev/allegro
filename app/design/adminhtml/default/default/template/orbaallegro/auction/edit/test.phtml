@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            var result = <?php echo $this->getResult();?>;
+            var error = <?php echo $this->getError();?>;
+            var makeSave = <?php echo (int)$this->getMakeSave();?>;
+            
+            if(result && result.changedItem && result.changedItem.itemSurcharge){
+                window.parent.auctionControl.testStop(1, result.changedItem.itemSurcharge, makeSave);
+            }else if(error){
+                window.parent.auctionControl.testStop(0, error);
+            }else{
+                window.parent.auctionControl.testStop();
+            }
+        </script>
+    </head>
+</html>

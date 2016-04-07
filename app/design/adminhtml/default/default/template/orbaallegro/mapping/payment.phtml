@@ -1,0 +1,36 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml() ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml() ?></td>
+        </tr>
+    </table>
+</div>
+<form action="<?php echo $this->getFormUrl();?>" method="post" id="payments_form">
+    <input type="hidden" name="form_key" value="<?php echo $this->getFormKey();?>"/>
+    <div>
+		<script type="text/javascript">
+			function openGridRow(grid, event){
+				var element = Event.findElement(event, 'tr');
+				if(Event.element(event).type != 'checkbox'){
+				  if(['img', 'a', 'input', 'select', 'option', 'img'].indexOf(Event.element(event).tagName.toLowerCase())!=-1) {
+					  // re-enable the checkbox
+					  var checkbox = Element.select(element, 'input');
+					  if(checkbox[0] && !checkbox[0].disabled){
+						  grid.setCheckboxChecked(checkbox[0], true);
+					  }
+					  return;
+				  }
+				}
+				if(element.title){
+					setLocation(element.title);
+				}
+			} 
+		</script>
+        <?php echo $this->getGridHtml() ?>
+    </div>
+    <?php echo $this->getChildHtml('mapping_payment_serializer');?>
+</form>
+<script type="text/javascript">
+    var paymentsForm = new varienForm('payments_form');
+</script>

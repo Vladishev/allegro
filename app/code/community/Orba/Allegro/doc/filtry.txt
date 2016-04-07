@@ -1,0 +1,44 @@
+Zmienne w szablonach oraz blokach statycznych CMS Orba Allegro:
+
+
+1. {{var product}} - Obiekt produktu magento przypisany do aukcji
+
+{{var product.name}} - nazwa
+{{var product.getFinalPrice()}} - cena
+Wszystkie inne właściwości i metody produktu
+
+
+2. {{var user}} - Obiekt użytkonika Allego
+
+{{var user.userEmail}} - Email Allegro
+{{var user.userId}} - Id Allegro
+Parz więcej w dokumentacji: http://allegro.pl/webapi/documentation.php/show/id,84#method-output,camel
+
+
+3. {{var media}} - Lista html obrazków
+
+
+4. {{var attributes}} - Tabela atrybutów dodatkowych produktu
+
+
+5. {{var youtube}} - film Youtube (jeśli podano w ustawieniach proadut zakładka ORBA | Allegro)
+
+
+6. Zmienne z użytecznymi adresami linków
+
+{{var about_link}} - strona o mnie
+{{var auction_list_link}} - strona z listą aukcji
+{{var shop_link}} - strona sklepu allegro (opcjonalne)
+{{var add_favourites_link}} - link dodania do ulubionych
+{{var comments_link}} - link strony z komentarzami
+
+7. Wszystkie inne dyrektywy
+
+Patrz: http://www.magentocommerce.com/wiki/3_-_store_setup_and_management/cms/markup_tags
+
+8. Adresy źródłowe
+
+{{var product_photo_url}} - url dużego zdjęcia głównego
+{{var logo_url}} - logo sklepu (z konfiguracji)
+{{var template_url}} - ścieżka do plików szablonu
+{{var youtube_url}} - adres filmu youtube

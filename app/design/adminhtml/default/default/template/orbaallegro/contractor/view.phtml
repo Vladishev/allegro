@@ -1,0 +1,133 @@
+<?php $_contractor = $this->getModel(); ?>
+
+<div class="content-header">
+    <h3><?php echo $this->getHeaderText() ?></h3>
+    <p class="content-buttons form-buttons">
+        <?php echo $this->getBackButtonHtml(); ?>
+        <?php echo $this->getRefreshButtonHtml(); ?>
+    </p>
+</div>
+
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Account data'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Login') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getLogin()) ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Email') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getEmail()) ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Allegro Id') ?></label></td>
+                    <td class="value"><strong><?php echo $_contractor->getAllegroUserId() ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Fullname') ?></label></td>
+                    <td class="value"><strong> <?php echo $this->escapeHtml($_contractor->getFirstname() . " " . $_contractor->getLastname()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Phone') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getPhone()) ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Company') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getCompany()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Address') ?></label></td>
+                    <td class="value">
+                        <strong>
+                            <?php echo $this->escapeHtml($_contractor->getStreet()); ?><br/>
+                            <?php echo $this->escapeHtml($_contractor->getPostcode()); ?>
+                            <?php echo $this->escapeHtml($_contractor->getCity()); ?>
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Country') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($this->getCountryLabel($_contractor->getCountry())) ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<?php if($_contractor->getHasSendData()):?>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Shipping data'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Fullname') ?></label></td>
+                    <td class="value"><strong> <?php echo $this->escapeHtml($_contractor->getSendFirstname() . " " . $_contractor->getSendLastname()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Company') ?></label></td>
+                    <td class="value"><strong> <?php echo $this->escapeHtml($_contractor->getSendCompany()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Address') ?></label></td>
+                    <td class="value">
+                        <strong>
+                            <?php echo $this->escapeHtml($_contractor->getSendStreet()); ?><br/>
+                            <?php echo $this->escapeHtml($_contractor->getSendPostcode()); ?>
+                            <?php echo $this->escapeHtml($_contractor->getSendCity()); ?>
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Country') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($this->getCountryLabel($_contractor->getSendCountry())) ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<?php endif;?>
+
+<?php if($_contractor->getHasCompanyData()):?>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Company data'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Worker fullname') ?></label></td>
+                    <td class="value"><strong> <?php echo $this->escapeHtml($_contractor->getCompanyFirstname() . " " . $_contractor->getComapnyLastname()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Company') ?></label></td>
+                    <td class="value"><strong> <?php echo $this->escapeHtml($_contractor->getCompanyCompany()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Address') ?></label></td>
+                    <td class="value">
+                        <strong>
+                            <?php echo $this->escapeHtml($_contractor->getCompanyStreet()); ?><br/>
+                            <?php echo $this->escapeHtml($_contractor->getCompanyPostcode()); ?>
+                            <?php echo $this->escapeHtml($_contractor->getCompanyCity()); ?>
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Country') ?></label></td>
+                    <td class="value"><strong><?php echo $this->escapeHtml($this->getCountryLabel($_contractor->getCompanyCountry())) ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="clear"></div>
+

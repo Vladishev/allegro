@@ -1,0 +1,19 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml() ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml() ?></td>
+        </tr>
+    </table>
+</div>
+<form action="<?php echo $this->getFormUrl();?>" method="post" id="shipments_form">
+    <input type="hidden" name="form_key" value="<?php echo $this->getFormKey();?>"/>
+    <div>
+        <?php echo $this->getGridHtml() ?>
+    </div>
+    <?php echo $this->getChildHtml('mapping_shipment_serializer');?>
+</form>
+<script type="text/javascript">
+    var shipmentsForm = new varienForm('shipments_form');
+</script>
+    

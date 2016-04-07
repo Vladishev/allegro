@@ -1,0 +1,174 @@
+<?php $_bid = $this->getModel(); ?>
+<?php $_statArr = array(); ?>
+<?php if((int)$_bid->getIsDeleted()):?>
+    <?php $_statArr[] = Mage::helper("orbaallegro")->__("Expired");?>
+<?php endif;?>
+<?php if((int)$_bid->getIsIgnored()):?>
+    <?php $_statArr[] = Mage::helper("orbaallegro")->__("Ignored");?>
+<?php endif;?>
+<div class="content-header">
+    <h3>
+        <?php echo $this->getHeaderText() ?>
+        <?php if(count($_statArr)):?>
+            <span class="orbaallegro-gray">(<?php echo join("/", $_statArr);?>)</span>
+        <?php endif;?>
+    </h3>
+    <p class="content-buttons form-buttons">
+        <?php echo $this->getBackButtonHtml(); ?>
+        <?php echo $this->getRefreshButton(); ?>
+        
+        <?php if(!$this->getIsIgnored()):?>
+            <?php if (!$this->getHasOrder()): ?>
+                <?php echo $this->getCreateOrderButton(); ?>
+                <?php echo $this->getIgnoreButton();?>
+            <?php endif;?>
+        <?php else:?>
+            <?php echo $this->getUnIgnoreButton();?>
+        <?php endif; ?>
+    </p>
+</div>
+
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Buyer account'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Buyer login') ?></label></td>
+                    <td class="value">
+                        <strong>
+                        <?php if($_contractor = $_bid->getContractor()):?>
+                            <a href="<?php echo $this->getUrl("*/contractor/view", array("_current"=>true, "contractor"=>$_contractor->getId()));?>">
+                                <?php echo $this->escapeHtml($_contractor->getLogin()); ?>
+                            </a>
+                        <?php else:?>
+                            <?php echo $this->escapeHtml($_bid->getBuyerLogin());?>
+                        <?php endif;?>
+                        </strong>
+                    </td>
+                </tr>
+                <?php if($_contractor):?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Email') ?></label></td>
+                        <td class="value">
+                            <strong>
+                                <a href="mailto:<?php echo $this->escapeHtml($_contractor->getEmail()); ?>"><?php echo $this->escapeHtml($_contractor->getEmail()); ?></a>
+                            </strong>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Name'); ?></label></td>
+                        <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getFirstname()); ?> <?php echo $this->escapeHtml($_contractor->getLastname()); ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Phone'); ?></label></td>
+                        <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getPhone()); ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('City') ?></label></td>
+                        <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getCity()); ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Contractor type') ?></label></td>
+                        <td class="value"><strong><?php echo Mage::helper('orbaallegro')->__((int)$_contractor->getHasCompanyData() ? "Company" : "Private"); ?></strong></td>
+                    </tr>
+                    <?php if($_contractor->getComapny()):?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Firma') ?></label></td>
+                        <td class="value"><strong><?php echo $this->escapeHtml($_contractor->getComapny()); ?></strong></td>
+                    </tr>
+                    <?php endif;?>
+                <?php endif;?>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Offer details'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <?php $_auction=$_bid->getAuction(); ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Auction') ?></label></td>
+                    <td class="value">
+                        <?php if ($_auction->getId()): ?>
+                            <a href="<?php echo $this->getUrl("*/auction/view", array("auction_id" => $_auction->getId())); ?>">
+                                <strong><?php echo $this->escapeHtml($_auction->getAuctionTitle()); ?></strong>
+                            </a>
+                        <?php else:?>
+                            <?php echo Mage::helper('orbaallegro')->__('N/A'); ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Product count sum') ?></label></td>
+                    <td class="value"><strong><?php echo $_bid->getItemQuantity(); ?></strong></td>
+                </tr>
+                <?php $_uhiExclTrans = $_bid->getUnhandledItemCount(); ?>
+                <?php $_uhiIncTrans = $_bid->getUnhandledItemCount(true); ?>
+                <?php if($_uhiIncTrans>0 ):?>
+                    <?php if($_uhiIncTrans>$_uhiExclTrans):?>
+                        <tr>
+                            <td class="label">
+                                <label>
+                                    <?php echo Mage::helper('orbaallegro')->__('Not handled items') ?>
+                                </label>
+                            </td>
+                            <td class="value">
+                                <?php if($_uhiIncTrans>0):?>
+                                    <strong><?php echo $_uhiIncTrans-$_uhiExclTrans;?></strong>
+                                    <em>(<?php echo Mage::helper('orbaallegro')->__('Inc. transacitons') ?>)</em><br/>
+                                <?php endif;?>
+                                <?php if($_uhiExclTrans>0):?>
+                                    <strong><?php echo $_uhiExclTrans;?></strong> 
+                                    <em>(<?php echo Mage::helper('orbaallegro')->__('Excl. transacitons') ?>)</em>
+                                <?php endif;?>
+                            </td>
+                        </tr>
+                    <?php else:?>
+                        <tr>
+                            <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Not handled items') ?></label></td>
+                            <td class="value">
+                                <strong><?php echo $_uhiIncTrans;?></strong>
+                                <em>(<?php echo Mage::helper('orbaallegro')->__('Excl. transacitons') ?>)</em>
+                            </td>
+                        </tr>
+                    <?php endif;?>
+                <?php else:?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Not handled items') ?></label></td>
+                        <td class="value">
+                            <?php echo Mage::helper('orbaallegro')->__('none') ?>
+                        </td>
+                    </tr>
+                <?php endif;?>
+                        
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Offer date') ?></label></td>
+                    <td class="value"><strong><?php echo Mage::app()->getLocale()->date($_bid->getAllegroCreatedAt()) ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('External status') ?></label></td>
+                    <td class="value"><strong><?php echo $_bid->getBidStatusText() ?></strong></td>
+                </tr>
+                <?php $_locale = Mage::app()->getLocale(); ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Item price') ?></label></td>
+                    <td class="value"><strong><?php echo $_bid->getCurrencyModel()->format($_bid->getItemPrice());?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+<?php echo $this->getChildHtml("transaction_table"); ?>
+<?php echo $this->getChildHtml("order_table"); ?>
+
+<?php echo $this->getChildHtml("bid_note"); ?>

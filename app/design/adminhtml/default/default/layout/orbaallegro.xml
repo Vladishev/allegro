@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>js</type><name>orbaallegro/adminhtml/wysiwyg/tiny_mce/setup.js</name><params/><if/><condition>can_load_tiny_mce</condition></action>
+            <action method="addItem"><type>skin_css</type><name>orbaallegro/css/adminhtml.css</name></action>
+        </reference>
+    </default>
+    
+    <adminhtml_contractor_view>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_contractor_view" name="orbaallegro_contractor_view" template="orbaallegro/contractor/view.phtml"/>
+        </reference>
+    </adminhtml_contractor_view>
+    
+    <adminhtml_category_index>
+        <reference name="content">
+            <block type="core/template" name="orbaallegro.categories" template="orbaallegro/categories.phtml" />
+        </reference>
+    </adminhtml_category_index>
+    
+     <adminhtml_shop_category_index>
+        <reference name="content">
+            <block type="core/template" name="orbaallegro.shop_categories" template="orbaallegro/shop/categories.phtml" />
+        </reference>
+    </adminhtml_shop_category_index>
+    
+    <!-- Template -->
+    <adminhtml_template_index>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_template" name="orbaallegro_template" >
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_template_index>
+
+    <adminhtml_template_new>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_template_edit" name="orbaallegro_template_edit" template="orbaallegro/template/edit.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="orbaallegro/adminhtml_template_edit_tabs" name="template_tabs"></block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/catalog_product_edit_js" template="catalog/product/js.phtml" name="catalog_product_js"></block>
+            <block type="core/template" template="orbaallegro/wysiwyg/js.phtml"/>
+        </reference>
+    </adminhtml_template_new>
+    
+    <adminhtml_template_edit>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_template_edit" name="orbaallegro_template_edit" template="orbaallegro/template/edit.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                <action method="setUseConfirm"><params>1</params></action>
+            </block>
+            <block type="orbaallegro/adminhtml_template_edit_tabs" name="template_tabs"></block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/catalog_product_edit_js" template="catalog/product/js.phtml" name="catalog_product_js"></block>
+            <block type="core/template" template="orbaallegro/wysiwyg/js.phtml"/>
+        </reference>
+    </adminhtml_template_edit>
+    
+    <!-- Auction -->
+    <adminhtml_auction_index>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_auction" name="orbaallegro_auction"/>
+        </reference>
+    </adminhtml_auction_index>
+    
+    <adminhtml_auction_new>
+		<reference name="head">
+            <action method="addJs"><script>varien/configurable.js</script></action>
+			<action method="addItem"><type>js</type><name>orbaallegro/adminhtml/validation.js</name></action>
+		</reference>		
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_auction_edit" name="orbaallegro_auction_edit" template="orbaallegro/auction/edit.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="orbaallegro/adminhtml_auction_edit_tabs" name="auciton_tabs"></block>
+        </reference>
+        <reference name="js">  
+            <block type="core/template" template="orbaallegro/wysiwyg/js.phtml"/>
+        </reference>
+    </adminhtml_auction_new>
+    
+    <adminhtml_auction_view>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_auction_edit" name="orbaallegro_auction_edit" template="orbaallegro/auction/edit.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="orbaallegro/adminhtml_auction_edit_tabs" name="auciton_tabs"></block>
+        </reference>
+        <reference name="js">  
+            <block type="core/template" template="orbaallegro/wysiwyg/js.phtml"/>
+        </reference>
+    </adminhtml_auction_view>
+    
+    <adminhtml_auction_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_auction_edit_tab_product_grid" name="orbaallegro_auction_product_grid"/>
+        </block>
+    </adminhtml_auction_grid>
+    
+    <adminhtml_auction_gridtransaction>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_auction_edit_tab_transaction_grid" name="orbaallegro_auction_transaction_grid"/>
+        </block>
+    </adminhtml_auction_gridtransaction>
+    <adminhtml_auction_gridbid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_auction_edit_tab_bid_grid" name="orbaallegro_auction_bid_grid"/>
+        </block>
+    </adminhtml_auction_gridbid>
+    
+     <!-- Transaction -->
+    <adminhtml_transaction_index>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_transaction" name="orbaallegro_transaction"/>
+        </reference>
+    </adminhtml_transaction_index>
+    
+    <adminhtml_transaction_view>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_transaction_view" name="orbaallegro_transaction_view" template="orbaallegro/transaction/view.phtml">
+                <block type="orbaallegro/adminhtml_transaction_view_auction_grid" name="orbaallegro_transaction_auction_grid" as="grid"/>
+            </block>
+        </reference>
+    </adminhtml_transaction_view>
+    
+    <adminhtml_transaction_auctiongrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_transaction_view_auction_grid" name="orbaallegro_transaction_auction_grid" as="grid"/>
+        </block>
+    </adminhtml_transaction_auctiongrid>
+    
+    
+     <!-- Mappings -->
+    
+    <adminhtml_mapping_category_index>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_mapping_category" name="orbaallegro_mapping" />
+        </reference>
+    </adminhtml_mapping_category_index>
+    
+    <adminhtml_mapping_category_edit>
+        <update handle="editor"/>
+    </adminhtml_mapping_category_edit>
+    
+    <adminhtml_mapping_template_index>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_mapping_template" name="orbaallegro_mapping" />
+        </reference>
+    </adminhtml_mapping_template_index>
+    
+    <adminhtml_mapping_template_edit>
+        <update handle="editor"/>
+    </adminhtml_mapping_template_edit>
+    
+    <adminhtml_mapping_shipment_index>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_mapping_shipment" name="orbaallegro_mapping_shipment">
+                <block type="adminhtml/widget_grid_serializer" name="mapping_shipment_serializer">
+                        <action method="initSerializerBlock">
+                            <grid_block_name>adminhtml_mapping_shipment.grid</grid_block_name>
+                            <data_callback>getShipmentMap</data_callback>
+                            <hidden_input_name>mapping</hidden_input_name>
+                            <reload_param_name>reload_shipment_map</reload_param_name>
+                        </action>
+                        <action method="addColumnInputName">
+                            <input_name>shipment_map</input_name>
+                        </action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_mapping_shipment_index>
+   
+    <adminhtml_mapping_shipment_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_mapping_shipment_grid" name="mapping.shipment.grid"/>
+        </block>
+    </adminhtml_mapping_shipment_grid>
+    
+    <adminhtml_mapping_payment_index>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_mapping_payment" name="orbaallegro_mapping_payment">
+                <block type="adminhtml/widget_grid_serializer" name="mapping_payment_serializer">
+                        <action method="initSerializerBlock">
+                            <grid_block_name>adminhtml_mapping_payment.grid</grid_block_name>
+                            <data_callback>getPaymentMap</data_callback>
+                            <hidden_input_name>mapping</hidden_input_name>
+                            <reload_param_name>reload_payment_map</reload_param_name>
+                        </action>
+                        <action method="addColumnInputName">
+                            <input_name>payment_map</input_name>
+                        </action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_mapping_payment_index>
+    
+    <adminhtml_mapping_payment_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="orbaallegro/adminhtml_mapping_payment_grid" name="mapping.payment.grid"/>
+        </block>
+    </adminhtml_mapping_payment_grid>
+    
+    <!-- Bids -->
+    <adminhtml_auction_bid_index>
+        <reference name="js">
+            <block type="core/template" template="orbaallegro/auction/bid/unhandled-qty.phtml" />
+        </reference>		
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_auction_bid" name="orbaallegro_auction_bid"/>
+        </reference>
+    </adminhtml_auction_bid_index>
+    
+    <adminhtml_auction_bid_view>
+        <reference name="menu">
+            <action method="setActive"><menupath>sales/orbaallegro</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="orbaallegro/adminhtml_auction_bid_view" name="orbaallegro_auction_bid_view" template="orbaallegro/auction/bid/view.phtml">
+                <block type="orbaallegro/adminhtml_auction_bid_view_transaction" name="orbaallegro_auction_bid_view_transaction" as="transaction_table" template="orbaallegro/auction/bid/view/transaction.phtml"/>
+                <block type="orbaallegro/adminhtml_auction_bid_view_order" name="orbaallegro_auction_bid_view_order" as="order_table" template="orbaallegro/auction/bid/view/order.phtml"/>
+                <block type="orbaallegro/adminhtml_auction_bid_view_note" name="orbaallegro_auction_bid_view_note" as="bid_note" template="orbaallegro/auction/bid/view/note.phtml"/>
+            </block>
+        </reference>
+    </adminhtml_auction_bid_view>
+</layout>

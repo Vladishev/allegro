@@ -1,0 +1,175 @@
+<?php $helper = Mage::helper('orbaallegro'); ?>
+<?php $elementId =  $this->getHtmlId();?>
+<div id="allegro-shop-category">
+    <?php echo $this->getNamePath() ? $this->getNamePath() : "<span style=\"color: #aaa\">".$helper->__('not set')."</span>"; ?>
+</div>
+<input id="<?php echo $elementId; ?>" name="<?php echo $this->getName(); ?>" value="<?php echo $this->getEscapedValue(); ?>" type="hidden"<?php if($this->getRequired()):?> required="required" class="field-allegro-shop-category"<?php endif; ?>/>
+<?php if(!$this->getReadonly()):?>
+<div id="allegro-select-shop-category-container" style="display: none;">
+    <select id="allegro-select-shop-category">
+        <option value=""></option>
+    </select>
+</div>
+<a href="#" id="allegro-change-shop-category"><?php echo $helper->__('Change'); ?></a>
+<a style="display: none; color: #aaa;" href="#" id="allegro-change-shop-category-cancel"><?php echo $helper->__('Cancel change'); ?></a>
+
+<script type="text/javascript">
+//<![CDATA[
+var allegro_shop_categories_url = '<?php echo Mage::helper('adminhtml')->getUrl('*/shop_category/jsonChildren', array('country_id' => $this->getCountryId(), 'login' => $this->getLogin())); ?>';
+var allegro_old_shop_category_id = '<?php echo $this->getEscapedValue(); ?>';
+var allegro_old_shop_category_name_path = '<?php echo $this->getNamePath() ? $this->getNamePath() : $helper->__('not set'); ?>';
+var allegro_shop_category_name_path = [];
+var allegro_shop_category_path_ids = [];
+var allegro_shop_category_level = 0;
+var allegro_shop_categories_cache = [];
+var allegro_shop_category_mode_only_leaf = <?php echo (int)!(bool)$this->getUseAll();?>;
+var allegro_shop_categories_country_id = <?php echo $this->getCountryId() ? $this->getCountryId() : "false"; ?>;
+
+$('allegro-change-shop-category').observe('click', function(event) {
+    this.hide();
+    $('allegro-shop-category').update();
+    $('allegro-select-shop-category-container').show();
+    allegro_shop_category_name_path = [];
+    allegro_shop_category_path_ids = [];
+    allegro_shop_category_level = 0;
+    allegroChangeShopCategory(0);
+    event.stop();
+});
+$('allegro-change-shop-category-cancel').observe('click', function(event) {
+    this.hide();
+    $('<?php echo $elementId;?>').writeAttribute('value', allegro_old_shop_category_id);
+    $('allegro-shop-category').update(allegro_old_shop_category_name_path);
+    $('allegro-change-shop-category').show();
+    $('allegro-select-shop-category-container').hide();
+    event.stop();
+});
+$('allegro-select-shop-category').observe('change', function(event) {
+    var parent_id = this.value;
+    allegroChangeShopCategory(parent_id);
+});
+function allegroChangeShopCategory(parent_id) {
+    var index = $('allegro-select-shop-category').selectedIndex;
+    var add = true;
+    for (i in allegro_shop_category_path_ids) {
+        if (allegro_shop_category_path_ids.hasOwnProperty(i)) {
+            if (allegro_shop_category_path_ids[i] == parent_id) {
+                add = false;
+                i = parseInt(i);
+                var how_many = allegro_shop_category_path_ids.length - i - 1;
+                allegro_shop_category_path_ids.splice(i + 1, how_many);
+                allegro_shop_category_name_path.splice(i + 1, how_many);
+                allegro_shop_category_level = i + 1;
+            }
+        }
+    }
+    if (add) {
+        if (!parent_id) {
+            allegro_shop_category_name_path[allegro_shop_category_level] = '';
+        } else {
+            allegro_shop_category_name_path[allegro_shop_category_level] = $('allegro-select-shop-category')[index].text;
+        }
+        allegro_shop_category_path_ids[allegro_shop_category_level] = parent_id;
+        allegro_shop_category_level++;
+    }
+ 
+    
+    allegroUpdateShopCategoryNamePath();
+    allegroUpdateShopCategorySelect(parent_id);
+}
+function allegroUpdateShopCategorySelect(parent_id) {
+    $('allegro-select-shop-category').update();
+    if (typeof allegro_shop_categories_cache[parent_id] == 'undefined') {
+        new Ajax.Request(allegro_shop_categories_url , {
+            method: 'POST',
+            onSuccess: function(transport) {
+                if (transport.responseText.isJSON()) {
+                    response = transport.responseText.evalJSON()
+                    allegroUpdateShopCategoryOptions(parent_id, response);
+                }
+            },
+            parameters:{
+                id: parent_id,
+                counry_id: allegro_shop_categories_country_id,
+                use_external: <?php echo (int)$this->getShowExternalValue();?>
+            }
+        });
+    } else {
+        allegroUpdateShopCategoryOptions(parent_id, allegro_shop_categories_cache[parent_id]);
+    }
+}
+function allegroUpdateShopCategoryOptions(parent_id, response) {
+    var resDefault = '<?php echo $helper->__('There is no categories. Check <a href="%s">configuration</a> and <a href="%s">category sync</a>.', 
+            Mage::helper("adminhtml")->getUrl("*/system_config/edit/section/orbaallegro", array("area"=>"backend")), 
+            Mage::helper("adminhtml")->getUrl("*/shop_category/index")) ?>';
+    var options = '<option value=""></option>';
+    var hiddenValue = "";
+    
+    var empty_json = true;
+    for (i in response) {
+        if (response.hasOwnProperty(i)) {
+            options = options + '<option value="' + i + '">' + response[i] + '</option>';
+            empty_json = false;
+        }
+    }
+    
+    if (empty_json) {
+        $('allegro-select-shop-category').hide();
+        if(parent_id==0){
+            $('allegro-shop-category').update(resDefault);
+        }else{
+            hiddenValue = parent_id;
+        }
+    } else {
+        if(!allegro_shop_category_mode_only_leaf){
+            hiddenValue = parent_id;
+        }
+        $('allegro-select-shop-category').show();
+        $('allegro-select-shop-category').update(options);
+    }
+    
+    // Onlu if lead
+    $('<?php echo $elementId?>').writeAttribute('value', hiddenValue);
+    
+    $('allegro-change-shop-category-cancel').show();
+    if (typeof allegro_shop_categories_cache[parent_id] == 'undefined' && !empty_json) {
+        allegro_shop_categories_cache[parent_id] = response;
+    }
+}
+function allegroUpdateShopCategoryNamePath() {
+    var res = '', 
+        i;
+        
+    for (i in allegro_shop_category_name_path) {
+        if (allegro_shop_category_name_path.hasOwnProperty(i)) {
+            if (allegro_shop_category_name_path[i]) {
+                if (res) {
+                    res = res + ' / ';
+                }
+                var link_id = 'allegro-shop-category-go-back-' + i;
+                res = res + '<a href="#" id="' + link_id + '" data-level="' + i + '" title="<?php echo $helper->__('Click to go back'); ?>">' + allegro_shop_category_name_path[i] + '</a>';
+            }
+        }
+    }
+    $('allegro-shop-category').update(res);
+    for (i in allegro_shop_category_name_path) {
+        if (allegro_shop_category_name_path.hasOwnProperty(i)) {
+            if (allegro_shop_category_name_path[i]) {
+                var link_id = 'allegro-shop-category-go-back-' + i;
+                $(link_id).observe('click', function(event) {
+                    var level = this.readAttribute('data-level');
+                    allegroChangeShopCategory(allegro_shop_category_path_ids[level - 1]);
+                    event.stop();
+                });
+            }
+        }
+    }
+}
+
+Validation.addAllThese([
+    ['field-allegro-shop-category', '<?php echo $helper->__($this->getUseAll() ? "Choose category" : "Choose last level category");?>', function(v) {
+        return ((v != "none") && (v != null) && (v.length != 0));}
+    ]
+]);
+//]]>
+</script>   
+<?php endif;?>
