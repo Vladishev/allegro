@@ -331,6 +331,10 @@
                 <api_url>https://webapi.allegro.pl/service.php?wsdl</api_url>
                 <country_id>1</country_id>
             </config>
+            <config_sandbox>
+                <api_url>https://webapi.allegro.pl.webapisandbox.pl/service.php?wsdl</api_url>
+                <country_id>1</country_id>
+            </config_sandbox>
             <categories>
                 <active>1</active>
                 <!-- <country_ids>1,228</country_ids>-->

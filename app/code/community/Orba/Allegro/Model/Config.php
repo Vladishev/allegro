@@ -6,6 +6,7 @@ class Orba_Allegro_Model_Config extends Varien_Object{
     const XML_PATH_CONFIG_USER_PASSWORD         = 'orbaallegro/config/user_password';
     const XML_PATH_CONFIG_IS_DEBUG_MODE         = 'orbaallegro/config/is_debug_mode';
     const XML_PATH_CONFIG_API_URL               = 'orbaallegro/config/api_url';
+    const XML_PATH_CONFIG_SANDBOX_API_URL       = 'orbaallegro/config_sandbox/api_url';
     const XML_PATH_CONFIG_COUNTRY_ID            = 'orbaallegro/config/country_id';
     const XML_PATH_CONFIG_IS_IMPORT_COMPLETE    = 'orbaallegro/config/is_import_complete';
 	const XML_PATH_ORDER_OVERRIDE_SHIPPING_RATE = 'orbaallegro/orders/override_shipping_rate';

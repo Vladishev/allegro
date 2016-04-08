@@ -19,7 +19,13 @@ class Orba_Allegro_Model_Resource_Client extends SoapClient {
             $options['trace'] = true;
             $this->_debug = true;
         }
-        parent::__construct($this->getConfig()->getApiUrl(), $options);
+        $isSandbox = Mage::app()->getRequest()->getPost('is_sandbox');
+        if ($isSandbox == 'Yes') {
+            $wsdlt = Mage::getStoreConfig(Orba_Allegro_Model_Config::XML_PATH_CONFIG_SANDBOX_API_URL);
+        } else {
+            $wsdlt = $this->getConfig()->getApiUrl();
+        }
+        parent::__construct($wsdlt, $options);
     }
     
     /**
@@ -31,7 +37,7 @@ class Orba_Allegro_Model_Resource_Client extends SoapClient {
      * @return boolean|stdClass
      */
     public function execute($method, $request, Orba_Allegro_Model_Client $clientObejct) {
-        
+
         $result = false;
         $repeat = false;
         try {
