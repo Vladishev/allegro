@@ -1,0 +1,69 @@
+<?php $_collection = $this->getCollection();?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Related orders (with no transactions)'); ?></h4>
+    </div>
+</div>
+<?php if($_collection->count()):?>
+<div class="grid np">
+    <div class="hor-scroll">
+        <table cellspacing="0" class="data order-tables">
+            <colgroup>
+                <col width="*"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="75"/>
+                <col width="150"/>
+                <col width="100"/>
+                <col width="150"/>
+                <col width="100"/>
+            </colgroup><thead>
+                <tr class="headings">
+                    <th><?php echo Mage::helper('orbaallegro')->__("Order No."); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("This product"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Count total"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Subtotal"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Cod"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Total"); ?></th>
+                    <th><span class="nobr"><?php echo Mage::helper('orbaallegro')->__("Date"); ?></span></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Status"); ?></th>
+                    <th><?php echo Mage::helper('orbaallegro')->__("Order"); ?></th>
+                    <th class="last"><?php echo Mage::helper('orbaallegro')->__("Action"); ?></th>
+                </tr>
+            </thead>
+            <tbody class="even">
+                <?php $_locale = Mage::app()->getLocale(); ?>
+                <?php foreach($_collection as $_order):?>
+                <tr class="border<?php echo $_order->getIsDeleted() ? " striked" : "" ;?>">
+                    <td><?php echo $_order->getIncrementId();?></td>
+                    <td class="a-right"><?php echo $this->getOrderBidItemCount($_order);?></td>
+                    <td class="a-right"><?php echo (int) $_order->getTotalQtyOrdered();?></td>
+                    <td class="a-right"><?php echo $_locale->currency($_order->getOrderCurrencyCode())->toCurrency($_order->getSubtotalInclTax());?></td>
+                    <td class="a-right"><?php echo $_locale->currency($_order->getOrderCurrencyCode())->toCurrency($_order->getShippingInclTax());?></td>
+                    <td class="a-right"><?php echo $_locale->currency($_order->getOrderCurrencyCode())->toCurrency($_order->getGrandTotal());?></td>
+                    <td><span class="nobr"><?php echo $_locale->date($_order->getCreatedAt());?></span></td>
+                    <td class="a-center"><?php echo $_order->getStatusLabel();?></td>
+                    <td class="a-center">
+                        <a href="<?php echo $this->getUrl("*/sales_order/view", array("order_id"=>$_order->getId()));?>"><?php echo $_order->getIncrementId();?></a>
+                    </td>
+                    <td class="a-center last">
+                        <a href="<?php echo $this->getUrl("*/sales_order/view", array("order_id"=>$_order->getId()));?>">
+                            <?php echo Mage::helper('orbaallegro')->__("View"); ?>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br/>
+<?php else:?>
+<div class="entry-edit">
+    <div class="fieldset">
+        <p><?php echo Mage::helper("orbaallegro")->__("There are no related orders");?></p>
+    </div>
+</div>
+<?php endif;?>

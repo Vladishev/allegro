@@ -1,0 +1,45 @@
+tr.important.even td{
+    background: #ffd6d6;
+}
+
+tr.important td{
+    background: #ffd9d9;
+}
+
+tr.noticed.even td{
+    background: #fdde97;
+}
+
+tr.noticed td{
+    background: #fff9ce;
+}
+
+tr.striked td{
+    text-decoration: line-through;
+}
+
+tr.ignored td{
+    color: #999;
+}
+tr.ignored td > a{
+    color: #999;
+}
+.orbaallegro-gray{
+    color: #999;
+}
+
+#orbaallegro_template_shipping .values {
+    width: 300px;
+}
+#orbaallegro_template_shipping .values td > div {
+    width: 196px;
+}
+#orbaallegro_template_shipping .values td {
+    padding-right: 10px;
+}
+#orbaallegro_template_shipping .values td td {
+    padding-right: 0;
+}
+#orbaallegro_template_shipping .values input[type=text] {
+    width: 190px;
+}

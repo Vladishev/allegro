@@ -1,0 +1,8 @@
+<?php $_helper = Mage::helper('orbaallegro'); ?>
+<div class="content-header">
+   <h3><?php echo $_helper->__('Categories synchronization'); ?></h3>
+</div>
+<div>
+    <a href="<?php echo Mage::helper('adminhtml')->getUrl('*/*/sync'); ?>"><?php echo $_helper->__('Click here to start synchroization.'); ?></a><br />
+    <?php echo $_helper->__('It may take a while...'); ?>
+</div>

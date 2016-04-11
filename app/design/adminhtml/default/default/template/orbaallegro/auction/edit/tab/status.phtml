@@ -1,0 +1,267 @@
+<?php $_auction = $this->getAuction(); ?>
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('General info'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Status') ?></label></td>
+                    <td class="value"><strong><?php echo $this->getStatus($_auction->getAuctionStatus()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Allegro category') ?></label></td>
+                    <td class="value"><strong><?php echo $_auction->getCategory()->getNamePath(); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Allegro ID') ?></label></td>
+                    <td class="value">
+                        <?php if ($_auction->getAllegroAuctionId()): ?>
+                            <strong>
+                                <?php if ($_auction->isOnline()): ?>
+                                    <a href="<?php echo $_auction->getAuctionLink(); ?>" target="_blank">
+                                        <?php echo $_auction->getAllegroAuctionId(); ?>
+                                    </a>
+                                <?php else: ?>
+                                    <?php echo $_auction->getAllegroAuctionId(); ?>
+                                <?php endif; ?>
+                            </strong>
+                        <?php else: ?>
+                            <?php echo Mage::helper("orbaallegro")->__("N/A"); ?>
+                        <?php endif; ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Login (service)') ?></label></td>
+                    <td class="value">
+                        <strong><?php echo $this->escapeHtml($_auction->getSellerLogin()); ?></strong>
+                        (<?php echo $this->escapeHtml($_auction->getService()->getServiceName()); ?>)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Linked product') ?></label></td>
+                    <td class="value">
+                        <strong>
+                            <?php $_product = $_auction->getProduct(); ?>
+                            <?php if ($_product->getId()): ?>
+                                <a href="<?php echo $this->getUrl("*/catalog_product/edit", array("id" => $_product->getId())); ?>" target="_blank">
+                                    <?php echo $this->escapeHtml($_product->getName()) ?>
+                                </a>
+                            <?php else: ?>
+                                <?php echo $this->escapeHtml($_auction->getAuctionTitle()) ?>
+                                [<?php echo Mage::helper("orbaallegro")->__("Deleted") ?>]
+                            <?php endif; ?>
+                        </strong>
+                    </td>
+                </tr>
+                <?php if (!Mage::app()->isSingleStoreMode()): ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__("Placed from store") ?></label></td>
+                        <td class="value">
+                            <strong>
+                                <?php $_store = $_auction->getStore(); ?>
+                                <?php if ($_store->getId()): ?>
+                                    <?php echo $this->escapeHtml($_store->getName()) ?>
+                                    </a>
+                                <?php else: ?>
+                                    [<?php echo Mage::helper("orbaallegro")->__("Deleted") ?>]
+                                <?php endif; ?>
+                            </strong>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Template') ?></label></td>
+                    <td class="value">
+                        <?php $_template = $_auction->getTemplate(); ?>
+                        <?php if ($_template && $_template->getId()): ?>
+                        <strong>
+                            <a href="<?php echo $this->getUrl("*/template/edit", array("entity_id" => $_template->getId())); ?>" target="_blank">
+                                <?php echo $this->escapeHtml($_template->getName()) ?>
+                            </a>
+                        </strong>
+                        <?php else:?>
+                            <?php echo Mage::helper('orbaallegro')->__('none') ?>
+                        <?php endif;?>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Auction details'); ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Offers') ?></label></td>
+                    <td class="value">
+                        <?php echo Mage::helper('orbaallegro')->__('<strong>%d person bought %d item</strong> (of <strong>%d</strong> placed)', $_auction->getOfferCount() , $_auction->getItemsSold(), $_auction->getItemsPlaced()) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Transactions') ?> </label></td>
+                    <td class="value">
+                        <strong><?php echo $_auction->getTransactionItemsSold(); ?></strong>
+                        <?php if($_ignored=$_auction->getIgnoredTransactionItemsSold()):?>
+                            (<?php echo Mage::helper('orbaallegro')->__('%s ignored', $_ignored); ?>)
+                        <?php endif;?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Starting time') ?></label></td>
+                    <td class="value">
+                        <?php if ($_auction->getAllegroStartingTimeObject()): ?>
+                            <strong><?php echo Mage::helper("core")->formatDate($_auction->getAllegroStartingTimeObject(), null, true); ?></strong>
+                        <?php else: ?>
+                            <?php echo Mage::helper("orbaallegro")->__("N/A"); ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php if ($_auction->getClosedAt()): ?>
+                    <?php /* Auciton finished */ ?>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Ended at') ?></label></td>
+                    <td class="value">
+                        <strong><?php echo Mage::helper("core")->formatDate($_auction->getClosedAt(), null, true); ?></strong>
+                    </td>      
+                <?php else: ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Ending time') ?></label></td>
+                        <td class="value">
+                            <?php if ($_auction->getEndingTime()): ?>
+                                <strong><?php echo Mage::helper("core")->formatDate($_auction->getEndingTime(), null, true); ?></strong>
+                            <?php else: ?>
+                                <?php echo Mage::helper("orbaallegro")->__("N/A"); ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Auction duration') ?></label></td>
+                    <td class="value"><strong><?php echo Mage::helper('orbaallegro')->__('%s days', $this->escapeHtml($_auction->getAuctionDuration())) ?></strong></td>
+                </tr>
+                
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Item price') ?></label></td>
+                    <td class="value"><strong><?php echo $_auction->getCurrencyModel()->format($_auction->getAuctionItemPrice()); ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Auction cost') ?></label></td>
+                    <td class="value"><strong><?php echo $_auction->getCurrencyModel()->format($_auction->getAuctionCost()); ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+<?php if ($this->getCanSellAgain()): ?>
+    <?php $_form = $this->getSellAgainForm(); ?>
+    <div class="box-left">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Sell again'); ?></h4>
+            </div>
+            <div class="fieldset">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Starting time') ?></label></td>
+                        <td class="value">
+                            <?php echo $_form->getElement("starting_time")->toHtml(); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="value">
+                            <?php echo $this->getSellAgainButton()->toHtml(); ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        sellAgaiinControll = {};
+        sellAgaiinControll.send = function(){
+            var startingTime = new Element("input", {type: "hidden", "name": "starting_time", "value": $F("starting_time")});
+            var formKey = new Element("input", {type: "hidden", "name": "form_key", "value": "<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>"});
+            var form = new Element("form", {action: "<?php echo $this->getSellAgainUrl(); ?>", "method": "POST"});
+                    
+            form.style.display = "none";
+                    
+            form.appendChild(startingTime);
+            form.appendChild(formKey);
+                    
+            $$("body")[0].appendChild(form);
+                    
+            form.submit();
+            form.remove();
+        }
+    </script>
+<?php elseif ($this->getCanCancel()): ?>
+    <?php $_form = $this->getCancelForm(); ?>
+    <div class="box-left">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Finish auction'); ?></h4>
+            </div>
+            <div class="fieldset">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Cancel offers?') ?></label></td>
+                        <td class="value">
+                            <?php echo $_form->getElement("cancel_bids")->toHtml(); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('orbaallegro')->__('Cancel reason') ?></label></td>
+                        <td class="value">
+                            <?php echo $_form->getElement("cancel_reason")->toHtml(); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="value">
+                            <?php echo $this->getCancelButton()->toHtml(); ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        cancelControll = {};
+        cancelControll.send = function(){
+            var cancelBids = new Element("input", {type: "hidden", "name": "cancel_bids", "value": $("cancel_bids").checked ? 1 : 0});
+            var cancelReason = new Element("input", {type: "hidden", "name": "cancel_reason", "value": $F("cancel_reason")});
+            var formKey = new Element("input", {type: "hidden", "name": "form_key", "value": "<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>"});
+            var form = new Element("form", {action: "<?php echo $this->getCancelUrl(); ?>", "method": "POST"});
+                    
+            if($("cancel_bids").checked && $F("cancel_reason")==""){
+                alert("<?php echo Mage::helper('orbaallegro')->__('You have to insert cancel reason if You choose canceling bids'); ?>");
+                return;
+            }
+                        
+            if(!confirm("<?php echo Mage::helper('orbaallegro')->__('Are You sure?'); ?>")){
+                return;
+            }
+                        
+            form.style.display = "none";
+                    
+            form.appendChild(cancelBids);
+            form.appendChild(cancelReason);
+            form.appendChild(formKey);
+                    
+            $$("body")[0].appendChild(form);
+                    
+            form.submit();
+            form.remove();
+        }
+    </script>
+<?php endif; ?>

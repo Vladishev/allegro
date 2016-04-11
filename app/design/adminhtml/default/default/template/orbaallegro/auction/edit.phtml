@@ -1,0 +1,136 @@
+<div class="content-header">
+   <h3><?php echo $this->getHeaderText() ?></h3>
+   <p class="content-buttons form-buttons">
+        <?php echo $this->getBackButtonHtml(); ?>
+        <?php if($this->getWasPlaced()):?>
+            <?php echo $this->getRefreshTransactionsButton();?>
+        <?php endif;?>
+        <?php if($this->getCanSave()):?>
+            <?php echo $this->getTestButtonHtml(); ?>
+            <?php echo $this->getTestSaveButtonHtml(); ?>
+        <?php endif;?>
+    </p>
+</div>
+<form action="<?php echo $this->getSaveUrl() ?>" method="post" enctype="multipart/form-data" id="auction_edit_form">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="no-display">
+        <input type="hidden" id="change_flag_element" name="_change_type_flag" value="" />
+        <input type="hidden" id="save_as_flag" name="_save_as_flag" value="<?php echo $this->getSaveAsFlag() ?>" />
+    </div>
+    <?php echo $this->getForm() ?>
+</form>
+
+<iframe sandbox="allow-same-origin allow-forms allow-scripts" src="about:blank" width="0" height="0" name="test_frame" id="test_frame" style="visibility: hidden;" ></iframe>
+
+<script type="text/javascript">
+//<![CDATA[
+    var auctionForm = new varienForm('auction_edit_form');
+    var auctionControl = {
+        init: function () {
+            if ($('convert_button_back')) {
+                $('convert_button_back').hide();
+            }
+        },
+        save: function() {
+            if (this.typeChange) {
+                $('change_flag_element').value = '1';
+            }
+            auctionControl.test(1);
+            return false;
+        },
+        saveAs: function() {
+            if (this.typeChange) {
+                $('change_flag_element').value = '1';
+            }
+
+            $('save_as_flag').value = '1';
+
+            auctionControl._save();
+            return false;
+        },
+        _save: function(){
+            auctionForm.submit();
+            return false;
+        },
+        remove: function() {
+            if(window.confirm("<?php echo Mage::helper('orbaallegro')->__('Do You really want cancel this auction?') ?>")) {
+                window.location.href = '<?php echo $this->getCancelUrl() ?>';
+            }
+        },
+        test: function(makeSave){
+            makeSave = makeSave || 0;
+            var frame = $("test_frame");
+            var from = $("auction_edit_form");
+            var testUrl = '<?php echo $this->getTestUrl();?>make_save/' + makeSave;
+            var oldUrl = from.getAttribute("action");
+            from.setAttribute("action", testUrl);
+            from.setAttribute("target", "test_frame");
+            $('loading-mask').show();
+            from.submit();
+            from.setAttribute("action", oldUrl);
+            from.setAttribute("target", "");
+        },
+        testStop: function(state, object, makeSave){
+            $('loading-mask').hide();
+            var msg = "";
+            if(typeof state!= "undefined"){
+                if(state){
+                    object = object.item;
+                    
+                    if(Object.prototype.toString.call(object) !== '[object Array]'){
+                        object = [object];
+                    }
+                    
+                    var msgArr = [];
+                    for(var i = 0; i<object.length; i++){
+                        msgArr.push(
+                            object[i].surchargeDescription + ": " + 
+                            object[i].surchargeAmount.amountValue + " " +
+                            object[i].surchargeAmount.amountCurrencySign
+                        );
+                    }
+                    msg = msgArr.join("\n");
+                }else{
+                    msg = "<?php echo Mage::helper('orbaallegro')->__("Some external error!");?>" + 
+                    "\n\n" + object
+                }
+                if(state && makeSave){
+                    auctionControl._save();
+                }else{
+                    alert(msg);
+                }
+            }
+        },
+        testNewStop: function(state, object, makeSave){
+            $('loading-mask').hide();
+            var msg;
+            if(typeof state!= "undefined"){
+                if(state){
+                    msg = "<?php echo Mage::helper('orbaallegro')->__("TEST PASSED!");?>" +
+                        "\n\n" + object.itemPriceDesc + "\n" +
+                        "<?php echo Mage::helper('orbaallegro')->__("Item price");?>" + ": " + 
+                        object.itemPrice
+                }else{
+                    msg = "<?php echo Mage::helper('orbaallegro')->__("Some external error!");?>" + 
+                    "\n\n" + object
+                }
+                if(state && makeSave){
+                    auctionControl._save();
+                }else{
+                    alert(msg);
+                }
+            }
+        }
+    };
+    auctionControl.init();
+    
+    var productTemplateSyntax = /(^|.|\r|\n)({{(\w+)}})/;
+    function setSettings(urlTemplate, catElement, tempElement, shopCatElement) {
+        console.log(auctionForm.validate());
+        if(auctionForm.validate() && $F(catElement)!=""){
+            var template = new Template(urlTemplate, productTemplateSyntax);
+            setLocation(template.evaluate({category_id:$F(catElement),template_id:$F(tempElement),shop_category_id:$F(shopCatElement)}));
+        }
+    }
+//]]>
+</script>

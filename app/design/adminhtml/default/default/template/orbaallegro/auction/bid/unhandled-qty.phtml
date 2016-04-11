@@ -1,0 +1,29 @@
+<script type="text/javascript">
+function updateUnhandledQty(event, element, bidId)
+{
+	new Ajax.Request('<?php echo Mage::helper('adminhtml')->getUrl('*/auction_bid/unhandledItemCount') ?>', {
+		method: 'POST',
+		parameters: { bid_id: bidId },
+		onSuccess: function(transport) {
+			try {
+				response = eval('(' + transport.responseText + ')');
+			} catch (e) {
+				response = {};
+			}
+
+			if (response.status && response.message) {
+				$(element).update(response.message);
+				if (response.message > 0) {
+					$(element).up('tr').addClassName('noticed');
+				}
+			} else {
+				$(element).update('X');
+			}
+			return;
+		},
+		onFailure: function() {
+			$(element).update('Error');
+		}                            
+	});	
+}
+</script>

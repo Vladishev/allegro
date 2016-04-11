@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            var result = <?php echo $this->getResult();?>;
+            var error = <?php echo $this->getError();?>;
+            var makeSave = <?php echo (int)$this->getMakeSave();?>;
+            
+            if(result && result.itemPriceDesc && result.itemPrice){
+                window.parent.auctionControl.testNewStop(1, result, makeSave);
+            }else if(error){
+                window.parent.auctionControl.testNewStop(0, error);
+            }else{
+                window.parent.auctionControl.testNewStop();
+            }
+        </script>
+    </head>
+</html>

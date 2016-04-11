@@ -1,0 +1,37 @@
+<?php if (count($this->getGalleryImages())): ?>
+    <div class="oa-contant-subtitle oa-content-section">
+        <h4 class="oa-text-accent">Galeria zdjęć</h4>
+    </div>
+    <div class="oa-contant-gallery oa-content-section">
+        <ul style="list-style: none; text-align: center;">
+            <?php foreach ($this->getGalleryImages() as $image): ?>
+                <li>
+                    <a target="_blank" href="<?php echo $this->getOriginImageUrl($image); ?>"><img src="<?php echo $this->getImageUrl($image); ?>" alt="<?php echo $image->getLabel() ? $this->escapeHtml($image->getLabel()) : ""; ?> "/></a>
+                    <?php if($image->getLabel()):?>
+                    <p><?php echo $this->escapeHtml($image->getLabel()) ;?></p>
+                    <?php endif;?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php else: ?>
+	<?php if (count($this->getParentGalleryImages($this->getProduct()->getId(), $this->getProduct()->getTypeId()))): ?>
+		<div class="oa-contant-subtitle oa-content-section">
+			<h4 class="oa-text-accent">Galeria zdjęć</h4>
+		</div>
+		<div class="oa-contant-gallery oa-content-section">
+			<ul style="list-style: none; text-align: center;">
+				<?php foreach ($this->getParentGalleryImages($this->getProduct()->getId(), $this->getProduct()->getTypeId()) as $images): ?>
+					<?php foreach ($images as $image): ?>
+						<li>
+							<a target="_blank" href="<?php echo $this->getOriginParentImageUrl($image); ?>"><img src="<?php echo $this->getOriginParentImageUrl($image); ?>" alt="<?php echo $image['label'] ? $this->escapeHtml($image['label']) : ""; ?> "/></a>
+							<?php if($image['label']):?>
+							<p><?php echo $this->escapeHtml($image['label']) ;?></p>
+							<?php endif;?>
+						</li>
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>		
+	<?php endif; ?>
+<?php endif; ?>

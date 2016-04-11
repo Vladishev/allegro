@@ -1,0 +1,371 @@
+<style type="text/css">
+    .oa-left{
+        float: left;
+    }
+    .oa-right{
+        float: right;
+    }
+    .oa-clear{
+        clear: both;
+        height:0;
+    }
+    .oa-text-accent{
+        color: {{config path='orbaallegro/template_design/accent_color'}};
+    }
+    .oa-underline{
+        text-decoration: underline;
+    }
+    .oa-text-regular{
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+    .oa-text-light{
+        color: {{config path='orbaallegro/template_design/text_light_color'}};
+    }
+    .oa-text-hero{
+        font-size: 36px;
+        letter-spacing: -1px;
+        font-weight: normal;
+    }
+    .oa-text-hero strong{
+        font-size: 48px;
+    }
+    .oa-container{
+        max-width: 1200px;
+        min-width: 980px;
+        margin: 0 auto;
+        font-family: Helvetica, Arial, sans-serif;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+    .oa-container h1,
+    .oa-container h2,
+    .oa-container h3,
+    .oa-container h4{
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    .oa-contant-heading h1,
+    .oa-contant-heading h2,
+    .oa-leftcol h4,
+    .oa-contant-subtitle h4,
+    .oa-header h3,
+    .oa-header h4{
+        margin:0;
+        padding:0;
+    }
+    .oa-container a{
+        text-decoration: none;
+    }
+    .oa-container a:hover{
+        text-decoration: underline;
+    }
+
+    .oa-header{
+        margin-bottom: 45px;
+    }
+    .oa-header hr{
+        margin:0;
+        padding:0;
+        border:0;
+        border-bottom: 10px {{config path='orbaallegro/template_design/accent_color'}} solid;
+    }
+    .oa-logo{
+        width: 250px;
+        height: 132px;
+        text-align: center;
+        margin: 45px 35px;
+    }
+    .oa-logo a,
+    .oa-logo img{
+        display: block;
+    }
+    .oa-logo img{
+        max-width: 250px;
+        margin: 0 auto;
+    }
+
+    .oa-header-info{
+        margin: 35px 35px 45px 0;
+    }
+    ul.oa-header-menu{
+        margin-bottom: 35px;
+        font-size: 11px;
+        list-style: none;
+        padding:0;
+        text-transform: uppercase;
+    }
+    .oa-header-menu li{
+        display: inline-block;
+        margin-left: 25px;
+    }
+    .oa-header-menu li:first-child{
+        margin-left: 0;
+    }
+    .oa-contact-holder h4{
+        display: inline-block;
+        font-weight: normal;
+        font-size: 24px;
+        margin-left: 20px;
+    }
+
+    .oa-icon-form,
+    .oa-icon-email,
+    .oa-icon-video,
+    .oa-contant-photo-video-shadow{
+        display: inline-block;
+        background: url("{{skin url='orbaallegro/images/sprite.png'}}") no-repeat;
+    }
+
+    .oa-icon-form,
+    .oa-icon-email{
+        width: 25px;
+        height: 17px;
+        margin-right: 6px;
+    }
+
+    .oa-icon-email{
+        background-position: 0 0;
+    }
+    .oa-icon-form{
+        background-position: -25px 0;
+    }
+    .oa-leftcol{
+        border-right: 1px #eee solid;
+    }
+    .oa-leftcol-box{
+        width: 250px;
+        word-break: break-all;
+        padding: 0 35px;
+        background: url("{{skin url='orbaallegro/images/sprite.png'}}") no-repeat 0 -100px;
+    }
+
+    .oa-leftcol-box > dl,
+    .oa-leftcol-box > div{
+        font-size: 12px;
+        color: {{config path='orbaallegro/template_design/text_light_color'}};
+    }
+
+    .oa-leftcol-box > dl,
+    .oa-leftcol-box > dl > dd,
+    .oa-leftcol-box > dt > dl{
+        margin:0;
+        padding:0;
+    }
+
+    .oa-leftcol-box > dl{
+        line-height: 24px;
+    }
+
+    .oa-leftcol-box > dl > dd{
+        margin-bottom: 20px;
+    }
+
+    .oa-leftcol-box h4{
+        font-size: 30px;
+        font-weight: bold;
+        padding: 25px 0 20px 0;
+        letter-spacing: -1px;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+    .oa-list-big{
+        font-size: 18px;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+
+
+    .oa-content{
+        margin-left: 320px;
+        padding: 0 35px;
+        border-left: 1px #eee solid;
+    } 
+    .oa-content-section{
+        margin-bottom: 60px;
+    }
+    .oa-contant-heading{
+        text-align: center;
+        padding: 10px 0;
+        margin-bottom: 35px;
+    }
+
+    .oa-content h1{
+        font-size: 58px;
+        letter-spacing: -4px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+    .oa-content h2{
+        font-size: 30px;
+        font-weight: normal;
+        letter-spacing: -2px;
+        color: {{config path='orbaallegro/template_design/text_light_color'}};
+    }
+    .oa-contant-photo-wrapper{
+        border: 1px #eee solid;
+        background: #fff;
+        margin: 0 auto;
+        width: 610px;
+        position: relative;
+    }
+
+    .oa-contant-photo-wrapper > a,            
+    .oa-contant-photo-wrapper > a > img{
+        display: block;
+    }
+
+    .oa-contant-photo-wrapper > a{
+        width: 590px;
+        padding: 10px;
+    }
+    .oa-contant-photo-wrapper > a > img{
+        width: 590px;
+    }
+    .oa-contant-photo-video{
+        position: absolute;
+        bottom: 50px;
+        right: -24px;
+        height: 72px;
+        background: #f6f6f6;
+        line-height: 36px;
+
+    }
+    .oa-contant-photo-video a{
+        display: inline-block;
+        padding: 18px 48px;
+        font-size: 24px;
+        letter-spacing: -2px;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+        text-transform: uppercase;
+    }
+    .oa-icon-video{
+        width: 47px;
+        height: 33px;
+        vertical-align: middle;
+        background-position: 0 -17px;
+        margin-left: 20px;
+        margin-top: -5px;
+
+    }
+    .oa-contant-photo-video-shadow{
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right:0;
+        bottom: -24px;
+        background-position: -50px -17px;
+    }
+    .oa-contant-subtitle{
+        margin-bottom: 35px;
+        border-bottom: 1px #eee solid;
+        height: 20px;
+        position: relative;
+    }
+    .oa-contant-subtitle h4{
+        font-size: 24px;
+        display: inline-block;
+        position: absolute;
+        font-weight: bold;
+        background: #fff;
+        padding-right: 15px;
+        margin-bottom: -12px;
+        letter-spacing: -1px;
+    }
+    .oa-content-text{
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .oa-contant-attributes table{
+        width: 100%;
+        line-height: 18px;
+        font-size: 14px;
+    }
+    .oa-contant-attributes table td{
+        vertical-align: top;
+        padding: 5px 0;
+        color: {{config path='orbaallegro/template_design/text_color'}};
+    }
+
+    .oa-contant-attributes table .label{
+        font-weight: bold;
+        width: 30%;
+    }
+    .oa-contant-attributes table .data{
+        width: 70%;
+    }
+    .oa-contant-gallery a{
+        display: inline-block;
+        padding: 10px;
+        border: 1px #eee solid;
+    }
+    .oa-contant-gallery ul,
+    .oa-contant-gallery li{
+        margin:0;
+        padding:0;
+    }
+    .oa-contant-gallery li{
+        margin-bottom: 20px;
+    }
+    .oa-contant-gallery img{
+        max-width: 590px;
+        display: block;
+    }
+</style>
+<div class="oa-container">
+    <div class="oa-header">
+        <div class="oa-wrapper">
+            <div class="oa-logo oa-left">
+                <a href="{{store direct_url=''}}" target="_blank"><img src="{{var logo_url}}" alt="Logo"/></a>
+            </div>
+            <div class="oa-header-info oa-right">
+                {{block type="orbaallegro/cms_block" block_id="orbaallegro_topmenu"}}
+                <h3 class="oa-right oa-text-hero">
+                    <em class="oa-text-regular">tel.</em> <strong class="oa-text-accent">{{var user.getUserPhone()}}</strong>
+                </h3>
+                <div class="oa-clear"></div>
+
+                <div class="oa-contact-holder oa-right">
+                    <h4><a href="mailto:{{var user.getUserEmail()}}" class="oa-text-accent"><i class="oa-icon-email"></i>{{var user.userEmail}}</a></h4>
+                    <h4><a href="{{var contact_link}}" class="oa-text-accent"><i class="oa-icon-form"></i>formularz online</a></h4>
+                </div>
+                <div class="oa-clear"></div>
+            </div>
+            <div class="oa-clear"></div>
+        </div>
+        <hr/>
+    </div>
+    <div class="oa-main">
+        <div class="oa-left oa-leftcol">
+            {{block type="orbaallegro/cms_block" block_id="orbaallegro_about"}}
+        </div>
+        <div class="oa-content">
+            <div class="oa-contant-heading">
+                <h1><strong></strong>{{var product.name}}</strong></h1>
+                <h2>Kup Teraz za <strong class="oa-text-accent oa-underline">{{var product.getFormatedPrice()}}</strong></h2>
+            </div>
+            <div class="oa-contant-photo oa-content-section">
+                <div class="oa-contant-photo-wrapper">
+                    {{if product_photo_url}}
+                    <a href="{{var product.getProductUrl()}}"  target="_blank"><img src="{{var product_photo_url}}" alt=""/></a>
+                    {{/if}}
+                    {{if youtube_url}}
+                    <div class="oa-contant-photo-video">
+                        <a href="{{var youtube_url}}" target="_blank">Film<i class="oa-icon-video"></i></a>
+                        <div class="oa-contant-photo-video-shadow"></div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="oa-contant-subtitle oa-content-section">
+                <h4 class="oa-text-accent">Szczegóły produktu</h4>
+            </div>
+            <div class="oa-content-section oa-content-text oa-text-regular">
+			{{if product.description}}
+                {{var product.description}}
+			{{else}}
+				{{var parent.description}}
+			{{/if}}
+            </div>
+            {{var attributes}}
+            {{var gallery}}
+            {{block type="orbaallegro/cms_block" block_id="orbaallegro_other"}}
+        </div>
+    </div>
+</div>

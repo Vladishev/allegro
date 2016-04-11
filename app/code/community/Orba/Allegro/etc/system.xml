@@ -1,0 +1,1283 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <orbaallegro translate="label" module="orbaallegro">
+            <label>ORBA | Allegro</label>
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>301</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <config translate="label,comment">
+                    <label>Configuration</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <use_sandbox>
+                            <label>Use Sandbox</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_sandbox>
+                        <country_id>
+                            <label>Service</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>orbaallegro/adminhtml_system_config_service</frontend_model>
+                            <source_model>orbaallegro/system_config_source_service</source_model>
+                            <comment>Features are depending on it</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </country_id>
+                        <api_key translate="label">
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </api_key>
+                        <user_login>
+                            <label>Login</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </user_login>
+                        <user_password>
+                            <label>Password</label>
+                            <frontend_type>password</frontend_type>
+                            <frontend_model>orbaallegro/adminhtml_system_config_password</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </user_password>
+                    </fields>
+                </config>
+                <orders translate="label,comment">
+                    <label>Orders</label>
+                    <sort_order>15</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <auto_place>
+                            <label>Auto place order [DEV]</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>If You set no you will confirm every order</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </auto_place>
+                        <create_customer>
+                            <label>Register customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Register customers during placing order. They can check order status online.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </create_customer>
+                        <override_shipping_rate>
+                            <label>Override shipping rate</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Use Allegro rate instead original carrier rate</comment>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </override_shipping_rate>
+                    </fields>
+                </orders>
+                <categories translate="label">
+                    <label>Categories synchronization</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Automatic synchronization?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                    </fields>
+                </categories>
+                <template_design translate="label">
+                    <label>Default template</label>
+                    <sort_order>25</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <accent_color translate="label,comment">
+                            <label>Accent color</label>
+                            <comment>HTML foramt (ex.#f00)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </accent_color>
+                        <text_color translate="label,comment">
+                            <label>Text color</label>
+                            <comment>HTML foramt (ex.#f00)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </text_color>
+                        <text_light_color translate="label,comment">
+                            <label>Text light color</label>
+                            <comment>HTML foramt (ex.#f00)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </text_light_color>
+                        <text_color translate="label,comment">
+                            <label>Text color</label>
+                            <comment>HTML text color for default template</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </text_color>
+                    </fields>
+                </template_design>
+                <template_localization translate="label">
+                    <label>Defaults: Location</label>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <country translate="label,comment">
+                            <label>Country</label>
+                            <comment>Set "Neverland" for Testwebapi.pl</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>orbaallegro/adminhtml_system_config_country</frontend_model>
+                            <source_model>orbaallegro/system_config_source_attribute_template_country</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </country>
+                        <province translate="label">
+                            <label>Province (Poland)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_province</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </province>
+                        -->
+                        <city translate="label">
+                            <label>City</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </city>
+                        <post_code translate="label">
+                            <label>Post code</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>85</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </post_code>
+                    </fields>
+                </template_localization>
+                <template_image>
+                    <label>Defaults: Images</label>
+                    <sort_order>35</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <count translate="label,comment">
+                            <label>How many images</label>
+                            <comment>By system sortorder. Includes main main photo.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_imagecount</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </count>
+                        <main translate="label,comment">
+                            <label>Thumbnail / Main Picture</label>
+                            <comment>Choose Magento attribute.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_product_image</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </main>
+                        <width translate="label,comment">
+                            <label>Max width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits required-entry</validate>
+                        </width>
+                        <height translate="label,comment">
+                            <label>Max height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits required-entry</validate>
+                        </height>
+                        <keep_frame translate="label,comment">
+                            <label>Keep frame</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </keep_frame>
+                    </fields>
+                </template_image>
+                <template_base translate="label">
+                    <label>Defaults: Base</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <title translate="label,comment">
+                            <label>Title</label>
+                            <comment>Choose Magento attribute</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_product_text</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <description translate="label,comment">
+                            <label>Description</label>
+                            <comment>Choose Magento attribute</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_product_text</source_model>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </description>
+                        <buy_now_price translate="label,comment">
+                            <label>"Buy now" price</label>
+                            <comment>Choose Magento attribute</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_product_price</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </buy_now_price>
+                        <weight translate="label,comment">
+                            <label>Weight</label>
+                            <comment>Choose Magento attribute</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_product_weight</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </weight>
+                        <duration translate="label">
+                            <label>Duration</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_duration</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </duration>
+                        <quantity translate="label,comment">
+                            <label>Quantity</label>
+                            <comment>Insert number between 1 and 1000</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits required-entry</validate>
+                        </quantity>
+                        <quantity_type translate="label">
+                            <label>Quantity type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_quantitytype</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </quantity_type>
+                        <additional_options translate="label">
+                            <label>Additional options</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_additionaloption</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </additional_options>
+                        <sales_format translate="label">
+                            <label>Sales format</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_salesformat</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sales_format>
+                        <auto_renew translate="label">
+                            <label>Auto renew shop offer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_autorenew</source_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </auto_renew>
+                    </fields>
+                </template_base>
+                
+                <template_payment translate="label">
+                    <label>Defaults: Payment</label>
+                    <sort_order>45</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <payment_types translate="label">
+                            <label>Payment types</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_payment</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_types>
+                        <bank_account_1 translate="label">
+                            <label>First bank account</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bank_account_1>
+                        <bank_account_2 translate="label">
+                            <label>Second bank account</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bank_account_2>
+                    </fields>
+                </template_payment>
+                <template_shipping translate="label">
+                    <label>Defaults: Shipping</label>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shipping_payer translate="label">
+                            <label>Who pays for shipping?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_shippingpayer</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_payer>
+                        <shipping_pay_seller_price translate="label">
+                            <label>Seller pay for shipping if item price greater that</label>
+                            <comment>Insert minimal price or leave empty</comment>
+                            <frontend_type>text</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_shippingpayer</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </shipping_pay_seller_price>
+                        <free_shipping translate="label">
+                            <label>Free shipping methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_freeshipping</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </free_shipping>
+                        <shipping_options translate="label">
+                            <label>Shipping options</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_shippingoptions</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_options>
+                        <shipping_info translate="label">
+                            <label>Additional shipping and billing information</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>58</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_info>
+                        <shipping_time translate="label">
+                            <label>Shipping in (h)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>orbaallegro/system_config_source_attribute_template_shippingtime</source_model>
+                            <sort_order>59</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_time>
+                        <first_item_postal_parcel_economic translate="label">
+                            <label>Economic postal parcel (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>orbaallegro/adminhtml_system_config_shipping</frontend_model>
+                            <sort_order>1010</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_parcel_economic>
+                        <first_item_postal_letter_economic translate="label">
+                            <label>Economic postal letter (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1020</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_letter_economic>
+                        <first_item_postal_parcel_priority translate="label">
+                            <label>Priority postal parcel (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1030</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_parcel_priority>
+                        <first_item_postal_letter_priority translate="label">
+                            <label>Priority postal letter (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1040</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_letter_priority>
+                        <first_item_postal_parcel_economic_cod translate="label">
+                            <label>Paczka48 COD (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1050</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_parcel_economic_cod>
+                        <first_item_postal_letter_economic_registered translate="label">
+                            <label>Economic registered letter (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1060</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_letter_economic_registered>
+                        <first_item_postal_parcel_priority_cod translate="label">
+                            <label>Paczka24 COD (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1070</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_parcel_priority_cod>
+                        <first_item_postal_letter_priority_registered translate="label">
+                            <label>Priority registered letter (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1080</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_postal_letter_priority_registered>    
+                        <first_item_courier_parcel translate="label">
+                            <label>Courier parcel (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1090</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_courier_parcel>
+                        <first_item_courier_parcel_cod translate="label">
+                            <label>Courier COD parcel (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_courier_parcel_cod>
+                        <first_item_pickpoint_cod_ruch translate="label">
+                            <label>Pickpoint after prepaid - Ruch (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_cod_ruch>
+                        <first_item_pickpoint_cod_paczkomaty translate="label">
+                            <label>Pickpoint after prepaid - Paczkomaty (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_cod_paczkomaty>
+                        <first_item_pickpoint_ruch translate="label">
+                            <label>Pickpoint - Ruch (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_ruch>
+                        <first_item_pickpoint_paczkomaty translate="label">
+                            <label>Pickpoint - Paczkomaty (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_paczkomaty>
+                        <first_item_pickpoint_cod_dhl translate="label">
+                            <label>Pickpoint after prepaid - DHL (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_cod_dhl>
+                        <first_item_pickpoint_cod_eprzesylka translate="label">
+                            <label>Pickpoint after prepaid - Paczka48 (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_cod_eprzesylka>
+                        <first_item_pickpoint_eprzesylka translate="label">
+                            <label>Pickpoint - Paczka48 (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_eprzesylka>
+                        <first_item_business_parcel translate="label">
+                            <label>Pocztex Kurier48 (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_business_parcel>
+                        <first_item_business_parcel_cod translate="label">
+                            <label>Pocztex Kurier48 COD (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_business_parcel_cod>                       
+                        <first_item_paczka24 translate="label">
+                            <label>Paczka24 (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_paczka24>
+                        <first_item_paczka48 translate="label">
+                            <label>Paczka48 (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_paczka48>
+                        <first_item_pickpoint_after_prepaid_paczka24 translate="label">
+                            <label>Pickpoint after prepaid - Paczka24 pickpoint (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_after_prepaid_paczka24>
+                        <first_item_pickpoint_paczka24 translate="label">
+                            <label>Pickpoint - Paczka24 Pickpoint (first item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </first_item_pickpoint_paczka24>
+                        
+                        <!-- Next items -->
+                        <next_item_postal_parcel_economic translate="label">
+                            <label>Economic postal parcel (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1011</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_parcel_economic>
+                        <next_item_postal_letter_economic translate="label">
+                            <label>Economic postal letter (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1021</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_letter_economic>
+                        <next_item_postal_parcel_priority translate="label">
+                            <label>Priority postal parcel (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1031</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_parcel_priority>
+                        <next_item_postal_letter_priority translate="label">
+                            <label>Priority postal letter (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1041</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_letter_priority>
+ 
+                        <next_item_postal_parcel_economic_cod translate="label">
+                            <label>Paczka48 COD (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1051</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_parcel_economic_cod>
+                        
+                        <next_item_postal_letter_economic_registered translate="label">
+                            <label>Economic registered letter (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1061</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_letter_economic_registered>
+                        <next_item_postal_parcel_priority_cod translate="label">
+                            <label>Paczka24 COD (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1071</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_parcel_priority_cod>
+                        <next_item_postal_letter_priority_registered translate="label">
+                            <label>Priority registered letter (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1081</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_postal_letter_priority_registered>
+                        <next_item_courier_parcel translate="label">
+                            <label>Courier parcel (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1091</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_courier_parcel>
+                        <next_item_courier_parcel_cod translate="label">
+                            <label>Courier COD parcel (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_courier_parcel_cod>
+                        <next_item_pickpoint_cod_ruch translate="label">
+                            <label>Pickpoint after prepaid - Ruch (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_cod_ruch>
+                        <next_item_pickpoint_cod_paczkomaty translate="label">
+                            <label>Pickpoint after prepaid - Paczkomaty (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1121</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_cod_paczkomaty>
+                        <!-- TU -->
+                        <next_item_pickpoint_ruch translate="label">
+                            <label>Pickpoint - Ruch (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1131</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_ruch>
+                        <next_item_pickpoint_paczkomaty translate="label">
+                            <label>Pickpoint - Paczkomaty (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1141</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_paczkomaty>
+                        <next_item_pickpoint_cod_dhl translate="label">
+                            <label>Pickpoint after prepaid - DHL (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1151</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_cod_dhl>
+                        <next_item_pickpoint_cod_eprzesylka translate="label">
+                            <label>Pickpoint after prepaid - Paczka48 (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1161</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_cod_eprzesylka>
+                        <next_item_pickpoint_eprzesylka translate="label">
+                            <label>Pickpoint - Paczka48 (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1171</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_eprzesylka>
+                        <next_item_business_parcel translate="label">
+                            <label>Pocztex Kurier48 (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1181</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_business_parcel>
+                        <next_item_business_parcel_cod translate="label">
+                            <label>Pocztex Kurier48 COD (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1191</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_business_parcel_cod>
+                        
+                        <next_item_paczka24 translate="label">
+                            <label>Paczka24 (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1201</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_paczka24>
+                        <next_item_paczka48 translate="label">
+                            <label>Paczka48 (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1211</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_paczka48>
+                        <next_item_pickpoint_after_prepaid_paczka24 translate="label">
+                            <label>Pickpoint after prepaid - Paczka24 pickpoint (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1221</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_after_prepaid_paczka24>
+                        <next_item_pickpoint_paczka24 translate="label">
+                            <label>Pickpoint - Paczka24 Pickpoint (next item)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1231</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </next_item_pickpoint_paczka24>
+                        
+                        <!-- Item count -->
+                        <item_count_postal_parcel_economic translate="label">
+                            <label>Economic postal parcel (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1012</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_parcel_economic>
+                        <item_count_postal_letter_economic translate="label">
+                            <label>Economic postal letter (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1022</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_letter_economic>
+                        <item_count_postal_parcel_priority translate="label">
+                            <label>Priority postal parcel (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1032</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_parcel_priority>
+                        <item_count_postal_letter_priority translate="label">
+                            <label>Priority postal letter (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1042</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_letter_priority>
+                        <item_count_postal_parcel_economic_cod translate="label">
+                            <label>Paczka48 COD (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1052</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_parcel_economic_cod>
+                        <item_count_postal_letter_economic_registered translate="label">
+                            <label>Economic registered letter (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1062</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_letter_economic_registered>
+                        <item_count_postal_parcel_priority_cod translate="label">
+                            <label>Paczka24 COD (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1072</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_parcel_priority_cod>
+                        <item_count_postal_letter_priority_registered translate="label">
+                            <label>Priority registered letter (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1082</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_postal_letter_priority_registered>
+                        <item_count_courier_parcel translate="label">
+                            <label>Courier parcel (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1092</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_courier_parcel>
+                        <item_count_courier_parcel_cod translate="label">
+                            <label>Courier COD parcel (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1102</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_courier_parcel_cod>
+                         <item_count_pickpoint_cod_ruch translate="label">
+                            <label>Pickpoint after prepaid - Ruch (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_cod_ruch>
+                        <item_count_pickpoint_cod_paczkomaty translate="label">
+                            <label>Pickpoint after prepaid - Paczkomaty (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1122</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_cod_paczkomaty>
+                        <item_count_pickpoint_ruch translate="label">
+                            <label>Pickpoint - Ruch (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1132</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_ruch>
+                       <item_count_pickpoint_paczkomaty translate="label">
+                            <label>Pickpoint - Paczkomaty (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1142</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_paczkomaty>
+                        <item_count_pickpoint_cod_dhl translate="label">
+                            <label>Pickpoint after prepaid - DHL (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1152</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_cod_dhl>
+                        <item_count_pickpoint_cod_eprzesylka translate="label">
+                            <label>Pickpoint after prepaid - Paczka48 (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1162</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_cod_eprzesylka>
+                        <item_count_pickpoint_eprzesylka translate="label">
+                            <label>Pickpoint - Paczka48 (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1172</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_eprzesylka>
+                        <item_count_business_parcel translate="label">
+                            <label>Pocztex Kurier48 (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1182</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_business_parcel>
+                        <item_count_business_parcel_cod translate="label">
+                            <label>Pocztex Kurier48 COD (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1192</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_business_parcel_cod>
+                        <item_count_paczka24 translate="label">
+                            <label>Paczka24 (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1202</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_paczka24>
+                        <item_count_paczka48 translate="label">
+                            <label>Paczka48 (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1212</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_paczka48>
+                        <item_count_pickpoint_after_prepaid_paczka24 translate="label">
+                            <label>Pickpoint after prepaid - Paczka24 pickpoint (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1222</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_after_prepaid_paczka24>
+                        <item_count_pickpoint_paczka24 translate="label">
+                            <label>Pickpoint - Paczka24 Pickpoint (item count)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1232</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                        </item_count_pickpoint_paczka24>
+                        
+                    </fields>
+                </template_shipping> 
+                <utils translate="label,comment">
+                    <label>Utility</label>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <debug_mode>
+                            <label>Debug mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>In debug mode, external errors and whole transfered data will be logged into log files</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug_mode>
+                        <unhandled_item_count>
+                            <label>Unhandled Item Count Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Use Ajax Loader (Use for better Database Performance)</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </unhandled_item_count>						
+                    </fields>
+                </utils>
+            </groups>
+        </orbaallegro>
+        <carriers translate="label" module="shipping">
+            <groups>
+                <orbaallegro translate="label">
+                    <label>ORBA | Allegro</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>500</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sort_order>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <showmethod translate="label">
+                            <label>Show Method if Not Applicable</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>92</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </showmethod>
+                        <sallowspecific translate="label">
+                            <label>Ship to Applicable Countries</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <frontend_class>shipping-applicable-country</frontend_class>
+                            <source_model>adminhtml/system_config_source_shipping_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sallowspecific>
+                        <specificcountry translate="label">
+                            <label>Ship to Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>91</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+                        <specificerrmsg translate="label">
+                            <label>Displayed Error Message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificerrmsg>
+                    </fields>
+                </orbaallegro>
+            </groups>
+        </carriers>
+        <payment translate="label" module="orbaallego">
+            <groups>
+                <orbaallegro translate="label">
+                    <label>ORBA | Allegro</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <order_status translate="label">
+                            <label>New Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1000</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>50</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>51</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+                    </fields>
+                </orbaallegro>
+            </groups>
+        </payment>
+    </sections>
+</config>

@@ -1,0 +1,45 @@
+<div class="entry-edit box-left">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-account"><?php echo Mage::helper('orbaallegro')->__('Bid notes'); ?></h4>
+    </div>
+    <div class="fieldset">
+        <form action="<?php echo $this->getForm()->getAction();?>" method="<?php echo $this->getForm()->getMethod();?>">
+            <input type="hidden" name="form_key" value="<?php echo $this->getFormKey();?>"/>
+            <input type="hidden" name="bid_id" value="<?php echo $this->getModel()->getId();?>"/>
+
+            <span class="field-row">
+                <?php $_noteField = $this->getNoteField();?>
+                <label class="normal" for="<?php echo $_noteField->getId();?>"><?php echo $_noteField->getLabel();?></label>
+                <textarea name="<?php echo $_noteField->getName();?>" id="<?php echo $_noteField->getId();?>" rows="3" style="width: 99%; height: 6em;"></textarea>
+            </span>    
+            <div class="f-right">
+                <?php $_button = $this->getSendButton();?>
+                <button type="submit" class="scalable save" name="<?php echo $_button->getName();?>">
+                    <span>
+                        <span><?php echo $_button->getValue();?></span>
+                    </span>
+                </button>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <?php $_collection = $this->getCollection();?>
+        <?php if($_collection->count()):?>
+        <ul class="note-list">
+            <?php foreach($_collection as $_note):?>
+            <li>
+                <?php echo Mage::app()->getLocale()->date($_note->getCreatedAt());?> 
+                <span class="separator">|</span> 
+                <?php if(($_user=$_note->getUser()) && $_user->getId()):?>
+                    <strong class="subdue"><?php echo $_user->getUsername();?></strong>
+                <?php else: ?>
+                    <strong class="subdue"><?php echo $_note->getUserName();?></strong> [<?php echo Mage::helper('orbaallegro')->__('deleted');?>]
+                <?php endif;?>
+                <br/>
+                <?php echo $this->escapeHtml($_note->getContent());?>
+            </li>
+            <?php endforeach;?>
+        </ul>
+        <?php endif;?>
+    </div>
+</div>
+<div class="clear"></div>
