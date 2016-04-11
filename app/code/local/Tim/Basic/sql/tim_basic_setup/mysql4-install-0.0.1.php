@@ -11,8 +11,6 @@ $attribute[] = array('code' => 'tim_jednostka_miary','label' => 'Jednostka miary
 $attribute[] = array('code' => 'tim_nr_katalogowy_producenta','label' => 'Nr referencyjny','type' => 'text','backend' => '');
 $attribute[] = array('code' => 'tim_ean','label' => 'EAN','type' => 'text','backend' => '');
 $attribute[] = array('code' => 'tim_producent','label' => 'Producent','type' => 'text','backend' => '');
-$attribute[] = array('code' => 'tim_rodzaj_opis','label' => 'Produkt rodzaj opis','type' => 'varchar','backend' => '', 'input' => 'select', 'source' => 'eav/entity_attribute_source_table', 'options' => array('values' => array('pim' => 'PIM', 'inne' => 'Inne')));
-$attribute[] = array('code' => 'tim_rodzaj_zdjecie','label' => 'Zdjęcie rodzaj opis','type' => 'int','backend' => '', 'input' => 'select', 'source' => 'eav/entity_attribute_source_table', 'options' => array('value' => array('pim' => array('PIM'), 'inne' => array('Inne'))));
 $attribute[] = array('code' => 'tim_crm_id','label' => 'Produkt CRM ID','type' => 'varchar','backend' => '', 'input' => 'select', 'source' => 'eav/entity_attribute_source_table', 'options' => '');
 
 $objCatalogEavSetup = Mage::getResourceModel('catalog/eav_mysql4_setup', 'core_setup');
@@ -64,14 +62,3 @@ foreach($attribute as $key => $attr){
 
 }
 $installer->endSetup();
-
-//set default value for select type fields
-$productModel = Mage::getModel('catalog/product');
-$selectTypes = array('tim_rodzaj_zdjecie' => 'PIM', 'tim_rodzaj_opis' => 'PIM');
-foreach ($selectTypes as $key => $value) {
-    $attr = $productModel->getResource()->getAttribute($key);
-    $optionId = $attr->getSource()->getOptionId($value);
-    $attrId = $attr->getAttributeId();
-    $model = Mage::getModel('eav/entity_attribute')->load($attrId);
-    $model->setDefaultValue($optionId)->save();
-}
