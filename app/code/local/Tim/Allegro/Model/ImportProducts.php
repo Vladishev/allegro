@@ -11,6 +11,24 @@
 class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 {
     /**
+     * Cut string after set position
+     * @var int
+     */
+    protected $_cutAfter = 50;
+
+    /**
+     * Set product weight
+     * @var float
+     */
+    protected $_productWeight = 1.0000;
+
+    /**
+     * Set product price
+     * @var int
+     */
+    protected $_productPrice = 1;
+
+    /**
      * Import products from xml
      */
     public function run()
@@ -190,6 +208,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setTimProducent($attributes['tim_producent'])
                 ->setTimWolumen($attributes['tim_wolumen'])
                 ->setTimNrKatalogowyProducenta($attributes['tim_nr_katalogowy_producenta'])
+                ->setTimTytulAukcji($attributes['tim_tytul_aukcji'])
+                ->setTimKategoriaRozmiaru($attributes['tim_kategoria_rozmiaru'])
                 ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
                 ->setCategoryIds(array($categoryId)); //assign product to categories
             $k = 0;
@@ -220,10 +240,13 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     protected function _getAttributes($rootNode)
     {
         $attributes = array();
-        //getting tim_czy_magazynowy attribute
+        //getting tim_czy_magazynowy and tim_kategoria_rozmiaru attributes
         foreach ($rootNode->Classification as $classification) {
             if ($classification['type'] == 'KategoriaDostawcyProduktu') {
                 $attributes['tim_czy_magazynowy'] = (string) $classification->Codes->Code;
+            }
+            if ($classification['type'] == 'KategoriaRozmiaru') {
+                $attributes['tim_kategoria_rozmiaru'] = (string) $classification->Codes->Code;
             }
         }
         //getting tim_jednostka_logistyczna attribute
@@ -260,7 +283,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         foreach ($rootNode->Attachment as $attachment) {
             $attributes['image'][] = (string) $attachment->URI;
         }
-        //getting description and name attributes
+        //getting description attribute
         foreach ($rootNode->Description as $description) {
             if ($description['type'] == 'B24') {
                 $description = (string) $description;
@@ -272,9 +295,15 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             }
 
         }
+        //getting tim_tytul_aukcji and name attributes
         foreach ($rootNode->Description as $description) {
             if ($description['type'] == 'Nazwa') {
                 $attributes['name'] = (string) $description;
+                if (strlen($attributes['name']) > $this->_cutAfter) {
+                    $attributes['tim_tytul_aukcji'] = substr($attributes['name'], 0, $this->_cutAfter);
+                } else {
+                    $attributes['tim_tytul_aukcji'] = $attributes['name'];
+                }
             }
         }
         //getting description attribute(if exist OpisMarketingowyDlugi - it will rewrite the previous one)
@@ -312,8 +341,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             $attributes['description'] .= '</ul>';
         }
         //getting weight and price attributes
-        $attributes['weight'] = 1.0000;
-        $attributes['price'] = 1;
+        $attributes['weight'] = $this->_productWeight;
+        $attributes['price'] = $this->_productPrice;
 
         return $attributes;
     }
