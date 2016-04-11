@@ -189,6 +189,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setTimJednostkaMiary($attributes['tim_jednostka_miary'])
                 ->setTimProducent($attributes['tim_producent'])
                 ->setTimWolumen($attributes['tim_wolumen'])
+                ->setTimCrmId($attributes['tim_crm_id'])
                 ->setTimNrKatalogowyProducenta($attributes['tim_nr_katalogowy_producenta'])
                 ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
                 ->setCategoryIds(array($categoryId)); //assign product to categories
@@ -314,6 +315,14 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         //getting weight and price attributes
         $attributes['weight'] = 1.0000;
         $attributes['price'] = 1;
+        //getting tim_crm_id attribute
+        foreach ($rootNode->ItemID as $item) {
+            if ($item['agencyRole'] == 'Product ID') {
+                $attributes['tim_crm_id'] = (string) $item->ID;
+            } else {
+                $attributes['tim_crm_id'] = '';
+            }
+        }
 
         return $attributes;
     }
