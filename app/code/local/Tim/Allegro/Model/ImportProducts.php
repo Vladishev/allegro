@@ -29,6 +29,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     protected $_productPrice = 1;
 
     /**
+     * Set product quantity
+     * @var int
+     */
+    protected $_qty = 1;
+
+    /**
      * Import products from xml
      */
     public function run()
@@ -75,6 +81,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         continue;
                     }
                 }
+                $this->_reindexData();
             } else {
                 Mage::log('There are no files in folder.', null, 'tim_import.log');
             }
@@ -189,7 +196,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
         try {
             $product = Mage::getModel('catalog/product')
-                ->setWebsiteIds(array(0)) //website ID the product is assigned to, as an array
+                ->setWebsiteIds(array(1)) //website ID the product is assigned to, as an array
                 ->setAttributeSetId(4) //ID of a attribute set named 'default'
                 ->setTypeId('simple') //product type
                 ->setCreatedAt(strtotime('now')) //product creation time
@@ -197,7 +204,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setName($attributes['name']) //product name
                 ->setWeight($attributes['weight'])
                 ->setStatus(1) //product status (1 - enabled, 2 - disabled)
-                ->setTaxClassId(1) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
+                ->setTaxClassId(0) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
                 ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) //catalog and search visibility
                 ->setPrice($attributes['price']) //price in form 11.22
                 ->setDescription($attributes['description'])
@@ -211,7 +218,14 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setTimTytulAukcji($attributes['tim_tytul_aukcji'])
                 ->setTimKategoriaRozmiaru($attributes['tim_kategoria_rozmiaru'])
                 ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
-                ->setCategoryIds(array($categoryId)); //assign product to categories
+                ->setCategoryIds(array($categoryId)) //assign product to categories
+                ->setStockData(array(
+                        'use_config_manage_stock' => 0, //'Use config settings' checkbox
+                        'manage_stock'=>1, //manage stock
+                        'is_in_stock' => 1, //Stock Availability
+                        'qty' => $this->_qty //qty
+                    )
+                );
             $k = 0;
             foreach ($attributes['image'] as $image) {
                 if ($k == 0) {
@@ -221,7 +235,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 }
                 $k++;
             }
-                $product->save();
+
+            $product->save();
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
             $result = false;
@@ -449,5 +464,17 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         }
 
         return $attributes;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function _reindexData()
+    {
+        $indexCollection = Mage::getModel('index/process')->getCollection();
+        foreach ($indexCollection as $index) {
+            /* @var $index Mage_Index_Model_Process */
+            $index->reindexAll();
+        }
     }
 }
