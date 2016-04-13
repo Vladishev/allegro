@@ -50,6 +50,9 @@
                                     <tim_alternative_image translate="title" module="tim_allegro">
                                         <title>Alternative image</title>
                                     </tim_alternative_image>
+                                    <tim_setup_tax translate="title" module="tim_allegro">
+                                        <title>Setup TAX</title>
+                                    </tim_setup_tax>
                                 </children>
                             </config>
                         </children>
