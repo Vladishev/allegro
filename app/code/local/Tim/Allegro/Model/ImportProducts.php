@@ -81,7 +81,6 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         continue;
                     }
                 }
-                $this->_reindexData();
             } else {
                 Mage::log('There are no files in folder.', null, 'tim_import.log');
             }
@@ -237,6 +236,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             }
 
             $product->save();
+            $this->_reindexData();
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
             $result = false;

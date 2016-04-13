@@ -19,8 +19,8 @@ class Orba_Allegro_Model_Resource_Client extends SoapClient {
             $options['trace'] = true;
             $this->_debug = true;
         }
-        $isSandbox = Mage::app()->getRequest()->getPost('is_sandbox');
-        if ($isSandbox == 'Yes') {
+        $isSandbox = (int) Mage::app()->getRequest()->getPost('is_sandbox');
+        if ($isSandbox == 1) {
             $wsdlt = Mage::getStoreConfig(Orba_Allegro_Model_Config::XML_PATH_CONFIG_SANDBOX_API_URL);
         } else {
             $wsdlt = $this->getConfig()->getApiUrl();
