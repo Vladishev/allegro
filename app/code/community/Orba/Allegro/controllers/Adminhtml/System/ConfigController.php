@@ -124,10 +124,27 @@ class Orba_Allegro_Adminhtml_System_ConfigController
         if(isset($clientData['password'])){
             $config->saveConfig(Orba_Allegro_Model_Config::XML_PATH_CONFIG_USER_PASSWORD, $clientData['password'], $scope, $scopeId);
         }
+        if(isset($clientData['is_sandbox'])){
+            $config->saveConfig(Orba_Allegro_Model_Config::XML_PATH_CONFIG_SANDBOX_SELECT, $clientData['is_sandbox'], $scope, $scopeId);
+        }
         
         // Relaod config
         Mage::getConfig()->reinit();
         Mage::app()->reinitStores();
+    }
+
+    /**
+     * Save data for Sandbox connection
+     */
+    public function saveSandboxAction()
+    {
+        $request = $this->getRequest();
+        $store = $request->getParam('store');
+        $website = $request->getParam('website');
+        $clientData = $request->getParams();
+
+        // Save config data
+        $this->_saveConfigData($clientData, $store, $website);
     }
     
     /**
@@ -136,7 +153,7 @@ class Orba_Allegro_Adminhtml_System_ConfigController
      */
     protected function _extractLoginDataToSave(array $inputData) {
         $data = array();
-        foreach(array("password", "login", "api_key", "country_code") as $field){
+        foreach(array("password", "login", "api_key", "country_code", "is_sandbox") as $field){
             if((!isset($inputData[$field."_inherit"]) || empty($inputData[$field."_inherit"]))
                 && isset($inputData[$field])){
                 $data[$field] = $inputData[$field];

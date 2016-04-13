@@ -36,7 +36,7 @@
                             <label>File to import</label>
                             <comment>Allow ONLY csv files!</comment>
                             <frontend_type>file</frontend_type>
-                            <backend_model>adminhtml/system_config_backend_file</backend_model>
+                            <backend_model>tim_allegro/system_config_backend_fileValidator</backend_model>
                             <upload_dir>var/tim_import/csv</upload_dir>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
@@ -58,7 +58,7 @@
         <tim_alternative_image translate="label" module="tim_allegro">
             <label>Alternative image</label>
             <tab>tim_tab</tab>
-            <sort_order>10</sort_order>
+            <sort_order>20</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
@@ -88,7 +88,7 @@
         <tim_reports_settings translate="label" module="tim_allegro">
             <label>Reports settings</label>
             <tab>tim_tab</tab>
-            <sort_order>20</sort_order>
+            <sort_order>30</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>

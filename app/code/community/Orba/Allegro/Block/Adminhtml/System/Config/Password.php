@@ -38,6 +38,7 @@ class Orba_Allegro_Block_Adminhtml_System_Config_Password
                 setElementId($element->getHtmlId())->
                 setLoginAndImportUrl(Mage::getUrl("*/system_config/loginAndImport"))->
                 setLoginUrl(Mage::getUrl("*/system_config/login"))->
+                setSandboxUrl(Mage::getUrl("*/system_config/saveSandbox"))->
                 setIsFirstImportComplete($isFirsImportComplete)->
                 setCanLogin($canLogin)->
                 setJsonParmas(Zend_Json::encode($json));
