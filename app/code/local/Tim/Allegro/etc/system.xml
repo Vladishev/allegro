@@ -85,8 +85,6 @@
                 </tim_alternative_image_group>
             </groups>
         </tim_alternative_image>
-    </sections>
-    <sections>
         <tim_reports_settings translate="label" module="tim_allegro">
             <label>Reports settings</label>
             <tab>tim_tab</tab>
