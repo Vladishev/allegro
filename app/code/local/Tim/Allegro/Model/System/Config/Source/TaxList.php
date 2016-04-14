@@ -11,12 +11,12 @@
 
 class Tim_Allegro_Model_System_Config_Source_TaxList
 {
+    /**
+     * Returns array with TAX classes
+     * @return mixed
+     */
     public function toOptionArray () {
-        return array (
-            array('value'=>0, 'label'=>Mage::helper('tim_allegro')->__('None')),
-            array('value'=>2, 'label'=>Mage::helper('tim_allegro')->__('Taxable Goods')),
-            array('value'=>4, 'label'=>Mage::helper('tim_allegro')->__('Shipping')),
-        );
+        return Mage::getSingleton('tax/class_source_product')->toOptionArray();
     }
 
 }

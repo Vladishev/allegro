@@ -190,10 +190,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      */
     protected function _createProduct($attributes, $categoryId)
     {
-        $taxClass = Mage::getStoreConfig('tim_setup_tax/tim_setup_tax_group/tim_tax');
-        if ($taxClass === null) {
-            $taxClass = 0;
-        }
+//        $taxClass = Mage::getStoreConfig('tim_setup_tax/tim_setup_tax_group/tim_tax');
+//        if ($taxClass === null) {
+//            $taxClass = 0;
+//        }
 
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
         $result = true;
@@ -208,7 +208,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setName($attributes['name']) //product name
                 ->setWeight($attributes['weight'])
                 ->setStatus(1) //product status (1 - enabled, 2 - disabled)
-                ->setTaxClassId($taxClass) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
+                ->setTaxClassId(0/*$taxClass*/) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
                 ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) //catalog and search visibility
                 ->setPrice($attributes['price'])
                 ->setDescription($attributes['description'])
