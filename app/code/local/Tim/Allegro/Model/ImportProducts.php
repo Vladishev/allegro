@@ -68,11 +68,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
                     $categoryArray = $this->_createCategoryArray($rootNode, $fileName);
                     if ($categoryArray !== false) {
-                        $categoryId = $this->_createCategoryTree($categoryArray, $sku);
-                        if ($categoryId) {
+                        $categoryInfo = $this->_createCategoryTree($categoryArray, $sku);
+                        if ($categoryInfo) {
                             $attributes = $this->_getAttributes($rootNode);
+                            $categoryInfo['attr_set_id'] = $this->_getAttributeSetId($categoryInfo['cat_name']);
                             $attributes = $this->_resizeImages($attributes);
-                            $result = $this->_createProduct($attributes, $categoryId);
+                            $result = $this->_createProduct($attributes, $categoryInfo['cat_id']);
                             if ($result) {
                                 unlink($file);
                             }
@@ -81,6 +82,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         continue;
                     }
                 }
+                $this->_reindexData();
             } else {
                 Mage::log('There are no files in folder.', null, 'tim_import.log');
             }
@@ -139,7 +141,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      */
     protected function _createCategoryTree($categoryArray, $sku)
     {
-        $productCategoryTimId = '';
+        $categoryInfo = array();
+        $result = true;
         $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', 'B24');
 
         foreach ($categoryArray as $id => $name) {
@@ -147,7 +150,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
             if ($currentCategory !== false) {
                 $rootCategory = $currentCategory;
-                $productCategoryTimId = $id;
+                $categoryInfo['cat_id'] = $id;
+                $categoryInfo['cat_name'] = $name;
                 continue;
             } else {
                 try {
@@ -162,20 +166,21 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         ->setInitialSetupFlag(true)
                         ->save();
                     $rootCategory = Mage::getModel('catalog/category')->loadByAttribute('tim_category_id', $id);
-                    $productCategoryTimId = $id;
+                    $categoryInfo['cat_id'] = $id;
+                    $categoryInfo['cat_name'] = $name;
                 } catch (Exception $e) {
                     Mage::log('Can not create category from file ' . $sku . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
-                    $productCategoryTimId = false;
+                    $result = false;
                     break;
                 }
             }
         }
 
-        if ($productCategoryTimId) {
-            $categoryId = Mage::getModel('catalog/category')
-                ->loadByAttribute('tim_category_id', $productCategoryTimId)
+        if ($result === true) {
+            $categoryInfo['cat_id'] = Mage::getModel('catalog/category')
+                ->loadByAttribute('tim_category_id', $categoryInfo['cat_id'])
                 ->getId();
-            return $categoryId;
+            return $categoryInfo;
         } else {
             return false;
         }
@@ -236,7 +241,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             }
 
             $product->save();
-            $this->_reindexData();
+//            $this->_reindexData();
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
             $result = false;
@@ -476,5 +481,50 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             /* @var $index Mage_Index_Model_Process */
             $index->reindexAll();
         }
+    }
+
+    /**
+     * Checks is attribute set exist. If not - create it. Returns attribute set id.
+     * @param $attributeSetName
+     * @return mixed
+     */
+    protected function _getAttributeSetId($attributeSetName)
+    {
+        $defaultAttrSetId = Mage::getModel('catalog/product')->getDefaultAttributeSetId();
+        $entityTypeId = Mage::getModel('eav/entity')
+            ->setType('catalog_product')
+            ->getTypeId();
+        $attributeSetId = $this->__getAttributeSetId($attributeSetName, $entityTypeId);
+        if ($attributeSetId === null) {
+            $attributeSet = Mage::getModel('eav/entity_attribute_set')
+                ->setEntityTypeId($entityTypeId)
+                ->setAttributeSetName($attributeSetName);
+
+            $attributeSet->validate();
+            $attributeSet->save();
+
+            $attributeSet->initFromSkeleton($defaultAttrSetId)->save();
+            $attributeSetId = $this->__getAttributeSetId($attributeSetName, $entityTypeId);
+        }
+
+        return $attributeSetId;
+    }
+
+    /**
+     * Returns attribute set id.
+     * @param $attributeSetName
+     * @param $entityTypeId
+     * @return mixed
+     */
+    private function __getAttributeSetId($attributeSetName, $entityTypeId)
+    {
+        $attributeSetId = Mage::getModel('eav/entity_attribute_set')
+            ->getCollection()
+            ->setEntityTypeFilter($entityTypeId)
+            ->addFieldToFilter('attribute_set_name', $attributeSetName)
+            ->getFirstItem()
+            ->getAttributeSetId();
+
+        return $attributeSetId;
     }
 }
