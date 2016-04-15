@@ -72,6 +72,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         if ($categoryInfo) {
                             $attributes = $this->_getAttributes($rootNode);
                             $categoryInfo['attr_set_id'] = $this->_getAttributeSetId($categoryInfo['cat_name']);
+                            $this->_attributeChecking($rootNode, $categoryInfo['attr_set_id']);
                             $attributes = $this->_resizeImages($attributes);
                             $result = $this->_createProduct($attributes, $categoryInfo['cat_id']);
                             if ($result) {
@@ -526,5 +527,93 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             ->getAttributeSetId();
 
         return $attributeSetId;
+    }
+
+    /**
+     * Get attributes from xml and check is exist.
+     * If not exist - calls _createAttribute method.
+     * If exist - check if exist label in option array. If not - adds it. If yes - skip it.
+     * @param $rootNode
+     * @param $attrSetId
+     */
+    protected function _attributeChecking($rootNode, $attrSetId)
+    {
+        foreach ($rootNode->Classification as $classification) {
+            if ($classification['type'] == 'ETIMAttr') {
+                $attributeInfo = array();
+                foreach ($classification->Note as $note) {
+                    if ($note['type'] == 'Nazwa') {
+                        $attributeInfo['name'] = (string) $note;
+                    }
+                }
+                foreach ($classification->Note as $note) {
+                    if ($note['type'] == 'Wartosc') {
+                        $attributeInfo['value'] = (string) $note;
+                    }
+                }
+                if (!empty($attributeInfo['name'])) {
+                    $attributeInfo['code'] = (string) $classification->Codes->Code;
+                    $attribute = Mage::getSingleton('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, $attributeInfo['code']);
+                    $attributeId = (bool) $attribute->getId();
+                    if ($attributeId === false) {
+                        $this->_createAttribute($attributeInfo, $attrSetId);
+                    } else {
+                        if ($attribute->usesSource()) {
+                            $isInArray = false;
+                            $options = $attribute->getSource()->getAllOptions(false);
+                            foreach ($options as $option) {
+                                if ($option['label'] === $attributeInfo['value']) {
+                                    $isInArray = true;
+                                }
+                            }
+                            if ($isInArray === false) {
+                                $attribute->setData('option', array(
+                                    'value' => array(
+                                        'option' => array($attributeInfo['value'], $attributeInfo['value'])
+                                    )
+                                ));
+                                $attribute->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates new product attribute based on data from xml
+     * @param $attributeInfo
+     * @param $attrSetId
+     */
+    protected function _createAttribute($attributeInfo, $attrSetId)
+    {
+        $model=Mage::getModel('eav/entity_setup','core_setup');
+        $data = array(
+            'group' => '',
+            'type' => 'varchar',
+            'input' => 'select',
+            'label' => $attributeInfo['name'],
+            'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
+            'source' => 'eav/entity_attribute_source_table',
+            'required' => false,
+            'is_comparable' => '0',
+            'is_searchable' => '0',
+            'is_unique' => '1',
+            'is_configurable' => '1',
+            'user_defined' => true,
+            'option' => array(
+                'value' => array(
+                    '' => array($attributeInfo['value'])
+                )
+            )
+        );
+
+        $model->addAttribute(Mage_Catalog_Model_Product::ENTITY ,$attributeInfo['code'] ,$data);
+        $entityTypeId = Mage::getModel('catalog/product')
+            ->getResource()
+            ->getEntityType()
+            ->getId();
+        $model->addAttributeToSet($entityTypeId, $attrSetId, 'General', $attributeInfo['code'], 10);
     }
 }
