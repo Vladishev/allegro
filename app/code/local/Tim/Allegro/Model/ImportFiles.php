@@ -82,6 +82,8 @@ class Tim_Allegro_Model_ImportFiles extends Mage_Core_Model_Abstract
         $files = glob($importFilePath . DS . '*.csv');
         foreach ($files as $file) {
             $links = array();
+            $content = file_get_contents($file);
+            file_put_contents($file, str_replace("\xEF\xBB\xBF",'', $content));
             if (($handle = fopen($file, "r")) !== false) {
                 while (($data = fgetcsv($handle, 200)) !== FALSE) {
                     $replaced = str_replace('-', '/', $data[0]);

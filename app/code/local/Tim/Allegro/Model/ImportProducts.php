@@ -35,6 +35,18 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     protected $_qty = 1;
 
     /**
+     * Attribute set id
+     * @var int
+     */
+    protected $_attSetId;
+
+    /**
+     * Current store id
+     * @var int
+     */
+    protected $_currStoreId;
+
+    /**
      * Import products from xml
      */
     public function run()
@@ -196,13 +208,14 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      */
     protected function _createProduct($attributes, $categoryId)
     {
+        $this->_currStoreId = $storeId = Mage::app()->getStore()->getStoreId();
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
         $result = true;
 
         try {
             $product = Mage::getModel('catalog/product')
                 ->setWebsiteIds(array(1)) //website ID the product is assigned to, as an array
-                ->setAttributeSetId(4) //ID of a attribute set named 'default'
+                ->setAttributeSetId($this->_attSetId) //ID of a attribute set
                 ->setTypeId('simple') //product type
                 ->setCreatedAt(strtotime('now')) //product creation time
                 ->setSku($attributes['sku']) //SKU
@@ -231,18 +244,27 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                         'qty' => $this->_qty //qty
                     )
                 );
-            $k = 0;
-            foreach ($attributes['image'] as $image) {
-                if ($k == 0) {
-                    $product->addImageToMediaGallery($image, array('image','thumbnail','small_image'), false, false);
-                } else {
-                    $product->addImageToMediaGallery($image, null, false, false);
+            if (!empty($attributes['image'])) {
+                $k = 0;
+                foreach ($attributes['image'] as $image) {
+                    if ($k == 0) {
+                        $product->addImageToMediaGallery($image, array('image','thumbnail','small_image'), false, false);
+                    } else {
+                        $product->addImageToMediaGallery($image, null, false, false);
+                    }
+                    $k++;
                 }
-                $k++;
+            }
+            //set dynamic attributes
+            if (!empty($attributes['attributes'])) {
+                foreach ($attributes['attributes'] as $code => $value) {
+                    $optionId = $this->_getOptionId($code, $value);
+                    $product->setData($code, $optionId);
+                }
             }
 
             $product->save();
-//            $this->_reindexData();
+            Mage::app()->setCurrentStore($this->_currStoreId);
         } catch (Exception $e) {
             Mage::log('Can not create product from file ' . $attributes['sku'] . '.xml. Technical details: ' . $e->getMessage(), null, 'tim_import.log');
             $result = false;
@@ -251,6 +273,35 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         array_map("unlink", glob($imagesPath));
 
         return $result;
+    }
+
+    /**
+     * Returns id of option item
+     * @param $attribute_code
+     * @param $label
+     * @return string
+     */
+    protected function _getOptionId($attribute_code, $label)
+    {
+        $optionId = '';
+        $attribute_model = Mage::getModel('eav/entity_attribute');
+        $attribute_options_model = Mage::getModel('eav/entity_attribute_source_table') ;
+        $attribute_code = $attribute_model->getIdByCode('catalog_product', $attribute_code);
+        $attribute = $attribute_model->load($attribute_code);
+
+        $options = $attribute_options_model
+            ->setAttribute($attribute)
+            ->getAllOptions(false);
+
+        foreach($options as $option)
+        {
+            if ($option['label'] == $label)
+            {
+                $optionId = $option['value'];
+                break;
+            }
+        }
+        return $optionId;
     }
 
     /**
@@ -338,28 +389,17 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 }
             }
         }
-        //getting description attribute(adding description list)
-        $z = 0;
+        //getting dynamic attributes data
         foreach ($rootNode->Classification as $classification) {
             if ($classification['type'] == 'ETIMAttr') {
-                if ($z == 0) {
-                    $attributes['description'] .= '<ul>';
-                }
-                foreach ($classification->Note as $note) {
-                    if ($note['type'] == 'Nazwa') {
-                        $attributes['description'] .= '<li>' . $note . ' : ';
-                    }
-                }
+                $code = (string) $classification->Codes->Code;
+
                 foreach ($classification->Note as $note) {
                     if ($note['type'] == 'Wartosc') {
-                        $attributes['description'] .= $note . '</li>';
+                        $attributes['attributes'][$code] = (string) $note;
                     }
                 }
-                $z++;
             }
-        }
-        if ($z > 0) {
-            $attributes['description'] .= '</ul>';
         }
         //getting weight and price attributes
         $attributes['weight'] = $this->_productWeight;
@@ -507,6 +547,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             $attributeSet->initFromSkeleton($defaultAttrSetId)->save();
             $attributeSetId = $this->__getAttributeSetId($attributeSetName, $entityTypeId);
         }
+        $this->_attSetId = $attributeSetId;
 
         return $attributeSetId;
     }
@@ -575,6 +616,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                                 $attribute->save();
                             }
                         }
+                        $this->_addAttributeToSet($attrSetId, 'General', $attributeInfo['code']);
                     }
                 }
             }
@@ -588,7 +630,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      */
     protected function _createAttribute($attributeInfo, $attrSetId)
     {
-        $model=Mage::getModel('eav/entity_setup','core_setup');
+        $model = Mage::getModel('eav/entity_setup','core_setup');
         $data = array(
             'group' => '',
             'type' => 'varchar',
@@ -610,10 +652,21 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         );
 
         $model->addAttribute(Mage_Catalog_Model_Product::ENTITY ,$attributeInfo['code'] ,$data);
+        $this->_addAttributeToSet($attrSetId, 'General', $attributeInfo['code']);
+    }
+
+    /**
+     * Adds attribute to attribute set
+     * @param $attrSetId
+     * @param $group
+     * @param $attrCode
+     */
+    protected function _addAttributeToSet($attrSetId, $group, $attrCode)
+    {
         $entityTypeId = Mage::getModel('catalog/product')
             ->getResource()
             ->getEntityType()
             ->getId();
-        $model->addAttributeToSet($entityTypeId, $attrSetId, 'General', $attributeInfo['code'], 10);
+        Mage::getModel('eav/entity_setup','core_setup')->addAttributeToSet($entityTypeId, $attrSetId, $group, $attrCode, 20);
     }
 }
