@@ -113,5 +113,33 @@
                 </tim_reports_group>
             </groups>
         </tim_reports_settings>
+        <tim_setup_tax translate="label" module="tim_allegro">
+            <label>Setup TAX</label>
+            <tab>tim_tab</tab>
+            <sort_order>40</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tim_setup_tax_group translate="label" module="tim_allegro">
+                    <label>TAX for product import</label>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <tim_tax translate="label comment" module="tim_allegro">
+                            <label>Select TAX for product import</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tim_allegro/system_config_source_taxList</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tim_tax>
+                    </fields>
+                </tim_setup_tax_group>
+            </groups>
+        </tim_setup_tax>
     </sections>
 </config>

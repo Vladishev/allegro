@@ -191,6 +191,11 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      */
     protected function _createProduct($attributes, $categoryId)
     {
+        $taxClass = Mage::getStoreConfig('tim_setup_tax/tim_setup_tax_group/tim_tax');
+        if ($taxClass === null) {
+            $taxClass = 0;
+        }
+
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
         $result = true;
 
@@ -204,9 +209,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setName($attributes['name']) //product name
                 ->setWeight($attributes['weight'])
                 ->setStatus(1) //product status (1 - enabled, 2 - disabled)
-                ->setTaxClassId(0) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
+                ->setTaxClassId($taxClass) //tax class (0 - none, 1 - default, 2 - taxable, 4 - shipping)
                 ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH) //catalog and search visibility
-                ->setPrice($attributes['price']) //price in form 11.22
+                ->setPrice($attributes['price'])
                 ->setDescription($attributes['description'])
                 ->setShortDescription($attributes['description'])
                 ->setTimCzyMagazynowy($attributes['tim_czy_magazynowy'])
@@ -330,29 +335,6 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                     $attributes['description'] = '';
                 }
             }
-        }
-        //getting description attribute(adding description list)
-        $z = 0;
-        foreach ($rootNode->Classification as $classification) {
-            if ($classification['type'] == 'ETIMAttr') {
-                if ($z == 0) {
-                    $attributes['description'] .= '<ul>';
-                }
-                foreach ($classification->Note as $note) {
-                    if ($note['type'] == 'Nazwa') {
-                        $attributes['description'] .= '<li>' . $note . ' : ';
-                    }
-                }
-                foreach ($classification->Note as $note) {
-                    if ($note['type'] == 'Wartosc') {
-                        $attributes['description'] .= $note . '</li>';
-                    }
-                }
-                $z++;
-            }
-        }
-        if ($z > 0) {
-            $attributes['description'] .= '</ul>';
         }
         //getting weight and price attributes
         $attributes['weight'] = $this->_productWeight;
