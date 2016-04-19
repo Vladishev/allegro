@@ -20,7 +20,7 @@ $attribute[] = array('code' => 'tim_jednostka_miary','label' => 'Jednostka miary
 $attribute[] = array('code' => 'tim_nr_katalogowy_producenta','label' => 'Nr referencyjny','type' => 'text','backend' => '');
 $attribute[] = array('code' => 'tim_ean','label' => 'EAN','type' => 'text','backend' => '');
 $attribute[] = array('code' => 'tim_producent','label' => 'Producent','type' => 'text','backend' => '');
-$attribute[] = array('code' => 'tim_crm_id','label' => 'Produkt CRM ID','type' => 'varchar','backend' => '', 'input' => 'select', 'source' => 'eav/entity_attribute_source_table', 'options' => '');
+$attribute[] = array('code' => 'tim_crm_id','label' => 'Produkt CRM ID','type' => 'text','backend' => '', 'system' => '1');
 
 $objCatalogEavSetup = Mage::getResourceModel('catalog/eav_mysql4_setup', 'core_setup');
 
@@ -43,7 +43,7 @@ foreach($attribute as $key => $attr){
             'is_comparable' => 0,
             'visible' => '1',
             'required' => false,
-            'user_defined' => '1',
+            'user_defined' => true,
             'default' => '',
             'is_visible_on_front' => 0,
             'is_unique' => 0,
@@ -57,14 +57,8 @@ foreach($attribute as $key => $attr){
             'is_html_allowed_on_front' => '1',
             'used_in_product_listing' => 0
         );
-        if(!empty($attr['options'])){
-            $arr['option'] = $attr['options'];
-        }
-        if(!empty($attr['input'])){
-            $arr['input'] = $attr['input'];
-        }
-        if(!empty($attr['source'])){
-            $arr['source'] = $attr['source'];
+        if(!empty($attr['system'])){
+            $arr['user_defined'] = false;
         }
         $objCatalogEavSetup->addAttribute(Mage_Catalog_Model_Product::ENTITY, $attr['code'], $arr);
     }
