@@ -111,6 +111,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Takes all xml files from folder
+     *
      * @return array|bool
      */
     protected function _getXmlFiles()
@@ -125,9 +126,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Creates array with categories and ids.
-     * @param $rootNode
-     * @param $fileName
+     * Creates array with categories and ids
+     *
+     * @param object $rootNode SimpleXML
+     * @param string $fileName
      * @return array|bool
      */
     protected function _createCategoryArray($rootNode, $fileName)
@@ -152,9 +154,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Creates category tree, if category exist - skips it.
-     * @param $categoryArray
-     * @param $sku
+     * Creates category tree, if category exist - skips it
+     *
+     * @param array $categoryArray
+     * @param string $sku
      * @return bool
      */
     protected function _createCategoryTree($categoryArray, $sku)
@@ -207,8 +210,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Creates product
-     * @param $attributes
-     * @param $categoryId
+     *
+     * @param array $attributes
+     * @param int $categoryId
      * @return bool
      */
     protected function _createProduct($attributes, $categoryId)
@@ -288,8 +292,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Returns id of option item
-     * @param $attribute_code
-     * @param $label
+     *
+     * @param string $attribute_code
+     * @param string $label
      * @return string
      */
     protected function _getOptionId($attribute_code, $label)
@@ -317,7 +322,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Takes all needed attributes for product from xml file
-     * @param $rootNode
+     *
+     * @param object $rootNode SimpleXML
      * @return array
      */
     protected function _getAttributes($rootNode)
@@ -429,8 +435,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Checks product according needed conditions
-     * @param $sku
-     * @param $rootNode
+     *
+     * @param string $sku
+     * @param object $rootNode SimpleXML
      * @return bool|string
      */
     protected function _checkProductStatus($sku, $rootNode)
@@ -465,10 +472,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Download, resize and save images to tmp folder. Write new path to attributes array
-     * and delete ways with unused file extensions. If file do not have allowed images,
-     * sets to product alternative image from Configuration->TIM SA->Alternative image
-     * @param $attributes
+     * Download, resize and save images to tmp folder
+     *
+     * Write new path to attributes array and delete ways with unused file extensions
+     * If file do not have allowed images, sets to product alternative image from Configuration->TIM SA->Alternative image
+     *
+     * @param array $attributes
      * @return mixed
      */
     protected function _resizeImages($attributes)

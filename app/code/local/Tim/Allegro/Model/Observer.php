@@ -17,10 +17,9 @@ class Tim_Allegro_Model_Observer
     public function deleteUploadedFile()
     {
         $postData = Mage::app()->getRequest()->getParams();
-        $deleteValues = $postData['groups']['tim_import_interface']['fields']['import']['value'];
 
-        if ($deleteValues['delete']) {
-            $fileName = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'csv' . DS . $deleteValues['value'];
+        if (isset($postData['groups']['tim_import_interface']['fields']['import']['value']['delete'])) {
+            $fileName = Mage::getBaseDir('var') . DS . 'tim_import' . DS . 'csv' . DS . $postData['groups']['tim_import_interface']['fields']['import']['value']['value'];
             unlink($fileName);
         }
         return $this;
