@@ -11,6 +11,11 @@
 class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 {
     /**
+     * Attribute tab label
+     */
+    const TAB_LABEL = 'Tim Basic';
+
+    /**
      * Cut string after set position
      * @var int
      */
@@ -525,8 +530,12 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Checks is attribute set exist. If not - create it. Returns attribute set id.
-     * @param $attributeSetName
+     * Checks is attribute set exist
+     *
+     * If attribute set not exist - create it
+     * Returns attribute set id
+     *
+     * @param string $attributeSetName
      * @return mixed
      */
     protected function _getAttributeSetId($attributeSetName)
@@ -553,9 +562,10 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Returns attribute set id.
-     * @param $attributeSetName
-     * @param $entityTypeId
+     * Returns attribute set id
+     *
+     * @param string $attributeSetName
+     * @param int $entityTypeId
      * @return mixed
      */
     private function __getAttributeSetId($attributeSetName, $entityTypeId)
@@ -571,11 +581,15 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Get attributes from xml and check is exist.
-     * If not exist - calls _createAttribute method.
-     * If exist - check if exist label in option array. If not - adds it. If yes - skip it.
-     * @param $rootNode
-     * @param $attrSetId
+     * Get attributes from xml and check is exist
+     *
+     * If not exist - calls _createAttribute method
+     * If exist - check if exist label in option array
+     * If not - adds it
+     * If yes - skip it
+     *
+     * @param object $rootNode SimpleXML
+     * @param int $attrSetId
      */
     protected function _attributeChecking($rootNode, $attrSetId)
     {
@@ -616,7 +630,8 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                                 $attribute->save();
                             }
                         }
-                        $this->_addAttributeToSet($attrSetId, 'General', $attributeInfo['code']);
+                        $setupModel = Mage::getModel('eav/entity_setup','core_setup');
+                        $this->_addAttributeToSet($attrSetId, self::TAB_LABEL, $attributeInfo['code'],$setupModel);
                     }
                 }
             }
@@ -625,8 +640,9 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
 
     /**
      * Creates new product attribute based on data from xml
-     * @param $attributeInfo
-     * @param $attrSetId
+     *
+     * @param array $attributeInfo
+     * @param int $attrSetId
      */
     protected function _createAttribute($attributeInfo, $attrSetId)
     {
@@ -652,21 +668,23 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
         );
 
         $model->addAttribute(Mage_Catalog_Model_Product::ENTITY ,$attributeInfo['code'] ,$data);
-        $this->_addAttributeToSet($attrSetId, 'General', $attributeInfo['code']);
+        $this->_addAttributeToSet($attrSetId, self::TAB_LABEL, $attributeInfo['code'], $model);
     }
 
     /**
      * Adds attribute to attribute set
-     * @param $attrSetId
-     * @param $group
-     * @param $attrCode
+     *
+     * @param int $attrSetId
+     * @param string $group
+     * @param string $attrCode
+     * @param object $model Mage_Eav_Model_Entity_Setup
      */
-    protected function _addAttributeToSet($attrSetId, $group, $attrCode)
+    protected function _addAttributeToSet($attrSetId, $group, $attrCode, $model)
     {
         $entityTypeId = Mage::getModel('catalog/product')
             ->getResource()
             ->getEntityType()
             ->getId();
-        Mage::getModel('eav/entity_setup','core_setup')->addAttributeToSet($entityTypeId, $attrSetId, $group, $attrCode, 20);
+        $model->addAttributeToSet($entityTypeId, $attrSetId, $group, $attrCode, 20);
     }
 }
