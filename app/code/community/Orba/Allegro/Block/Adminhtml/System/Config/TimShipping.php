@@ -37,7 +37,7 @@ class Orba_Allegro_Block_Adminhtml_System_Config_TimShipping extends Mage_Adminh
     /**
      * Prepare to render
      */
-    public function _prepareToRender()
+    protected function _prepareToRender()
     {
         $this->addColumn('shipping_method', array(
             'label' => Mage::helper('orbaallegro')->__('Shipping method'),
@@ -51,7 +51,7 @@ class Orba_Allegro_Block_Adminhtml_System_Config_TimShipping extends Mage_Adminh
 
         $this->addColumn('tim_shipping_price', array(
             'label' => Mage::helper('orbaallegro')->__('Price'),
-            'style' => 'width:50px',
+            'style' => 'width:100px',
             'class' => 'validate-not-negative-number required-entry',
         ));
 

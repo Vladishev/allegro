@@ -18,10 +18,11 @@ class Orba_Allegro_Block_Adminhtml_System_Config_Form_Field_TimSize extends Mage
      *
      * @return string
      */
-    public function _toHtml()
+    protected function _toHtml()
     {
         $options = Mage::getModel('orbaallegro/system_config_source_timSize')
             ->toOptionArray();
+        $this->setExtraParams('style="width:100px"');
         foreach ($options as $option) {
             $this->addOption($option['value'], $option['label']);
         }

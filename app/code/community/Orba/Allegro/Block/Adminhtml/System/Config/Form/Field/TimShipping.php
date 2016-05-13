@@ -18,7 +18,7 @@ class Orba_Allegro_Block_Adminhtml_System_Config_Form_Field_TimShipping extends 
      *
      * @return string
      */
-    public function _toHtml()
+    protected function _toHtml()
     {
         $options = Mage::getModel('orbaallegro/system_config_source_timShipping')
             ->toOptionArray();
