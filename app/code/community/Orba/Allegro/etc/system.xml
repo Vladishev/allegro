@@ -1133,6 +1133,23 @@
                         </unhandled_item_count>						
                     </fields>
                 </utils>
+                <tim_allegro_shipping_methods translate="label">
+                    <label>Special Shipping price</label>
+                    <sort_order>150</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <shipping_methods_values translate="label">
+                            <frontend_model>orbaallegro/adminhtml_system_config_timShipping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_methods_values>
+                    </fields>
+                </tim_allegro_shipping_methods>
             </groups>
         </orbaallegro>
         <carriers translate="label" module="shipping">
