@@ -11,6 +11,7 @@ class Orba_Allegro_Model_System_Config_Source_Duration
     const DAYS_10 = 10;
     const DAYS_14 = 14;
     const DAYS_30 = 30;
+    const TILL_END = 'Do wyczerpania';
     
     public function toOptionArray() {
         $helper = Mage::helper('orbaallegro');
@@ -38,6 +39,10 @@ class Orba_Allegro_Model_System_Config_Source_Duration
             array(
                 'value' => 5,
                 'label' => $helper->__(self::DAYS_30 . ' days')
+            ),
+            array(
+                'value' => 99,
+                'label' => $helper->__(self::TILL_END)
             )
         );
     }
@@ -50,6 +55,7 @@ class Orba_Allegro_Model_System_Config_Source_Duration
             3 => self::DAYS_10,
             4 => self::DAYS_14,
             5 => self::DAYS_30,
+            99 => self::TILL_END,
         );
     }
     
