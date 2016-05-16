@@ -1,8 +1,15 @@
 <?php
 class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
-    
-    
-    
+
+    /**
+     * Code for quantity field
+     */
+    const QTY_FIELD_CODE = "quantity";
+    /**
+     * Detect to get product qty from Magento
+     */
+    const DEFAULT_QTY_VALUE = "0";
+
     const FIELD_CATEGORY = "category";
     const FIELD_COUNTRY = "country";
     const FIELD_PROVINCE = "province";
@@ -352,7 +359,17 @@ class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
         foreach($mapping as $fieldCode){
             $field = $this->getField($fieldCode);
             if($field instanceof Varien_Data_Form_Element_Abstract){
-                $value = $config->getValueByField($fieldCode, $store);
+                if ($fieldCode == self::QTY_FIELD_CODE) {
+                    $defaultValue = $config->getValueByField($fieldCode, $store);
+                    if ($defaultValue == self::DEFAULT_QTY_VALUE) {
+                        $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product);
+                        $value = (int) $stock->getQty();
+                    } else {
+                        $value = $config->getValueByField($fieldCode, $store);
+                    }
+                } else {
+                    $value = $config->getValueByField($fieldCode, $store);
+                }
                 if(!is_null($value) && ""!==$value){
                     $field->setValue($value);
                 }
