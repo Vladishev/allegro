@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tim
+ *
+ * @category   Tim
+ * @package    Tim_UpdateQuantity
+ * @copyright  Copyright (c) 2016 Tim (http://tim.pl)
+ * @author     Vladislav Verbitskiy <vladomsu@gmail.com>
+ */
+-->
+<config>
+    <modules>
+        <Tim_UpdateQuantity>
+            <version>0.0.1</version>
+        </Tim_UpdateQuantity>
+    </modules>
+    <global>
+        <helpers>
+            <tim_update_quantity>
+                <class>Tim_UpdateQuantity_Helper</class>
+            </tim_update_quantity>
+        </helpers>
+        <models>
+            <tim_update_quantity>
+                <class>Tim_UpdateQuantity_Model</class>
+            </tim_update_quantity>
+        </models>
+    </global>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Tim_UpdateQuantity>
+                    <files>
+                        <default>Tim_UpdateQuantity.csv</default>
+                    </files>
+                </Tim_UpdateQuantity>
+            </modules>
+        </translate>
+    </adminhtml>
+    <crontab>
+        <jobs>
+            <tim_send_product_reports>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>tim_update_quantity/update::run</model></run>
+            </tim_send_product_reports>
+        </jobs>
+    </crontab>
+</config>
