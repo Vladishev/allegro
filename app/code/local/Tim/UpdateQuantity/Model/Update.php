@@ -27,7 +27,55 @@ class Tim_UpdateQuantity_Model_Update extends Mage_Core_Model_Abstract
             }
         }
 
-        require_once '/home/vlado/workspace/allegro/shell/stock_update/doFinishItems.php';
+        /**
+         * save auction_ids from table to array
+         */
+        $auctionIds = array();
+
+        $sql = "select oa.allegro_auction_id
+from catalog_product_entity cpe
+JOIN orba_allegro_auction oa ON oa.product_id = cpe.entity_id
+JOIN cataloginventory_stock_item csi ON cpe.entity_id = csi.product_id
+WHERE oa.closed_at IS NOT NULL";
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $rows = $connection->fetchAll($sql);
+        foreach ($rows as $row) {
+            $auctionIds[] = $row['auction_number'];
+        }
+
+        /**
+         * prepare doFinishItems_request
+         */
+        $webservice = Mage::getModel('tim_update_quantity/webservice');
+        $sessionHandle = $webservice->getServiceSession()->sessionHandlePart;
+
+        $i = 0;
+        while ($i < count($auctionIds)) {
+            $requestItemsLimit = 0;
+            $doFinishItemsRequest = array();
+            $doFinishItemsRequest['sessionHandle'] = $sessionHandle;
+            while (($requestItemsLimit < 25)  && isset($auctionIds[$i])) {
+                $doFinishItemsRequest['finishItemsList'][] = array(
+                    'finishItemId' => $auctionIds[$i],
+                    'finishCancelAllBids' => 0,
+                    'finishCancelReason' => ''
+                );
+                $requestItemsLimit++;
+                $i++;
+            }
+            $result = $webservice->doFinishItems($doFinishItemsRequest);
+        }
+        /**
+         * update data in wsallegro_published table
+         */
+        if($result){
+            $ids = implode(",", $auctionIds);
+            $query = 'UPDATE wsallegro_published SET finished = 1
+WHERE auction_number IN ('.$ids.')';
+            $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+            $connection->query($query);
+            Mage::log('Updated ids : ' . $ids, NULL, 'doFinishItems.log');
+        }
 
         echo "Czyszczenie cache...\n";
         Mage::app()->getCacheInstance()->cleanType('product_loading');

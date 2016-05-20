@@ -107,7 +107,6 @@ class Tim_UpdateQuantity_Model_Wms
 		$db = $general->getWmsAccess();
 
 		$dbhandle = mssql_connect($db['wms_host'].':'.$db['wms_port'],$db['wms_user'],$db['wms_pwd']);
-//        var_dump($link);die;
         $selected = mssql_select_db($db['wms_db'], $dbhandle);
 		if(!$selected){
 //			$general = new General();
