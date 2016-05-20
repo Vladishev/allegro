@@ -28,13 +28,21 @@ class Tim_UpdateQuantity_Model_Webservice extends Mage_Core_Model_Abstract
         if(!$this->soap){
             // temporary
     //        $url = 'http://webapi.allegro.pl/uploader.php?wsdl';
-            $url = 'https://webapi.allegro.pl/service.php?wsdl';
-            $webapi_key = '4cdc2023';
+            $useSandbox = Mage::getStoreConfig(
+                Orba_Allegro_Model_Config::XML_PATH_CONFIG_SANDBOX_SELECT,
+                Mage::app()->getStore()
+            );
+            if ($useSandbox == 1) {
+                $url = Mage::getStoreConfig(Orba_Allegro_Model_Config::XML_PATH_CONFIG_SANDBOX_API_URL);
+            } else {
+                $url = Mage::getModel('orbaallegro/config')->getApiUrl();
+            }
+            $webapi_key = 's7a9f3a8';
             $user_id = 'outletelektryka';
-            $user_pass = 'timsa556';
+            $user_pass = '7a9f3a8bd64c1a5d';
             $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
             try {
-                $this->soap = new SoapClient('https://webapi.allegro.pl/service.php?wsdl', $options);
+                $this->soap = new SoapClient($url, $options);
                 $request = array(
                     'countryId' => 1,
                     'webapiKey' => $webapi_key
