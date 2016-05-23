@@ -14,7 +14,7 @@ $installer->startSetup();
 
 $attribute = array();
 $attribute[] = array('code' => 'tim_tytul_aukcji', 'label' => 'Tytul aukcji', 'type' => 'text');
-$attribute[] = array('code' => 'tim_kategoria_rozmiaru', 'label' => 'Kategoria rozmiaru', 'type' => 'text');
+$attribute[] = array('code' => 'tim_kategoria_rozmiaru', 'label' => 'Kategoria rozmiaru', 'type' => 'text', 'input' => 'select', 'source' => 'eav/entity_attribute_source_table');
 
 $objCatalogEavSetup = Mage::getResourceModel('catalog/eav_mysql4_setup', 'core_setup');
 
@@ -51,6 +51,13 @@ foreach($attribute as $key => $attr){
             'is_html_allowed_on_front' => '1',
             'used_in_product_listing' => 0
         );
+
+        if(!empty($attr['input'])){
+            $arr['input'] = $attr['input'];
+        }
+        if(!empty($attr['source'])){
+            $arr['source'] = $attr['source'];
+        }
 
         $objCatalogEavSetup->addAttribute(Mage_Catalog_Model_Product::ENTITY, $attr['code'], $arr);
     }

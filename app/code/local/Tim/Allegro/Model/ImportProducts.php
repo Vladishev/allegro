@@ -90,6 +90,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                             $attributes = $this->_getAttributes($rootNode);
                             $categoryInfo['attr_set_id'] = $this->_getAttributeSetId($categoryInfo['cat_name']);
                             $this->_attributeChecking($rootNode, $categoryInfo['attr_set_id']);
+                            $this->_setDataToOptionAttribute($attributes['tim_kategoria_rozmiaru']);
                             $attributes = $this->_resizeImages($attributes);
                             $result = $this->_createProduct($attributes, $categoryInfo['cat_id']);
                             if ($result) {
@@ -249,7 +250,6 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 ->setTimCrmId($attributes['tim_crm_id'])
                 ->setTimNrKatalogowyProducenta($attributes['tim_nr_katalogowy_producenta'])
                 ->setTimTytulAukcji($attributes['tim_tytul_aukcji'])
-                ->setTimKategoriaRozmiaru($attributes['tim_kategoria_rozmiaru'])
                 ->setMediaGallery(array('images'=>array (), 'values'=>array ())) //media gallery initialization
                 ->setCategoryIds(array($categoryId)) //assign product to categories
                 ->setStockData(array(
@@ -273,6 +273,13 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             //set dynamic attributes
             if (!empty($attributes['attributes'])) {
                 foreach ($attributes['attributes'] as $code => $value) {
+                    $optionId = $this->_getOptionId($code, $value);
+                    $product->setData($code, $optionId);
+                }
+            }
+            //set tim_kategoria_rozmiaru attribute
+            if (!empty($attributes['tim_kategoria_rozmiaru'])) {
+                foreach ($attributes['tim_kategoria_rozmiaru'] as $code => $value) {
                     $optionId = $this->_getOptionId($code, $value);
                     $product->setData($code, $optionId);
                 }
@@ -335,7 +342,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
                 $attributes['tim_czy_magazynowy'] = (string) $classification->Codes->Code;
             }
             if ($classification['type'] == 'KategoriaRozmiaru') {
-                $attributes['tim_kategoria_rozmiaru'] = (string) $classification->Codes->Code;
+                $attributes['tim_kategoria_rozmiaru']['tim_kategoria_rozmiaru'] = (string) $classification->Codes->Code;
             }
         }
         //getting tim_jednostka_logistyczna attribute
@@ -709,5 +716,34 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
             ->getEntityType()
             ->getId();
         $model->addAttributeToSet($entityTypeId, $attrSetId, $group, $attrCode, 20);
+    }
+
+    /**
+     * Set new value to select attribute type
+     *
+     * @param array $attributeData
+     */
+    protected function _setDataToOptionAttribute($attributeData)
+    {
+        foreach ($attributeData as $code => $label) {
+            $attribute = Mage::getSingleton('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, $code);
+            if ($attribute->usesSource()) {
+                $isInArray = false;
+                $options = $attribute->getSource()->getAllOptions(false);
+                foreach ($options as $option) {
+                    if ($option['label'] === $label) {
+                        $isInArray = true;
+                    }
+                }
+                if ($isInArray === false) {
+                    $attribute->setData('option', array(
+                        'value' => array(
+                            'option' => array($label, $label)
+                        )
+                    ));
+                    $attribute->save();
+                }
+            }
+        }
     }
 }
