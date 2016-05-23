@@ -57,13 +57,13 @@ class Tim_UpdateQuantity_Model_Wms
 			$sections = array();
 			$sections_outlet = array();
 			foreach($this->findInWms($prod['sku']) as $wms){
-				$wms_qty  = $wms['stkr_freequantity'];
-				if(strtolower(trim($wms['stkr_SUunitCode'])) == 'km'){
-					$wms_qty = $wms_qty * 1000;
-				}
-				if($wms_qty == 0){
-					continue;
-				}
+//				$wms_qty  = $wms['stkr_freequantity'];
+//				if(strtolower(trim($wms['stkr_SUunitCode'])) == 'km'){
+//					$wms_qty = $wms_qty * 1000;
+//				}
+//				if($wms_qty == 0){
+//					continue;
+//				}
                 if($prod['wolumen'] && (int)$prod['wolumen'] != 0) {
                     $wms_qty = $wms_qty / (int)$prod['wolumen'];
                 }
