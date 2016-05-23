@@ -70,13 +70,13 @@ class Tim_UpdateQuantity_Model_Wms
 				
 				$qty += $wms_qty;
 				
-				if($prod['type'] == 'barrel'){
-					if($prod['max_length'] < $wms_qty){
-						$sections[] = $wms_qty;
-					} else {
-						$sections_outlet[] = $wms_qty; 
-					}
-				}
+//				if($prod['type'] == 'barrel'){
+//					if($prod['max_length'] < $wms_qty){
+//						$sections[] = $wms_qty;
+//					} else {
+//						$sections_outlet[] = $wms_qty; 
+//					}
+//				}
 			}
 			
 			sort($sections);
