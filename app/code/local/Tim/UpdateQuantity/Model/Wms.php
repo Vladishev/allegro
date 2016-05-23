@@ -64,8 +64,8 @@ class Tim_UpdateQuantity_Model_Wms
 //				if($wms_qty == 0){
 //					continue;
 //				}
-                if($prod['wolumen'] && (int)$prod['wolumen'] != 0) {
-                    $wms_qty = $wms_qty / (int)$prod['wolumen'];
+                if($prod['wolumen'] && (float)$prod['wolumen'] != 0) {
+                    $wms_qty = $wms_qty / (float)$prod['wolumen'];
                 }
 				
 				$qty += $wms_qty;
