@@ -57,7 +57,7 @@ class Tim_UpdateQuantity_Model_Wms
 			$sections = array();
 			$sections_outlet = array();
 			foreach($this->findInWms($prod['sku']) as $wms){
-//				$wms_qty  = $wms['stkr_freequantity'];
+				$wms_qty  = $wms['stkr_freequantity'];
 //				if(strtolower(trim($wms['stkr_SUunitCode'])) == 'km'){
 //					$wms_qty = $wms_qty * 1000;
 //				}
