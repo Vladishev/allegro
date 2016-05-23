@@ -5,13 +5,27 @@
  */
 class Tim_UpdateQuantity_Model_Wms
 {
-    
-    protected $_wmsCollection; 
+    /**
+     * External products array
+     *
+     * @var array
+     */
+    protected $_wmsCollection;
+    /**
+     * Internal products array
+     *
+     * @var array
+     */
 	protected $_products;
+    /**
+     * Internal products sku array
+     *
+     * @var array
+     */
 	protected $_productSkus;
 
     /**
-     * @param $products
+     * @param array $products
      * @return bool
      */
 	public function setProductCollection($products)
@@ -27,11 +41,15 @@ class Tim_UpdateQuantity_Model_Wms
 		}
 		return false;
 	}
-	
+
+    /**
+     * Returns array with product which needed to update
+     *
+     * @return array
+     */
 	public function getUpdatedData()
 	{
 		$timestampUpdate = microtime(true);
-		$updatedProducts = array();
 		$productCount = count($this->_products);
 
 		foreach($this->_products as $key => $prod){
@@ -46,12 +64,9 @@ class Tim_UpdateQuantity_Model_Wms
 				if($wms_qty == 0){
 					continue;
 				}
-				
-//				if(strtolower(trim($wms['stkr_SUunitCode'])) == 'km' || strtolower(trim($wms['stkr_SUunitCode'])) == 'm'){
-                                if($prod['wolumen'] && (int)$prod['wolumen'] != 0) {
-                                    $wms_qty = $wms_qty / (int)$prod['wolumen'];
-                                }
-//				}
+                if($prod['wolumen'] && (int)$prod['wolumen'] != 0) {
+                    $wms_qty = $wms_qty / (int)$prod['wolumen'];
+                }
 				
 				$qty += $wms_qty;
 				
@@ -79,7 +94,13 @@ class Tim_UpdateQuantity_Model_Wms
 		return $this->_products;
 			
 	}
-	
+
+    /**
+     * Looks for a matches
+     *
+     * @param array $sku
+     * @return array
+     */
 	protected function findInWms($sku)
 	{
 		$wmsRows = $this->getWmsCollection();
@@ -92,7 +113,10 @@ class Tim_UpdateQuantity_Model_Wms
 		
 		return $result;
 	}
-	
+
+    /**
+     * @return array|bool
+     */
     protected function getWmsCollection()
     {
 		$timestampWms = microtime(true);
@@ -109,7 +133,6 @@ class Tim_UpdateQuantity_Model_Wms
 		$dbhandle = mssql_connect($db['wms_host'].':'.$db['wms_port'],$db['wms_user'],$db['wms_pwd']);
         $selected = mssql_select_db($db['wms_db'], $dbhandle);
 		if(!$selected){
-//			$general = new General();
 			$general->mail('Błąd Mssql!','Błąd połączenia z WMS','Couldn\'t open database '.$db['wms_db'].' ('.$db['wms_host'].')');
 			die('Couldn\'t open database '.$db['wms_db'].' ('.$db['wms_host'].')');
 		}
@@ -126,7 +149,6 @@ class Tim_UpdateQuantity_Model_Wms
 			die;
 		}
 
-
         $rows = array();
 		global $timestamp;
 		
@@ -138,7 +160,7 @@ class Tim_UpdateQuantity_Model_Wms
         mssql_close($dbhandle);
 		
 		echo "\r Pobrano dane z WMS w czasie: ". round(microtime(true) - $timestampWms,2)."\033[?25ls                \n";
-		return $this->_wmsCollection = $rows;
 
+        return $this->_wmsCollection = $rows;
     }
 }
