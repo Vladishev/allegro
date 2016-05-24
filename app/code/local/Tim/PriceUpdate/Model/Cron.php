@@ -1,9 +1,5 @@
 <?php
 
-//DELETE NEXT 2 ROWS BEFORE LAST COMMIT!!!
-require '../../../../../Mage.php';
-Mage::app();
-
 /**
  * PriceUpdate cron model
  *
@@ -26,5 +22,3 @@ class Tim_PriceUpdate_Model_Cron
         $priceImport->run();
     }
 }
-
-Mage::getModel('tim_priceupdate/cron')->updatePrice();
