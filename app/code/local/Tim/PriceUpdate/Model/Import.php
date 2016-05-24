@@ -80,6 +80,20 @@ class Tim_PriceUpdate_Model_Import extends Mage_Core_Model_Abstract
     protected $_tasks = array();
 
     /**
+     * Current store id
+     *
+     * @var int
+     */
+    protected $_storeId;
+
+    /**
+     * Old product price
+     *
+     * @var float
+     */
+    protected $_oldProductPrice;
+
+    /**
      * Runs prices import
      *
      * @param string $file    a CSV file to import prices from
@@ -94,22 +108,19 @@ class Tim_PriceUpdate_Model_Import extends Mage_Core_Model_Abstract
         }
         $this->_start('run');
 
-//        $fileName = !is_null($file) ? $file : (self::IMPORT_FILE_FULL_PATH);
-//        if ($convert) {
-//            $fileName = $this->_prepareFile($fileName);
-//            var_dump($fileName);
-//        }
-//
-//        if ($fileName === false) {
-//            return $this;
-//        }
-//
-//        if (!is_file($fileName) || substr($fileName, -3) != 'csv') {
-//            $this->_logError('Error. Unable to find a file, or file extension is not CSV: ' . $fileName);
-//            return $this;
-//        }
+        $fileName = !is_null($file) ? $file : (self::IMPORT_FILE_FULL_PATH);
+        if ($convert) {
+            $fileName = $this->_prepareFile($fileName);
+        }
 
-$fileName = '/home/vlado/workspace/allegro/var/CennikB24_UTF8.csv';
+        if ($fileName === false) {
+            return $this;
+        }
+
+        if (!is_file($fileName) || substr($fileName, -3) != 'csv') {
+            $this->_logError('Error. Unable to find a file, or file extension is not CSV: ' . $fileName);
+            return $this;
+        }
 
         $updatedTotal = 0;
         $fileHandle = fopen($fileName, 'r');
@@ -249,7 +260,7 @@ $fileName = '/home/vlado/workspace/allegro/var/CennikB24_UTF8.csv';
         /* @var $productCollection Mage_Catalog_Model_Resource_Product_Collection */
         $productCollection = Mage::getModel('catalog/product')->setStoreId(0)->getCollection();
         $productCollection->addFieldToFilter('sku', array('in' => $allSku));
-        $productCollection->addAttributeToSelect(array('price', 'tim_cena_ewidencyjna', 'tim_cena_producenta', 'tim_jednostka_miary', 'tim_wolumen'));
+        $productCollection->addAttributeToSelect(array('price', 'tim_jednostka_miary', 'tim_wolumen'));
 
         $updatedProducts = 0;
         foreach ($productCollection as $product) {
@@ -275,9 +286,9 @@ $fileName = '/home/vlado/workspace/allegro/var/CennikB24_UTF8.csv';
                 $product->getData('tim_jednostka_miary'),
                 $product->getData('tim_wolumen')
             );
-            if (!$this->_comparePrices($product->getData('tim_cena_ewidencyjna'), $data[$sku][self::COLUMN_PRICE_REGISTERED])) {
-                $attributesData['tim_cena_ewidencyjna'] = $data[$sku][self::COLUMN_PRICE_REGISTERED];
-            }
+//            if (!$this->_comparePrices($product->getData('tim_cena_ewidencyjna'), $data[$sku][self::COLUMN_PRICE_REGISTERED])) {
+//                $attributesData['tim_cena_ewidencyjna'] = $data[$sku][self::COLUMN_PRICE_REGISTERED];
+//            }
 
             $data[$sku][self::COLUMN_PRICE_MANUFACTURER] = $this->_convertPriceToValidFormat($data[$sku][self::COLUMN_PRICE_MANUFACTURER]);
             $data[$sku][self::COLUMN_PRICE_MANUFACTURER] = $this->_calculatePrice(
@@ -285,30 +296,31 @@ $fileName = '/home/vlado/workspace/allegro/var/CennikB24_UTF8.csv';
                 $product->getData('tim_jednostka_miary'),
                 $product->getData('tim_wolumen')
             );
-            if (!$this->_comparePrices($product->getData('tim_cena_producenta'), $data[$sku][self::COLUMN_PRICE_MANUFACTURER])) {
-                $attributesData['tim_cena_producenta'] = $data[$sku][self::COLUMN_PRICE_MANUFACTURER];
-            }
+//            if (!$this->_comparePrices($product->getData('tim_cena_producenta'), $data[$sku][self::COLUMN_PRICE_MANUFACTURER])) {
+//                $attributesData['tim_cena_producenta'] = $data[$sku][self::COLUMN_PRICE_MANUFACTURER];
+//            }
 
             if (!empty($attributesData)) {
-                //Sets 'Use default value' for attributes if product in 2-nd store
-                $storesId = $product->getStoreIds();
-                foreach ($storesId as $storeId) {
-                    if ($storeId == '2') {
-                        $attributes = array();
-                        $attributes = array_keys($attributesData);
-                        Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-                        foreach ($attributes as $attribute) {
-                            $product->setStoreId(2)->setData($attribute, false);
-                        }
-                        $product->save();
-                    }
+                if (!$this->_storeId) {
+                    $this->_storeId = $product->getStoreId();
                 }
+                $this->_oldProductPrice = (float) $product->getData('price');
+                $attributes = array();
+                $attributes = array_keys($attributesData);
+                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+
+                foreach ($attributes as $attribute) {
+                    $product->setStoreId($this->_storeId)->setData($attribute, false);
+                }
+                $product->save();
+
                 $this->_updateReport($product, $attributesData);
                 foreach ($attributesData as $code => $value) {
-                    $product->setStoreId(0);
+                    $product->setStoreId($this->_storeId);
                     $product->setData($code, $value);
                     $product->getResource()->saveAttribute($product, $code);
                 }
+                Mage::app()->setCurrentStore($this->_storeId);
 
                 $updatedProducts++;
             }
@@ -393,15 +405,15 @@ $fileName = '/home/vlado/workspace/allegro/var/CennikB24_UTF8.csv';
 
         $data = array(
             'product_id' => $product->getId(),
-            'price_old' => (float) $product->getData('price'),
+            'price_old' => $this->_oldProductPrice,
             'price_new' => (float) $attributesData['price'],
-            'price_diff' => $this->_calculatePriceDiffPercentage($product->getData('price'), $attributesData['price']),
-            'registered_price_old' => (float) $product->getData('tim_cena_ewidencyjna'),
-            'registered_price_new' => (float) $attributesData['tim_cena_ewidencyjna'],
-            'registered_price_diff' => $this->_calculatePriceDiffPercentage($product->getData('tim_cena_ewidencyjna'), $attributesData['tim_cena_ewidencyjna']),
-            'manufacturer_price_old' => (float) $product->getData('tim_cena_producenta'),
-            'manufacturer_price_new' => (float) $attributesData['tim_cena_producenta'],
-            'manufacturer_price_diff' => $this->_calculatePriceDiffPercentage($product->getData('tim_cena_producenta'), $attributesData['tim_cena_producenta']),
+            'price_diff' => $this->_calculatePriceDiffPercentage($this->_oldProductPrice, $attributesData['price']),
+//            'registered_price_old' => (float) $product->getData('tim_cena_ewidencyjna'),
+//            'registered_price_new' => (float) $attributesData['tim_cena_ewidencyjna'],
+//            'registered_price_diff' => $this->_calculatePriceDiffPercentage($product->getData('tim_cena_ewidencyjna'), $attributesData['tim_cena_ewidencyjna']),
+//            'manufacturer_price_old' => (float) $product->getData('tim_cena_producenta'),
+//            'manufacturer_price_new' => (float) $attributesData['tim_cena_producenta'],
+//            'manufacturer_price_diff' => $this->_calculatePriceDiffPercentage($product->getData('tim_cena_producenta'), $attributesData['tim_cena_producenta']),
             'updated_at' => Mage::getSingleton('core/date')->gmtDate(),
         );
         $writeAdapter->insertOnDuplicate($resource->getTableName('tim_priceupdate/report'), $data);

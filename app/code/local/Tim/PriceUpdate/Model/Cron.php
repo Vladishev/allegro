@@ -23,7 +23,7 @@ class Tim_PriceUpdate_Model_Cron
     {
         /* @var $priceImport Tim_PriceUpdate_Model_Import */
         $priceImport = Mage::getModel('tim_priceupdate/import');
-        $priceImport->run('/home/vlado/workspace/allegro/var/csv/CennikB24.csv');
+        $priceImport->run();
     }
 }
 
