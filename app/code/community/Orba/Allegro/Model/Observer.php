@@ -270,4 +270,17 @@ class Orba_Allegro_Model_Observer {
 			$collection->getResource()->disableRenew($toDisableIds);
 		}
 	}
+
+    public function addMassAction($observer)
+    {
+        $block = $observer->getEvent()->getBlock();
+        if(get_class($block) =='Mage_Adminhtml_Block_Widget_Grid_Massaction'
+            && $block->getRequest()->getControllerName() == 'catalog_product')
+        {
+            $block->addItem('new_auction', array(
+                'label' => 'New Auction',
+                'url' => Mage::app()->getStore()->getUrl('*/auction/new'),
+            ));
+        }
+    }
 }

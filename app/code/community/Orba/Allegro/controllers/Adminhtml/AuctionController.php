@@ -813,6 +813,9 @@ class Orba_Allegro_Adminhtml_AuctionController
 
     protected function _registerObjects() {
         $request = $this->getRequest();
+        if ($this->getRequest()->getPost('product')) {
+            $postRequest = $this->getRequest()->getPost('product');
+        }
 		
         $models = array(
             'store'      => 'core/store', 
