@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * Class Orba_Allegro_Model_Auction_Test
+ *
+ * Implements 'test auction' for mass action
+ */
 class Orba_Allegro_Model_Auction_Test extends Mage_Core_Model_Abstract
 {
+    /**
+     * @param array $auctionData
+     * @throws Orba_Allegro_Exception
+     */
     public function test($auctionData)
     {
         $service = Orba_Allegro_Model_Service::factory($this->_getCountryCode());
@@ -20,7 +29,8 @@ class Orba_Allegro_Model_Auction_Test extends Mage_Core_Model_Abstract
                 $error = $e->getMessage();
             }
 
-            $t = 1;
+            Mage::log(array('result' => $result));
+            Mage::log(array('error' => $error));
         }
     }
 
@@ -63,7 +73,7 @@ class Orba_Allegro_Model_Auction_Test extends Mage_Core_Model_Abstract
      * Sends prepared data to Allegro service
      *
      * @param $data
-     * @return type
+     * @return object stdClass
      */
     protected function _checkNewAuction($data) {
         return $this->_getClient()->checkNewAuctionExt($data);

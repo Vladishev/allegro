@@ -119,9 +119,21 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
                         }
                     }
                 }
-                Mage::getModel('orbaallegro/auction_test')->test($resultArray);
+                Mage::getModel('orbaallegro/auction_save')->save($resultArray);
             }
             Mage::getSingleton('core/session')->unsPostRequest();
+            Mage::getSingleton('core/session')->addSuccess(Mage::helper('orbaallegro')->
+            __("Auction created. Status will change immediately. You can refresh statuses manually."));
+
+            return Mage::app()
+                ->getResponse()
+                ->setRedirect(
+                    Mage::helper('adminhtml')
+                        ->getUrl(
+                            'adminhtml/auction/index',
+                            array('_secure' => true)
+                        )
+                );
         }
 
         $this->addTab('flat', array(
