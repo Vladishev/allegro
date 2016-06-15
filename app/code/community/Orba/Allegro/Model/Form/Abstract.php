@@ -91,12 +91,28 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
 		$items = $this->_sortItems($items);
 
         $fields = array();
-        
-        foreach ($items as $item) {
-            $field = $this->_processField($item);
-            if($field instanceof Varien_Data_Form_Abstract){
-                $this->_res[$item->sellFormId] = $item->sellFormResType;
-                $fields[$item->sellFormId] = $field;
+
+        $extraKeys = Mage::registry('extra_ids');
+        if (!empty($extraKeys)) {
+            foreach ($items as $item) {
+                $itemId = $item->sellFormId;
+                if (!array_key_exists($itemId, $extraKeys)) {
+                    $field = $this->_processField($item);
+                } else {
+                    continue;
+                }
+                if($field instanceof Varien_Data_Form_Abstract){
+                    $this->_res[$item->sellFormId] = $item->sellFormResType;
+                    $fields[$item->sellFormId] = $field;
+                }
+            }
+        } else {
+            foreach ($items as $item) {
+                $field = $this->_processField($item);
+                if($field instanceof Varien_Data_Form_Abstract){
+                    $this->_res[$item->sellFormId] = $item->sellFormResType;
+                    $fields[$item->sellFormId] = $field;
+                }
             }
         }
         $this->_fields = $fields;
@@ -134,4 +150,11 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
 		return $items;
 	}
 
+    /**
+     * @param array $data
+     */
+    public function setFields($data)
+    {
+        $this->_fields = $data;
+    }
 }

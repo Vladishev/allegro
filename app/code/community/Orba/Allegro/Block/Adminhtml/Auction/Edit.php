@@ -56,8 +56,20 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Block_Wid
                     'class' => 'delete'
                 ))
         );
+        $this->setChild('mass_auctions',
+            $this->getLayout()->createBlock('adminhtml/widget_button')
+                ->setData(array(
+                    'label' => Mage::helper('orbaallegro')->__('Create auctions'),
+                    'onclick' => 'auctionControl.create();',
+                ))
+        );
 
         return parent::_prepareLayout();
+    }
+
+    public function getCreateButtonHtml()
+    {
+        return $this->getChildHtml('mass_auctions');
     }
 
     public function getBackButtonHtml()
@@ -112,6 +124,25 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Block_Wid
         ));
     }
 
+    public function getCreateUrl()
+    {
+        return $this->getUrl('*/*/new', array(
+            '_current'         => true,
+            'template'      => Mage::registry('allegro_template_id'),
+            'category'      => Mage::registry('allegro_category_id'),
+            'shop_category' => Mage::registry('allegro_shop_cat_id'),
+            'extra_done'    => '1',
+        ));
+    }
+
+    public function checkMassAction()
+    {
+        if (Mage::getSingleton('core/session')->getPostRequest()) {
+            return true;
+        }
+
+        return false;
+    }
 
     public function getDuplicateUrl()
     {

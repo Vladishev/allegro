@@ -82,9 +82,32 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
             ->setAttributeSetFilter($attributeSetId)
             ->setSortOrder()
             ->load();
-       
+
         // Get Allegro stuff
 
+        //This 'if' statement for mass action only
+        if (Mage::getSingleton('core/session')->getPostRequest() && ($this->getExtraDone() !== '1')) {
+            $defaultIdSet = array_flip(Mage::getModel('orbaallegro/service_defaultSet')->getDefaultIds());
+                Mage::register('allegro_category_id', $this->getCategory()->getId());
+                Mage::register('allegro_shop_cat_id', $this->getShopCategory()->getId());
+                Mage::register('allegro_template_id', $this->getAucitonTemplate()->getId());
+                Mage::register('extra_ids', $defaultIdSet);
+
+                $this->addTab('settings', array(
+                    'label'     => Mage::helper('orbaallegro')->__('Extra fields'),
+                    'content'   => $this->getLayout()
+                        ->createBlock('orbaallegro/adminhtml_auction_edit_tab_extra')
+                        ->setProduct($this->getProduct())
+                        ->setParentProductId($parentProductId)
+                        ->setCategory($this->getCategory())
+                        ->setShopCategory($this->getShopCategory())
+                        ->setStore($this->getStore())
+                        ->setUser($this->getUser())
+                        ->toHtml(),
+                    'active'    => true
+                ));
+                return parent::_prepareLayout();
+        }
         //This 'if' statement for mass action only
         if ($postRequest = Mage::getSingleton('core/session')->getPostRequest()) {
             foreach ($postRequest as $product) {
@@ -101,9 +124,20 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
                 $auctionData = $flatNewBlock->getAuctionData();
                 $flatFields = $auctionData->getFlatFields();
                 $resultArray = array();
+                $extraData = Mage::getSingleton('adminhtml/session')->getExtraData();
+                if (!empty($extraData)) {
+                    $resultArray['opt'] = $extraData['opt'];
+                    unset($extraData['res']);
+                    unset($extraData['opt']);
+                    $flatFields = array_replace($flatFields, $extraData);
+                }
                 $resultArray['res'] = $auctionData->getResData();
                 foreach ($flatFields as $key => $obj) {
-                    $value = $obj->getValue();
+                    if (is_object($obj)) {
+                        $value = $obj->getValue();
+                    } else {
+                        $value = $obj;
+                    }
                     if (is_array($value)) {
                         foreach ($value as $num => $val) {
                             if (empty($val)) {
@@ -122,6 +156,7 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
                 Mage::getModel('orbaallegro/auction_save')->save($resultArray);
             }
             Mage::getSingleton('core/session')->unsPostRequest();
+            Mage::getSingleton('adminhtml/session')->unsExtraData();
             Mage::getSingleton('core/session')->addSuccess(Mage::helper('orbaallegro')->
             __("Auction created. Status will change immediately. You can refresh statuses manually."));
 
@@ -253,7 +288,13 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
     public function getUser() {
         return Mage::registry('user');
     }
-	
+    /**
+     * @return mixed
+     */
+    public function getExtraDone() {
+        return Mage::registry('extra_done');
+    }
+
     /**
      * @return Mage_Core_Model_Product
      */

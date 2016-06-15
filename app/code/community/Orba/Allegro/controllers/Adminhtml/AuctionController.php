@@ -813,11 +813,17 @@ class Orba_Allegro_Adminhtml_AuctionController
 
     protected function _registerObjects() {
         $request = $this->getRequest();
-
+//Mage::getSingleton('core/session')->unsPostRequest();
         if ($this->getRequest()->getPost('product')) {
             $postRequest = $this->getRequest()->getPost('product');
             $request->setParam('product', $postRequest[0]);
             Mage::getSingleton('core/session')->setPostRequest($postRequest);
+        }
+
+        if ($request->getParam('extra_done') == '1') {
+            $formData = $request->getPost('auction');
+            Mage::getSingleton('adminhtml/session')->setExtraData($formData);
+            Mage::register('extra_done', '1');
         }
 
         $models = array(

@@ -189,7 +189,7 @@ class Orba_Allegro_Model_Client extends Orba_Allegro_Model_Abstract {
             'webapiKey' => $this->getApiKey()
         ));
     }
-    
+
     
     /**
      * Metoda pozwala na pobranie pełnego drzewa kategorii dostępnych we wskazanym kraju.

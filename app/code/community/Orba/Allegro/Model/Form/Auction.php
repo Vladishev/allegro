@@ -206,7 +206,7 @@ class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
     }
     
     public function load($categoryId=null) {
-        
+
         if($categoryId!==null){
             $this->_clientMethod = "getSellFormFieldsForCategory";
             $this->_clientMethodArgs = array("categoryId"=>(int)$categoryId);
