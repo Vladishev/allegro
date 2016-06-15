@@ -23,29 +23,63 @@ class Orba_Allegro_Model_System_Config_Source_TimShipping
     public function toOptionArray()
     {
         return array(
-            array('value' => 1, 'label'=>Mage::helper('orbaallegro')->__('Economic postal parcel')),
-            array('value' => 2, 'label'=>Mage::helper('orbaallegro')->__('Economic postal letter')),
-            array('value' => 3, 'label'=>Mage::helper('orbaallegro')->__('Priority postal parcel')),
-            array('value' => 4, 'label'=>Mage::helper('orbaallegro')->__('Priority postal letter')),
-            array('value' => 6, 'label'=>Mage::helper('orbaallegro')->__('Paczka48 COD')),
-            array('value' => 7, 'label'=>Mage::helper('orbaallegro')->__('Economic registered letter')),
-            array('value' => 8, 'label'=>Mage::helper('orbaallegro')->__('Paczka24 COD')),
-            array('value' => 9, 'label'=>Mage::helper('orbaallegro')->__('Priority registered letter')),
-            array('value' => 10, 'label'=>Mage::helper('orbaallegro')->__('Courier parcel')),
-            array('value' => 11, 'label'=>Mage::helper('orbaallegro')->__('Courier COD parcel')),
-            array('value' => 12, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Ruch')),
-            array('value' => 13, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczkomaty')),
-            array('value' => 14, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Ruch')),
-            array('value' => 15, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczkomaty')),
-            array('value' => 16, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - DHL')),
-            array('value' => 17, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczka48')),
-            array('value' => 18, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczka48')),
-            array('value' => 19, 'label'=>Mage::helper('orbaallegro')->__('Pocztex Kurier48')),
-            array('value' => 20, 'label'=>Mage::helper('orbaallegro')->__('Pocztex Kurier48 COD')),
-            array('value' => 21, 'label'=>Mage::helper('orbaallegro')->__('Paczka24')),
-            array('value' => 22, 'label'=>Mage::helper('orbaallegro')->__('Paczka48')),
-            array('value' => 23, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczka24 pickpoint')),
-            array('value' => 24, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczka24 Pickpoint')),
+            array('value' => 36, 'label'=>Mage::helper('orbaallegro')->__('Economic postal parcel')),
+            array('value' => 37, 'label'=>Mage::helper('orbaallegro')->__('Economic postal letter')),
+            array('value' => 38, 'label'=>Mage::helper('orbaallegro')->__('Priority postal parcel')),
+            array('value' => 39, 'label'=>Mage::helper('orbaallegro')->__('Priority postal letter')),
+            array('value' => 40, 'label'=>Mage::helper('orbaallegro')->__('Paczka48 COD')),
+            array('value' => 41, 'label'=>Mage::helper('orbaallegro')->__('Economic registered letter')),
+            array('value' => 42, 'label'=>Mage::helper('orbaallegro')->__('Paczka24 COD')),
+            array('value' => 43, 'label'=>Mage::helper('orbaallegro')->__('Priority registered letter')),
+            array('value' => 44, 'label'=>Mage::helper('orbaallegro')->__('Courier parcel')),
+            array('value' => 45, 'label'=>Mage::helper('orbaallegro')->__('Courier COD parcel')),
+            array('value' => 46, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Ruch')),
+            array('value' => 47, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczkomaty')),
+            array('value' => 48, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Ruch')),
+            array('value' => 49, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczkomaty')),
+            array('value' => 50, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - DHL')),
+            array('value' => 51, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczka48')),
+            array('value' => 52, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczka48')),
+            array('value' => 53, 'label'=>Mage::helper('orbaallegro')->__('Pocztex Kurier48')),
+            array('value' => 54, 'label'=>Mage::helper('orbaallegro')->__('Pocztex Kurier48 COD')),
+            array('value' => 55, 'label'=>Mage::helper('orbaallegro')->__('Paczka24')),
+            array('value' => 56, 'label'=>Mage::helper('orbaallegro')->__('Paczka48')),
+            array('value' => 57, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint after prepaid - Paczka24 pickpoint')),
+            array('value' => 58, 'label'=>Mage::helper('orbaallegro')->__('Pickpoint - Paczka24 Pickpoint')),
             );
+    }
+
+    /**
+     * Returns array of Allegro ids for shipping methods
+     *
+     * @return array
+     */
+    public function getShippingIds()
+    {
+        return array(
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+        );
     }
 }

@@ -5,6 +5,11 @@ class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
      * Code for quantity field
      */
     const QTY_FIELD_CODE = "quantity";
+
+    /**
+     * Product size attribute
+     */
+    const ATTR_ID = 'tim_kategoria_rozmiaru';
     /**
      * Detect to get product qty from Magento
      */
@@ -354,9 +359,12 @@ class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
             Orba_Allegro_Model_Auction_Config $config, 
             Mage_Catalog_Model_Product $product, 
             $store=null) {
-        
+
+        $shippingIds = Mage::getModel('orbaallegro/system_config_source_timShipping')->getShippingIds();
+        $specialValues = unserialize(Mage::getStoreConfig('orbaallegro/tim_allegro_shipping_methods/shipping_methods_values'));
+        $timKategoriaRozmiaru = Mage::getResourceModel('catalog/product')->getAttributeRawValue($product->getId(), self::ATTR_ID, $store->getId());
         $mapping = $this->getMapping();
-        foreach($mapping as $fieldCode){
+        foreach($mapping as $key => $fieldCode){
             $field = $this->getField($fieldCode);
             if($field instanceof Varien_Data_Form_Element_Abstract){
                 if ($fieldCode == self::QTY_FIELD_CODE) {
@@ -369,6 +377,14 @@ class Orba_Allegro_Model_Form_Auction extends Orba_Allegro_Model_Form_Abstract{
                     }
                 } else {
                     $value = $config->getValueByField($fieldCode, $store);
+                }
+                //Change price for shipping if it has special price
+                if (in_array($key, $shippingIds)) {
+                    foreach ($specialValues as $item) {
+                        if (($item['shipping_method'] == $key) && ($item['tim_kategoria_rozmiaru'] == $timKategoriaRozmiaru)) {
+                            $value = $item['tim_shipping_price'];
+                        }
+                    }
                 }
                 if(!is_null($value) && ""!==$value){
                     $field->setValue($value);
