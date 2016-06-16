@@ -31,7 +31,7 @@ class Tim_Allegro_Model_ImportProducts extends Mage_Core_Model_Abstract
      * Set product price
      * @var int
      */
-    protected $_productPrice = 1;
+    protected $_productPrice = 1.0000;
 
     /**
      * Set product quantity
