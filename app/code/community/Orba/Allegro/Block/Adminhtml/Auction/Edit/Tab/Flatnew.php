@@ -68,13 +68,24 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tab_Flatnew
             $id = $this->getShopCategory()->getId();
             $shopCatField->setValue(($id == null) ? 0 : $id);
         }
-        
         $this->setForm($form);
         Mage::dispatchEvent("orbaallegro_auction_form_prepared", array("form"=>$form));
+        if (Mage::getSingleton('core/session')->getPostRequest()) {
+            return $form;
+        }
     }
     
 	public function getFormHtml() {
 		return Mage::helper('orbaallegro')->rebuildAuctionFormHtml(parent::getFormHtml());
 	}
-    
+
+    /**
+     * Returns form
+     *
+     * @return false|Mage_Core_Model_Abstract|Orba_Allegro_Model_Form_Auction
+     */
+    public function getAuctionData()
+    {
+        return $this->_prepareForm();
+    }
 }

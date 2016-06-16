@@ -417,6 +417,14 @@
             </updates>
         </layout>        
         <events>
+            <core_block_abstract_prepare_layout_before>
+                <observers>
+                    <orbaallegro_core_block_abstract_prepare_layout_before>
+                        <class>orbaallegro/observer</class>
+                        <method>addMassAction</method>
+                    </orbaallegro_core_block_abstract_prepare_layout_before>
+                </observers>
+            </core_block_abstract_prepare_layout_before>
             <core_block_abstract_prepare_layout_after>
                 <observers>
                     <orbaallegro>

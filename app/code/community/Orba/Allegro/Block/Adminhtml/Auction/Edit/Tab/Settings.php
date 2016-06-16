@@ -52,7 +52,7 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tab_Settings extends Mage_Adminh
             'title' => $helper->__('Template'),
             'options' => $options
         ));
-        
+
         $fieldset->addField('continue_button', 'note', array(
             'text' => $this->getChildHtml('continue_button'),
         ));

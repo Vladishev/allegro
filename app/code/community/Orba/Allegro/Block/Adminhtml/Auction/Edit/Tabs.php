@@ -1,6 +1,8 @@
 <?php
 class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
+    const EXTERNAL_CATEGORY_ID = 2;
+
     public function __construct()
     {
         parent::__construct();
@@ -18,7 +20,7 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
             $this->_handleEdit($auction);
             return;
         }
-        
+
         // Step 1 - choose product
         if(is_null($productId = $this->getProduct()->getId())){
             $this->addTab('product_grid', array(
@@ -82,10 +84,58 @@ class Orba_Allegro_Block_Adminhtml_Auction_Edit_Tabs extends Mage_Adminhtml_Bloc
             ->load();
        
         // Get Allegro stuff
-        
-       
-        
-        
+
+        //This 'if' statement for mass action only
+        if ($postRequest = Mage::getSingleton('core/session')->getPostRequest()) {
+            foreach ($postRequest as $product) {
+                $productModel = Mage::getModel('catalog/product')->load($product);
+                Mage::unregister('product');
+                Mage::register('product', $productModel);
+                $flatNewBlock = $this->getLayout()
+                    ->createBlock("orbaallegro/adminhtml_auction_edit_tab_flatnew")
+                    ->setParentProductId($parentProductId)
+                    ->setCategory($this->getCategory())
+                    ->setShopCategory($this->getShopCategory())
+                    ->setStore($this->getStore())
+                    ->setUser($this->getUser());
+                $auctionData = $flatNewBlock->getAuctionData();
+                $flatFields = $auctionData->getFlatFields();
+                $resultArray = array();
+                $resultArray['res'] = $auctionData->getResData();
+                foreach ($flatFields as $key => $obj) {
+                    $value = $obj->getValue();
+                    if (is_array($value)) {
+                        foreach ($value as $num => $val) {
+                            if (empty($val)) {
+                                $resultArray[$key] = $val;
+                            } else {
+                                $resultArray[$key] = $value;
+                            }
+                        }
+                    } else {
+                        $resultArray[$key] = $value;
+                        if ($key == self::EXTERNAL_CATEGORY_ID) {
+                            $resultArray[$key] = $this->getCategory()->getExternalId();
+                        }
+                    }
+                }
+                Mage::getModel('orbaallegro/auction_save')->save($resultArray);
+            }
+            Mage::getSingleton('core/session')->unsPostRequest();
+            Mage::getSingleton('core/session')->addSuccess(Mage::helper('orbaallegro')->
+            __("Auction created. Status will change immediately. You can refresh statuses manually."));
+
+            return Mage::app()
+                ->getResponse()
+                ->setRedirect(
+                    Mage::helper('adminhtml')
+                        ->getUrl(
+                            'adminhtml/auction/index',
+                            array('_secure' => true)
+                        )
+                );
+        }
+
         $this->addTab('flat', array(
             'label'     => Mage::helper('orbaallegro')->__("Auction content"),
             'content'   => $this->getLayout()->

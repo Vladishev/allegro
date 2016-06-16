@@ -21,11 +21,11 @@ class Orba_Allegro_Adminhtml_AuctionController
             return $this->_redirectReferer();
         }
         $this->_registerObjects();
-        
+
         $this->_title($this->__('Sales'))
                 ->_title($this->__('ORBA | Allegro'))
                 ->_title($this->__('New Auction'));
-        
+
         $this->loadLayout();
         $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
         $this->renderLayout();
@@ -311,12 +311,12 @@ class Orba_Allegro_Adminhtml_AuctionController
         $data = $this->getRequest()->getParams();
         $auctionData = $data["auction"];
         $service = Orba_Allegro_Model_Service::factory($this->_getCountryCode());
-       
+
         if($service->getId()){
             $parser = Mage::getModel("orbaallegro/form_parser_out", $service);
             /* @var $parser Orba_Allegro_Model_Form_Parser_Out */
             $parsedData = $parser->parse($auctionData);
-            
+
             $error = false;
             $result = "";
             
@@ -338,7 +338,7 @@ class Orba_Allegro_Adminhtml_AuctionController
         }
         
     }
-    
+
     /**
      * Test existing auction
      */
@@ -813,7 +813,13 @@ class Orba_Allegro_Adminhtml_AuctionController
 
     protected function _registerObjects() {
         $request = $this->getRequest();
-		
+
+        if ($this->getRequest()->getPost('product')) {
+            $postRequest = $this->getRequest()->getPost('product');
+            $request->setParam('product', $postRequest[0]);
+            Mage::getSingleton('core/session')->setPostRequest($postRequest);
+        }
+
         $models = array(
             'store'      => 'core/store', 
             'product'    => 'catalog/product', 

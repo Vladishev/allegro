@@ -9,7 +9,17 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
     protected $_parserName = "orbaallegro/form_parser_in";
     protected $_fields;
     protected $_parser;
-    
+
+    /**
+     * Collect data for form fields in view 'external id' => 'type of field'
+     *
+     * External id - id of this field on Allegro servise
+     * Type of field - numeric view of types(1 - string, 2 - integer...)
+     *
+     * @var array
+     */
+    protected $_res;
+
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
         
@@ -52,6 +62,16 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
     public function getFlatFields() {
         return $this->_fields;
     }
+
+    /**
+     * Returns array with types of fields
+     *
+     * @return mixed
+     */
+    public function getResData()
+    {
+        return $this->_res;
+    }
     
     /**
      * @return Orba_Allegro_Model_Client
@@ -69,12 +89,13 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
             $items = array($items);
         }
 		$items = $this->_sortItems($items);
-		
+
         $fields = array();
         
         foreach ($items as $item) {
             $field = $this->_processField($item);
             if($field instanceof Varien_Data_Form_Abstract){
+                $this->_res[$item->sellFormId] = $item->sellFormResType;
                 $fields[$item->sellFormId] = $field;
             }
         }
@@ -112,5 +133,5 @@ abstract class Orba_Allegro_Model_Form_Abstract extends Varien_Data_Form {
     protected function _sortItems($items) {
 		return $items;
 	}
-    
+
 }

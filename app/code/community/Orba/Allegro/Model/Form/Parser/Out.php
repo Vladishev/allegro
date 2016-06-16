@@ -332,6 +332,10 @@ class Orba_Allegro_Model_Form_Parser_Out extends Orba_Allegro_Model_Form_Parser_
             if(isset($data['value'])){
                 return $this->_readAndProcessFile(Mage::getBaseDir('media') . "/" . $data['value']);
             }
+        } else {
+            if (!empty($data)) {
+                return $this->_readAndProcessFile(Mage::getBaseDir('media') . DS . $data);
+            }
         }
         return null;
     }
