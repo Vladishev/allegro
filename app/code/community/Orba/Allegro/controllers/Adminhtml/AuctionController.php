@@ -15,7 +15,7 @@ class Orba_Allegro_Adminhtml_AuctionController
         $this->renderLayout();
     }
 
-    public function newAction() {	
+    public function newAction() {
         if(!is_null($msg=$this->_stopProcess())){
             $this->_getSession()->addError($msg);
             return $this->_redirectReferer();
