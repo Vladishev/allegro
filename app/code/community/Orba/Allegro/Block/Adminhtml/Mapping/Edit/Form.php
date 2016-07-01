@@ -86,6 +86,7 @@ class Orba_Allegro_Block_Adminhtml_Mapping_Edit_Form extends
         
         switch ($attribute_code) {
             case Orba_Allegro_Model_Mapping::ATTR_CODE_CATEGORY:
+                $fieldset->addType('text', Mage::getConfig()->getBlockClassName('orbaallegro/adminhtml_service_form_element_attributes'));
                 $fieldset->addType('orbaallegro_category', Mage::getConfig()->getBlockClassName('orbaallegro/adminhtml_category_renderer'));
                 $fieldset->addType('orbaallegro_shop_category', Mage::getConfig()->getBlockClassName('orbaallegro/adminhtml_shop_category_renderer'));
                 
